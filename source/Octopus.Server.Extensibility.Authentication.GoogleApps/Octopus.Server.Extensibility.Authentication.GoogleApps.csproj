@@ -129,6 +129,9 @@
     <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_light_normal_web.png" />
     <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_light_pressed_web.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\icon-google.svg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
