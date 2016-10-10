@@ -26,7 +26,10 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 .As<IAzureADConfigurationStore>()
                 .As<IHasConfigurationSettings>()
                 .InstancePerDependency();
-            builder.RegisterType<AzureADConfigureCommands>().As<IContributeToConfigureCommand>().InstancePerDependency();
+            builder.RegisterType<AzureADConfigureCommands>()
+                .As<IContributeToConfigureCommand>()
+                .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
+                .InstancePerDependency();
 
             builder.RegisterType<AzureADAuthorizationEndpointUrlBuilder>().As<IAzureADAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<AzureADAuthTokenHandler>().As<IAzureADAuthTokenHandler>().InstancePerDependency();

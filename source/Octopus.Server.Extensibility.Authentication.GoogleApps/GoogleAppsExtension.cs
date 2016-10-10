@@ -25,7 +25,10 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 .As<IGoogleAppsConfigurationStore>()
                 .As<IHasConfigurationSettings>()
                 .InstancePerDependency();
-            builder.RegisterType<GoogleAppsConfigureCommands>().As<IContributeToConfigureCommand>().InstancePerDependency();
+            builder.RegisterType<GoogleAppsConfigureCommands>()
+                .As<IContributeToConfigureCommand>()
+                .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
+                .InstancePerDependency();
 
             builder.RegisterType<GoogleAppsAuthorizationEndpointUrlBuilder>().As<IGoogleAppsAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<GoogleAuthTokenHandler>().As<IGoogleAuthTokenHandler>().InstancePerDependency();
