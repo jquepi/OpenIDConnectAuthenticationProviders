@@ -5,7 +5,7 @@ using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand
+    public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand, IHandleLegacyWebAuthenticationModeConfigurationCommand
         where TStore : IOpenIDConnectConfigurationStore
     {
         protected readonly ILog Log;
@@ -62,6 +62,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetLoginLinkLabel(v);
                 Log.Info($"{ConfigurationSettingsName} LoginLinkLabel set to: {v}");
             });
+        }
+
+        public void Handle(string webAuthenticationMode)
+        {
+            ConfigurationStore.Value.SetIsEnabled(false);
+            Log.Info($"Octopus {ConfigurationSettingsName} authentication IsEnabled set to false, based on webAuthenticationMode={webAuthenticationMode}");
         }
     }
 }
