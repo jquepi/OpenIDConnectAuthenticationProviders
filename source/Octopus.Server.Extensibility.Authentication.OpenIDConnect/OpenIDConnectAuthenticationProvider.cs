@@ -28,12 +28,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 
         public AuthenticationProviderElement GetAuthenticationProviderElement(string siteBaseUri)
         {
-            return new AuthenticationProviderElement
+            var authenticationProviderElement = new AuthenticationProviderElement
             {
                 Name = IdentityProviderName,
-                AuthenticateUri = siteBaseUri + AuthenticateUri,
                 LinkHtml = LoginLinkHtml(siteBaseUri)
             };
+            authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, siteBaseUri + AuthenticateUri);
+
+            return authenticationProviderElement;
         }
 
         public AuthenticationProviderThatSupportsGroups GetGroupLookupElement()
