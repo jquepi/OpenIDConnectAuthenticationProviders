@@ -20,7 +20,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 
         protected override string LoginLinkHtml(string siteBaseUri)
         {
-            return $"<div class=\"external-provider-button googleapps-button\"><a href='{{{{authenticateLink}}}}'><img src=\"{siteBaseUri}/images/google_signin_buttons/icon-google.svg\"><div>Sign in with Google</div></a></div>";
+            return $"<a href='{{{{authenticateLink}}}}'><div class=\"external-provider-button googleapps-button\"><img src=\"{siteBaseUri}/images/google_signin_buttons/icon-google.svg\"><div>Sign in with Google</div></div></a>";
         }
     }
 }

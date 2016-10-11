@@ -19,7 +19,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 
         protected override string LoginLinkHtml(string siteBaseUri)
         {
-            return $"<div class=\"external-provider-button aad-button\"><a href='{{{{authenticateLink}}}}'><img src=\"{siteBaseUri}/images/microsoft_signin_buttons/microsoft-logo.svg\"><div>Sign in with Microsoft</div></a></div>";
+            return $"<a href='{{{{authenticateLink}}}}'><div class=\"external-provider-button aad-button\"><img src=\"{siteBaseUri}/images/microsoft_signin_buttons/microsoft-logo.svg\"><div>Sign in with Microsoft</div></div></a>";
         }
     }
 }

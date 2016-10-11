@@ -1,17 +1,11 @@
 ﻿@font-face {
   font-family: 'Roboto';
-    src: url('/fonts/Roboto-Medium.ttf') format('truetype'),
-        url('/fonts/Roboto-Black.ttf') format('truetype'),
-         url('/fonts/Roboto-BlackItalic.ttf') format('truetype'),
-         url('/fonts/Roboto-Bold.ttf') format('truetype'),
-         url('/fonts/Roboto-BoldItalic.ttf') format('truetype'),
-         url('/fonts/Roboto-Italic.ttf') format('truetype'),
-         url('/fonts/Roboto-Light.ttf') format('truetype'),
-         url('/fonts/Roboto-LightItalic.ttf') format('truetype'),
-         url('/fonts/Roboto-MediumItalic.ttf') format('truetype'),
-         url('/fonts/Roboto-Regular.ttf') format('truetype'),
-         url('/fonts/Roboto-Thin.ttf') format('truetype'),
-         url('/fonts/Roboto-ThinItalic.ttf') format('truetype');
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Medium';
+    src: url('/fonts/Roboto-Medium.ttf') format('truetype');
 }
 
 .googleapps-button {
@@ -33,7 +27,7 @@
 }
 
 .googleapps-button div {
-    font-family: 'Roboto';
+    font-family: 'Roboto Medium';
     margin-top: 10px;
     display: inline-block;
     margin-left: 10px;
