@@ -1,11 +1,18 @@
 ﻿@font-face {
-  font-family: 'Roboto';
+    font-family: 'Roboto';
     src: url('/fonts/Roboto-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Roboto Medium';
+    font-family: 'Roboto';
     src: url('/fonts/Roboto-Medium.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
+    font-weight: bold;
 }
 
 .googleapps-button {
@@ -27,7 +34,8 @@
 }
 
 .googleapps-button div {
-    font-family: 'Roboto Medium';
+    font-family: 'Roboto';
+    font-weight: 400;
     margin-top: 10px;
     display: inline-block;
     margin-left: 10px;
