@@ -16,7 +16,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
 
         public static string Protect(string state)
         {
-            using (var sha = SHA256CryptoServiceProvider.Create())
+            using (var sha = new SHA256CryptoServiceProvider())
             {
                 var stateHash = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes("OctoState" + state)));
                 return stateHash;
