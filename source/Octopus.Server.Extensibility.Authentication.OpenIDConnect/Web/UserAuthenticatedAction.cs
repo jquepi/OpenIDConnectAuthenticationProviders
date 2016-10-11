@@ -88,7 +88,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             var userResult = GetOrCreateUser(model, principal);
             if (!userResult.Succeeded)
+            {
+                loginTracker.RecordFailure(model.Username, context.Request.UserHostAddress);
+
+                if (action == InvalidLoginAction.Slow)
+                {
+                    sleep.For(1000);
+                }
+
                 return responseCreator.BadRequest(HttpStatusCode.BadRequest, userResult.FailureReason);
+            }
 
             if (!userResult.User.IsActive || userResult.User.IsService)
             {
