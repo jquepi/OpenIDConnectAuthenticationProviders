@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Server.Extensibility.HostServices.Model;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public abstract class OpenIDConnectConfiguration : IOverridableId
+    public abstract class OpenIDConnectConfiguration : ExtensionConfigurationDocument, IOverridableId
     {
         public const string DefaultResponseType = "code+id_token";
         public const string DefaultResponseMode = "form_post";
@@ -12,15 +12,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         protected OpenIDConnectConfiguration()
         {
+        }
+
+        protected OpenIDConnectConfiguration(string name, string author) : base(name, author)
+        {
             ResponseType = DefaultResponseType;
             ResponseMode = DefaultResponseMode;
             Scope = DefaultScope;
 
             NameClaimType = DefaultNameClaimType;
         }
-
-        [JsonIgnore]
-        public string Id { get; protected set; }
 
         public bool IsEnabled { get; set; }
 

@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
     {
         public const string DefaultCertificateUri = "https://www.googleapis.com/oauth2/v1/certs";
 
-        public GoogleAppsConfiguration()
+        public GoogleAppsConfiguration() : base("GoogleApps", "Octopus Deploy")
         {
             Issuer = "https://accounts.google.com";
             CertificateUri = DefaultCertificateUri;
