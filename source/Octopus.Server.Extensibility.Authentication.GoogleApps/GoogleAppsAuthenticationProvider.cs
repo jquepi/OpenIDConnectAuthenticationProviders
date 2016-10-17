@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Server.Extensibility.HostServices.Diagnostics;
@@ -8,27 +7,13 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {
     public class GoogleAppsAuthenticationProvider : OpenIDConnectAuthenticationProvider<IGoogleAppsConfigurationStore>
     {
-        readonly ILog log;
-
-        public GoogleAppsAuthenticationProvider(ILog log, IGoogleAppsConfigurationStore configurationStore) : base(configurationStore)
+        public GoogleAppsAuthenticationProvider(ILog log, IGoogleAppsConfigurationStore configurationStore) : base(log, configurationStore)
         {
-            this.log = log;
         }
 
         public override string IdentityProviderName => "Google Apps";
 
-        protected override bool IsProviderConfigComplete()
-        {
-            var isComplete = true;
-            foreach (var reason in ReasonsWhyConfigIsIncomplete())
-            {
-                log.Warn(reason);
-                isComplete = false;
-            }
-            return isComplete;
-        }
-
-        IEnumerable<string> ReasonsWhyConfigIsIncomplete()
+        protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
             if (string.IsNullOrWhiteSpace(ConfigurationStore.GetIssuer()))
                 yield return $"No {IdentityProviderName} issuer specified";

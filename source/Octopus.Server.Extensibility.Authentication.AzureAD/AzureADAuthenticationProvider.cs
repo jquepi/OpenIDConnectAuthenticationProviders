@@ -1,20 +1,24 @@
-﻿using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+﻿using System.Collections.Generic;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
+using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {
     public class AzureADAuthenticationProvider : OpenIDConnectAuthenticationProvider<IAzureADConfigurationStore>
     {
-        public AzureADAuthenticationProvider(IAzureADConfigurationStore configurationStore) : base(configurationStore)
+        public AzureADAuthenticationProvider(ILog log, IAzureADConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 
         public override string IdentityProviderName => "Azure AD";
 
-        protected override bool IsProviderConfigComplete()
+        protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
-            return !string.IsNullOrWhiteSpace(ConfigurationStore.GetIssuer()) &&
-                !string.IsNullOrWhiteSpace(ConfigurationStore.GetClientId());
+            if (string.IsNullOrWhiteSpace(ConfigurationStore.GetIssuer()))
+                yield return $"No {IdentityProviderName} issuer specified";
+            if (string.IsNullOrWhiteSpace(ConfigurationStore.GetClientId()))
+                yield return $"No {IdentityProviderName} Client ID specified";
         }
 
         protected override string LoginLinkHtml(string siteBaseUri)

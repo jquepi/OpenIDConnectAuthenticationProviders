@@ -1,14 +1,19 @@
-﻿using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+﻿using System.Collections.Generic;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Extensions.Contracts.Authentication;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Resources;
+using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 {
     public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport 
         where TStore : IOpenIDConnectConfigurationStore
     {
-        protected OpenIDConnectAuthenticationProvider(TStore configurationStore)
+        readonly ILog log;
+
+        protected OpenIDConnectAuthenticationProvider(ILog log, TStore configurationStore)
         {
+            this.log = log;
             ConfigurationStore = configurationStore;
         }
 
@@ -18,7 +23,18 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 
         public bool IsEnabled => ConfigurationStore.GetIsEnabled() && IsProviderConfigComplete();
 
-        protected abstract bool IsProviderConfigComplete();
+        private bool IsProviderConfigComplete()
+        {
+            var isComplete = true;
+            foreach (var reason in ReasonsWhyConfigIsIncomplete())
+            {
+                log.Warn(reason);
+                isComplete = false;
+            }
+            return isComplete;
+        }
+
+        protected abstract IEnumerable<string> ReasonsWhyConfigIsIncomplete();
 
         public bool SupportsPasswordManagement => false;
 
