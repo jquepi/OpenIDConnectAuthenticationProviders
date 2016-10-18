@@ -11,6 +11,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Server.Extensibility.HostServices.Authentication;
+using Octopus.Server.Extensibility.HostServices.Diagnostics;
 using Octopus.Server.Extensibility.HostServices.Model;
 using Octopus.Server.Extensibility.HostServices.Time;
 
@@ -20,32 +21,32 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         where TStore : IOpenIDConnectConfigurationStore
         where TAuthTokenHandler : IAuthTokenHandler
     {
+        readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserHandler principalToUserHandler;
         readonly IUserStore userStore;
         readonly IAuthCookieCreator authCookieCreator;
-        readonly IApiActionResponseCreator responseCreator;
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
 
         protected readonly TStore ConfigurationStore;
 
         protected UserAuthenticatedAction(
+            ILog log,
             TAuthTokenHandler authTokenHandler,
             IPrincipalToUserHandler principalToUserHandler,
             IUserStore userStore,
             TStore configurationStore,
             IAuthCookieCreator authCookieCreator,
-            IApiActionResponseCreator responseCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep)
         {
+            this.log = log;
             this.authTokenHandler = authTokenHandler;
             this.principalToUserHandler = principalToUserHandler;
             this.userStore = userStore;
             ConfigurationStore = configurationStore;
             this.authCookieCreator = authCookieCreator;
-            this.responseCreator = responseCreator;
             this.loginTracker = loginTracker;
             this.sleep = sleep;
         }
@@ -57,7 +58,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             if (principal == null)
             {
-                return new Response { StatusCode = HttpStatusCode.Unauthorized };
+                log.Info($"User login failed - {context.Request.Form["error_description"]}");
+                return RedirectResponse(response, $"{context.Request.Form["state"]}?error=Invalid username or password");
             }
 
             var cookieStateHash = string.Empty;
@@ -65,7 +67,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 cookieStateHash = HttpUtility.UrlDecode(context.Request.Cookies["s"]);
             if (State.Protect(state) != cookieStateHash)
             {
-                return new Response { StatusCode = HttpStatusCode.Unauthorized };
+                log.Info($"User login failed - invalid state");
+                return RedirectResponse(response, $"{state}?error=Invalid state");
             }
 
             var cookieNonceHash = string.Empty;
@@ -75,7 +78,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             var nonce = principal.Claims.FirstOrDefault(c => c.Type == "nonce");
             if (nonce == null || Nonce.Protect(nonce.Value) != cookieNonceHash)
             {
-                return new Response { StatusCode = HttpStatusCode.Unauthorized };
+                log.Info("User login failed - invalid nonce");
+                return RedirectResponse(response, $"{state}?error=Invalid nonce");
             }
 
             var model = principalToUserHandler.GetUserResource(principal);
@@ -83,7 +87,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             var action = loginTracker.BeforeAttempt(model.Username, context.Request.UserHostAddress);
             if (action == InvalidLoginAction.Ban)
             {
-                return responseCreator.BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
+                return RedirectResponse(response, $"{state}?error=You have had too many failed login attempts in a short period of time. Please try again later.");
             }
 
             var userResult = GetOrCreateUser(model, principal);
@@ -96,7 +100,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     sleep.For(1000);
                 }
 
-                return responseCreator.BadRequest(HttpStatusCode.BadRequest, userResult.FailureReason);
+                return RedirectResponse(response, $"${state}?error={userResult.FailureReason}");
             }
 
             if (!userResult.User.IsActive || userResult.User.IsService)
@@ -108,19 +112,23 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     sleep.For(1000);
                 }
 
-                return responseCreator.BadRequest("Invalid username or password.");
+                return RedirectResponse(response, $"{state}?error=Invalid username or password");
             }
 
             loginTracker.RecordSucess(model.Username, context.Request.UserHostAddress);
 
             var cookie = authCookieCreator.CreateAuthCookie(context, userResult.User.IdentificationToken, true);
 
-            return response.AsRedirect(state)
+            return RedirectResponse(response, state)
                 .WithCookie(cookie)
-                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
-                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
                 .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
+        }
 
+        Response RedirectResponse(IResponseFormatter response, string uri)
+        {
+            return response.AsRedirect(uri)
+                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
+                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
 
         UserCreateOrUpdateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal)

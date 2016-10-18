@@ -37,8 +37,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             var postLoginRedirectTo = context.Request.Query["redirectTo"];
             var state = "~/app";
-            if (!string.IsNullOrWhiteSpace(postLoginRedirectTo) && IsLocalUrl(postLoginRedirectTo))
-                state = "/app#" + postLoginRedirectTo;
+            if (!string.IsNullOrWhiteSpace(postLoginRedirectTo))
+                state = postLoginRedirectTo;
             var nonce = Nonce.Generate();
 
             var issuer = ConfigurationStore.GetIssuer();
@@ -49,20 +49,5 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 .WithCookie(new NancyCookie("s", State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
                 .WithCookie(new NancyCookie("n", Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
         }
-        
-        bool IsLocalUrl(string url)
-        {
-            // Credit to Microsoft - Preventing Open Redirection Attacks (C#)
-            // http://www.asp.net/mvc/overview/security/preventing-open-redirection-attacks
-
-            return !string.IsNullOrEmpty(url) &&
-
-                // Allows "/" or "/foo" but not "//" or "/\".
-                ((url[0] == '/' && (url.Length == 1 || (url[1] != '/' && url[1] != '\\'))) ||
-
-                // Allows "~/" or "~/foo".
-                (url.Length > 1 && url[0] == '~' && url[1] == '/'));
-        }
-
     }
 }

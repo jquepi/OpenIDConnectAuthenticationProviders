@@ -3,12 +3,13 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 {
     public class AzureADAuthTokenHandler : OpenIDConnectAuthTokenHandler<IAzureADConfigurationStore, ICertificateRetriever>, IAzureADAuthTokenHandler
     {
-        public AzureADAuthTokenHandler(IAzureADConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, ICertificateRetriever certificateRetriever) : base(configurationStore, identityProviderConfigDiscoverer, certificateRetriever)
+        public AzureADAuthTokenHandler(ILog log, IAzureADConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, ICertificateRetriever certificateRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, certificateRetriever)
         {
         }
 

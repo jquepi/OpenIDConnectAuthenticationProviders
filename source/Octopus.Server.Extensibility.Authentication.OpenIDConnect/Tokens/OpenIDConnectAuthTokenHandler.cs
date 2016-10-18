@@ -6,6 +6,7 @@ using Nancy;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {
@@ -16,13 +17,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever certificateRetriever;
 
+        readonly ILog log;
         protected readonly TStore ConfigurationStore;
 
         protected OpenIDConnectAuthTokenHandler(
+            ILog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             TRetriever certificateRetriever)
         {
+            this.log = log;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.certificateRetriever = certificateRetriever;
@@ -33,7 +37,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             state = null;
             if (request.Form.ContainsKey("error"))
             {
-                return null;
+                log.Error($"Failed to authenticate user: {request.Form["error_description"]}");
+                return Task.FromResult<ClaimsPrincipal>(null);
             }
 
             var accessToken = request.Form["access_token"];
