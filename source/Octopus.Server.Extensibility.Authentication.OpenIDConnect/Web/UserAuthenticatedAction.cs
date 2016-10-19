@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
 using Nancy.Helpers;
+using Octopus.Data.Storage.User;
+using Octopus.Diagnostics;
+using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
-using Octopus.Server.Extensibility.HostServices.Authentication;
-using Octopus.Server.Extensibility.HostServices.Diagnostics;
-using Octopus.Server.Extensibility.HostServices.Model;
-using Octopus.Server.Extensibility.HostServices.Time;
+using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {

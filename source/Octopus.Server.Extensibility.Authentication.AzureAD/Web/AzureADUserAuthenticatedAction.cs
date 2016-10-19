@@ -1,11 +1,11 @@
-﻿using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+﻿using Octopus.Data.Storage.User;
+using Octopus.Diagnostics;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
+using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
-using Octopus.Server.Extensibility.HostServices.Authentication;
-using Octopus.Server.Extensibility.HostServices.Diagnostics;
-using Octopus.Server.Extensibility.HostServices.Model;
-using Octopus.Server.Extensibility.HostServices.Time;
+using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {

@@ -1,8 +1,8 @@
 ﻿using Nancy;
+using Octopus.Server.Extensibility.Authentication.Extensions;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
-using Octopus.Server.Extensibility.Extensions.Contracts.Authentication;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 {

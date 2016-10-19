@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Nancy;
+using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {

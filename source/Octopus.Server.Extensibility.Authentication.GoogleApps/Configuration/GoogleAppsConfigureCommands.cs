@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
-using Octopus.Server.Extensibility.HostServices.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
