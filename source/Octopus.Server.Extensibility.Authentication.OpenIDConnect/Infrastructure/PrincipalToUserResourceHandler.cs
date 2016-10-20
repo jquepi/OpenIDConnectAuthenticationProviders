@@ -15,6 +15,15 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
                 ExternalId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value
             };
 
+            if (!string.IsNullOrEmpty(userResource.EmailAddress))
+            {
+                userResource.Username = userResource.EmailAddress;
+            }
+            else if (!string.IsNullOrEmpty(userResource.DisplayName))
+            {
+                userResource.Username = userResource.DisplayName;
+            }
+
             return userResource;
         }
     }

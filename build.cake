@@ -22,7 +22,7 @@ var assetDir = "./BuildAssets";
 var localPackagesDir = "../LocalPackages";
 var globalAssemblyFile = "./source/Solution Items/VersionInfo.cs";
 var extensionName = "Octopus.Server.Extensibility.Authentication.OpenIDConnect";
-var solutionToBuild = "./source/" + extensionName + ".sln";
+var solutionToBuild = "./source/OctopusOpenIDConnect.sln";
 var cleanups = new List<IDisposable>(); 
 
 var isContinuousIntegrationBuild = !BuildSystem.IsLocalBuild;
