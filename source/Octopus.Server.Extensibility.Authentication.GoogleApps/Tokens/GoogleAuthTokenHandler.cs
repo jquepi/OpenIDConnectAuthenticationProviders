@@ -14,15 +14,14 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens
         {
         }
 
-        protected override void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal)
+        protected override void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal, out string error)
         {
+            error = string.Empty;
             var hd = ConfigurationStore.GetHostedDomain();
-
             var hdClaim = principal.Claims.FirstOrDefault(c => c.Type == "hd");
-
             if (hdClaim == null || hdClaim.Value != hd)
             {
-                throw new InvalidHostedDomainSecurityException();
+                error = "Incorrect Hosted Domain value. This server is setup to accept users from a specific hosted domain only.";
             }
         }
     }

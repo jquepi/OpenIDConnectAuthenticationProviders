@@ -6,6 +6,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {
     public interface IAuthTokenHandler
     {
-        Task<ClaimsPrincipal> GetPrincipalAsync(Request request, out string state);
+        Task<ClaimsPrincipleContainer> GetPrincipalAsync(Request request, out string state);
+    }
+
+    public struct ClaimsPrincipleContainer
+    {
+        public string error { get; set; }
+        public ClaimsPrincipal principal { get; set; }
     }
 }

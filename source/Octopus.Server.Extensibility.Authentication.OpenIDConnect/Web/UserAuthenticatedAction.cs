@@ -54,12 +54,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
             string state;
-            var principal = await authTokenHandler.GetPrincipalAsync(context.Request, out state);
-
-            if (principal == null)
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request, out state);
+            var principal = principalContainer.principal;
+            if (principal == null || !string.IsNullOrEmpty(principalContainer.error))
             {
-                log.Info($"User login failed - {context.Request.Form["error_description"]}");
-                return RedirectResponse(response, $"{context.Request.Form["state"]}?error=Invalid username or password");
+                log.Info($"User login failed - {principalContainer.error}");
+                return RedirectResponse(response, $"{context.Request.Form["state"]}?error={principalContainer.error}");
             }
 
             var cookieStateHash = string.Empty;

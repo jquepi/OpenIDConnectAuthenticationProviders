@@ -32,13 +32,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             this.certificateRetriever = certificateRetriever;
         }
 
-        public Task<ClaimsPrincipal> GetPrincipalAsync(Request request, out string state)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(Request request, out string state)
         {
             state = null;
             if (request.Form.ContainsKey("error"))
             {
-                log.Error($"Failed to authenticate user: {request.Form["error_description"]}");
-                return Task.FromResult<ClaimsPrincipal>(null);
+                var errorDescription = request.Form["error_description"];
+                log.Error($"Failed to authenticate user: {errorDescription}");
+                return Task.FromResult(new ClaimsPrincipleContainer() { error = errorDescription, principal = null });
             }
 
             var accessToken = request.Form["access_token"];
@@ -52,7 +53,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
         { }
 
-        async Task<ClaimsPrincipal> GetPrincipalFromToken(string accessToken, string idToken)
+        async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
         {
             var handler = new JwtSecurityTokenHandler();
 
@@ -84,12 +85,15 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             SecurityToken unused;
             var principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
 
-            DoIssuerSpecificClaimsValidation(principal);
+            var error = string.Empty;
+            DoIssuerSpecificClaimsValidation(principal, out error);
 
-            return principal;
+            return new ClaimsPrincipleContainer() { principal = principal, error = error };
         }
 
-        protected virtual void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal)
-        { }
+        protected virtual void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal, out string error)
+        {
+            error = string.Empty;
+        }
     }
 }
