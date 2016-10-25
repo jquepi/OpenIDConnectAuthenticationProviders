@@ -6,7 +6,7 @@
 @font-face {
     font-family: 'Roboto';
     src: url('/fonts/Roboto-Medium.ttf') format('truetype');
-    font-weight: 400;
+    font-weight: 600;
 }
 
 @font-face {
@@ -17,14 +17,11 @@
 
 .googleapps-button {
     background-color: #dc4e41;
+    color: #ffffff;
 }
 
 .googleapps-button:hover {
     background-color: #c53829;
-}
-
-.googleapps-button a {
-    color: #ffffff;
 }
 
 .googleapps-button img {
@@ -35,7 +32,7 @@
 
 .googleapps-button div {
     font-family: 'Roboto';
-    font-weight: 400;
+    font-weight: 600;
     margin-top: 10px;
     display: inline-block;
     margin-left: 10px;
