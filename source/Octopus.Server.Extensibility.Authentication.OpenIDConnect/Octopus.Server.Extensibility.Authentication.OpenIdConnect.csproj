@@ -124,6 +124,7 @@
     <Compile Include="Certificates\ICertificateRetriever.cs" />
     <Compile Include="Issuer\IdentityProviderConfigDiscoverer.cs" />
     <Compile Include="Issuer\IIdentityProviderConfigDiscoverer.cs" />
+    <Compile Include="Tokens\ClaimsPrincipleContainer.cs" />
     <Compile Include="Tokens\IAuthTokenHandler.cs" />
     <Compile Include="Infrastructure\IPrincipalToUserHandler.cs" />
     <Compile Include="Infrastructure\PrincipalToUserResourceHandler.cs" />

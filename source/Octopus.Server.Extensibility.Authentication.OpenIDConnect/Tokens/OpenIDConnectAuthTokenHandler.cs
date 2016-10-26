@@ -39,7 +39,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             {
                 var errorDescription = request.Form["error_description"];
                 log.Error($"Failed to authenticate user: {errorDescription}");
-                return Task.FromResult(new ClaimsPrincipleContainer() { error = errorDescription, principal = null });
+                return Task.FromResult(new ClaimsPrincipleContainer(errorDescription));
             }
 
             var accessToken = request.Form["access_token"];
@@ -87,8 +87,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
             var error = string.Empty;
             DoIssuerSpecificClaimsValidation(principal, out error);
-
-            return new ClaimsPrincipleContainer() { principal = principal, error = error };
+            if (string.IsNullOrEmpty(error))
+                return new ClaimsPrincipleContainer(principal);
+            else
+                return new ClaimsPrincipleContainer(error);
         }
 
         protected virtual void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal, out string error)

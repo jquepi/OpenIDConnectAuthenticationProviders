@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
 {
@@ -18,10 +19,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
 
             using (var client = new HttpClient())
             {
-                    var response = await client.GetAsync(issuer + "/.well-known/openid-configuration");
+                var response = await client.GetAsync(issuer + "/.well-known/openid-configuration");
                 var content = await response.Content.ReadAsStringAsync();
 
                 configuration = JsonConvert.DeserializeObject<IssuerConfiguration>(content);
+                if (configuration == null)
+                    throw new Exception($"The identity provider's well-known configuration cannot be read. This is possibly due to a misconfiguration of the issuer ({issuer}).");
             }
 
             configurations.Add(issuer, configuration);

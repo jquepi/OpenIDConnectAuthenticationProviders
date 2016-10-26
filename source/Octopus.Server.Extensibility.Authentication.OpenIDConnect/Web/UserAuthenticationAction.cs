@@ -6,12 +6,14 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
+using Octopus.Diagnostics;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
     public abstract class UserAuthenticationAction<TStore> : IAsyncApiAction
         where TStore : IOpenIDConnectConfigurationStore
     {
+        readonly ILog log;
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly IAuthorizationEndpointUrlBuilder urlBuilder;
 
@@ -19,11 +21,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         protected readonly IApiActionResponseCreator ResponseCreator;
 
         protected UserAuthenticationAction(
+            ILog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionResponseCreator responseCreator)
         {
+            this.log = log;
             ResponseCreator = responseCreator;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
@@ -33,7 +37,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
             if (!ConfigurationStore.GetIsEnabled())
-                return ResponseCreator.AsStatusCode(HttpStatusCode.BadRequest);
+            {
+                log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called while the provider was disabled.");
+                return ResponseCreator.BadRequest(new string[] { "This authentication provider is disabled." });
+            }
 
             var postLoginRedirectTo = context.Request.Query["redirectTo"];
             var state = "~/app";
@@ -41,13 +48,21 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 state = postLoginRedirectTo;
             var nonce = Nonce.Generate();
 
-            var issuer = ConfigurationStore.GetIssuer();
-            var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
-            var url = urlBuilder.Build(context.Request.Url.SiteBase, issuerConfig, nonce, state);
+            try
+            {
+                var issuer = ConfigurationStore.GetIssuer();
+                var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
+                var url = urlBuilder.Build(context.Request.Url.SiteBase, issuerConfig, nonce, state);
 
-            return response.AsRedirect(url)
-                .WithCookie(new NancyCookie("s", State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
-                .WithCookie(new NancyCookie("n", Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
+                return response.AsRedirect(url)
+                    .WithCookie(new NancyCookie("s", State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
+                    .WithCookie(new NancyCookie("n", Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return response.AsRedirect($"{state}?error=Login failed. Please see the Octopus Server logs for more details.");
+            }
         }
     }
 }

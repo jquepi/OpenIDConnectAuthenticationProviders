@@ -1,5 +1,6 @@
 ﻿using Nancy.Helpers;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using System;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
 {
@@ -15,6 +16,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
 
         public virtual string Build(string siteBaseUri, IssuerConfiguration issuerConfiguration, string nonce, string state)
         {
+            if (issuerConfiguration == null)
+                throw new ArgumentException("issuerConfiguration is required", nameof(issuerConfiguration));
+
             var issuerEndpoint = issuerConfiguration.AuthorizationEndpoint;
             var clientId = ConfigurationStore.GetClientId();
             var scope = ConfigurationStore.GetScope();
