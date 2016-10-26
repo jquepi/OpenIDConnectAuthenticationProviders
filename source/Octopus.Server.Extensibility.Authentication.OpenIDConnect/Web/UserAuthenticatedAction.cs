@@ -100,7 +100,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     sleep.For(1000);
                 }
 
-                return RedirectResponse(response, $"${state}?error={userResult.FailureReason}");
+                return RedirectResponse(response, $"{state}?error={userResult.FailureReason}");
             }
 
             if (!userResult.User.IsActive || userResult.User.IsService)
