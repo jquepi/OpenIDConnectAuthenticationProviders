@@ -43,7 +43,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             }
 
             if (context.Request.Url.SiteBase.StartsWith("https://", StringComparison.OrdinalIgnoreCase) == false)
-                log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called without using using https.");
+                log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called without using https.");
 
             var postLoginRedirectTo = context.Request.Query["redirectTo"];
             var state = "~/app";
