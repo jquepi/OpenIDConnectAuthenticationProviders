@@ -36,15 +36,18 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
-            if (!ConfigurationStore.GetIsEnabled())
+            if (ConfigurationStore.GetIsEnabled() == false)
             {
                 log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called while the provider was disabled.");
                 return ResponseCreator.BadRequest(new string[] { "This authentication provider is disabled." });
             }
 
+            if (context.Request.Url.SiteBase.StartsWith("https://", StringComparison.OrdinalIgnoreCase) == false)
+                log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called without using using https.");
+
             var postLoginRedirectTo = context.Request.Query["redirectTo"];
             var state = "~/app";
-            if (!string.IsNullOrWhiteSpace(postLoginRedirectTo))
+            if (string.IsNullOrWhiteSpace(postLoginRedirectTo) == false)
                 state = postLoginRedirectTo;
             var nonce = Nonce.Generate();
 
