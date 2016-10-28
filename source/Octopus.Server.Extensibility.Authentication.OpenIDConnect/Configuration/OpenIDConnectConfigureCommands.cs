@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
@@ -10,11 +11,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
     {
         protected readonly ILog Log;
         protected readonly Lazy<TStore> ConfigurationStore;
+        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
 
-        protected OpenIdConnectConfigureCommands(ILog log, Lazy<TStore> configurationStore)
+        protected OpenIdConnectConfigureCommands(ILog log, Lazy<TStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore)
         {
             Log = log;
             ConfigurationStore = configurationStore;
+            this.webPortalConfigurationStore = webPortalConfigurationStore;
         }
 
         protected abstract string ConfigurationSettingsName { get; }
@@ -26,6 +29,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 var isEnabled = bool.Parse(v);
                 ConfigurationStore.Value.SetIsEnabled(isEnabled);
                 Log.Info($"{ConfigurationSettingsName} IsEnabled set to: {isEnabled}");
+
+                if (isEnabled && webPortalConfigurationStore.GetForceSSL() == false && webPortalConfigurationStore.GetListenPrefixes().ToLower().Contains("http://"))
+                    Log.Warn($"{ConfigurationSettingsName} user authentication API was called from an instance including listening prefixes that are not using https.");
             });
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Issuer=", $"Set the {ConfigurationSettingsName} Issuer, used for authentication.", v =>
             {
