@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
     public class AzureADConfigureCommands : OpenIdConnectConfigureCommands<IAzureADConfigurationStore>
     {
-        public AzureADConfigureCommands(ILog log, Lazy<IAzureADConfigurationStore> configurationStore) : base(log, configurationStore)
+        public AzureADConfigureCommands(ILog log, Lazy<IAzureADConfigurationStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, webPortalConfigurationStore)
         {
         }
 

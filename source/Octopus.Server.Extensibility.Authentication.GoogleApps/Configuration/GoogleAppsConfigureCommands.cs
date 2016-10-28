@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
     public class GoogleAppsConfigureCommands : OpenIdConnectConfigureCommands<IGoogleAppsConfigurationStore>
     {
-        public GoogleAppsConfigureCommands(ILog log, Lazy<IGoogleAppsConfigurationStore> configurationStore) : base(log, configurationStore)
+        public GoogleAppsConfigureCommands(ILog log, Lazy<IGoogleAppsConfigurationStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, webPortalConfigurationStore)
         {
         }
 
