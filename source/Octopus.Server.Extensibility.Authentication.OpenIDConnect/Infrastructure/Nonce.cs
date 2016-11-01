@@ -6,9 +6,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
 {
     public static class Nonce
     {
+        static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+
         public static string Generate()
         {
-            var nonce = Guid.NewGuid().ToString("N");
+            var data = new byte[16];
+            Rng.GetNonZeroBytes(data);
+            var nonce = Convert.ToBase64String(data);
             return nonce;
         }
 
