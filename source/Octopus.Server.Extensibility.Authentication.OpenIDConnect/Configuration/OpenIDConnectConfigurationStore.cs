@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Octopus.Data.Model;
+using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
