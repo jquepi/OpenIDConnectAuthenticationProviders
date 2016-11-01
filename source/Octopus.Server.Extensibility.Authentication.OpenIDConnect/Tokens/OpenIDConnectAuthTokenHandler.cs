@@ -64,6 +64,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
             var validationParameters = new TokenValidationParameters
             {
+                ValidateActor = true,
+                ValidateIssuerSigningKey = true,
                 ValidAudience = issuer + "/resources",
                 ValidIssuer = issuerConfig.Issuer,
                 IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !certificates.ContainsKey(identifier) ? null : new [] { new X509SecurityKey(certificates[identifier]) }
