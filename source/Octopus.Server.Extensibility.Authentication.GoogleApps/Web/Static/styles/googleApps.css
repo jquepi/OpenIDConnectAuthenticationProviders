@@ -26,14 +26,18 @@
 
 .googleapps-button img {
     margin-left: 10px;
-    margin-right: 10px;
-    margin-top: -2px;
+    margin-top: 13px; /* ([container-40h]-[image-14h]) / 2 = 13px */
+    float: left;
 }
 
 .googleapps-button div {
     font-family: 'Roboto';
     font-weight: 600;
-    margin-top: 10px;
     display: inline-block;
-    margin-left: 10px;
+    float: right;
+    text-align: left;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
 }
