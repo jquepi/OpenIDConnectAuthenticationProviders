@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Server.Extensibility.HostServices.Web;
@@ -30,8 +31,20 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetIsEnabled(isEnabled);
                 Log.Info($"{ConfigurationSettingsName} IsEnabled set to: {isEnabled}");
 
-                if (isEnabled && webPortalConfigurationStore.GetForceSSL() == false && webPortalConfigurationStore.GetListenPrefixes().ToLower().Contains("http://"))
+                var listenPrefixes = webPortalConfigurationStore.GetListenPrefixes();
+
+                if (isEnabled && webPortalConfigurationStore.GetForceSSL() == false && listenPrefixes.ToLower().Contains("http://"))
                     Log.Warn($"{ConfigurationSettingsName} user authentication API was called from an instance including listening prefixes that are not using https.");
+
+                if (isEnabled && !string.IsNullOrWhiteSpace(listenPrefixes))
+                {
+                    Log.Info("Add the following to the Authorized redirect URIs for your app");
+                    var prefixes = listenPrefixes.Split(',', ';').Where(u => !string.IsNullOrWhiteSpace(u));
+                    foreach (var prefix in prefixes)
+                    {
+                        Log.Info(prefix.TrimEnd('/') + "/api/users/authenticatedToken/" + ConfigurationStore.Value.ConfigurationSettingsName);
+                    }
+                }
             });
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Issuer=", $"Set the {ConfigurationSettingsName} Issuer, used for authentication.", v =>
             {

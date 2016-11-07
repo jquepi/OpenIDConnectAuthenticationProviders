@@ -14,7 +14,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
             ConfigurationStore = configurationStore;
         }
 
-        public virtual string Build(string siteBaseUri, IssuerConfiguration issuerConfiguration, string nonce, string state)
+        public virtual string Build(string requestDirectoryPath, IssuerConfiguration issuerConfiguration, string nonce, string state)
         {
             if (issuerConfiguration == null)
                 throw new ArgumentException("issuerConfiguration is required", nameof(issuerConfiguration));
@@ -24,7 +24,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
             var scope = ConfigurationStore.GetScope();
             var responseType = ConfigurationStore.GetResponseType();
             var responseMode = ConfigurationStore.GetResponseMode();
-            var redirectUri = siteBaseUri + ConfigurationStore.RedirectUri;
+            var redirectUri = requestDirectoryPath + ConfigurationStore.RedirectUri;
 
             var urlPathEncode = HttpUtility.UrlEncode(state);
 

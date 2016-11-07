@@ -40,16 +40,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 
         public string AuthenticateUri => $"/api/users/authenticate/{ConfigurationStore.ConfigurationSettingsName}";
 
-        protected abstract string LoginLinkHtml(string siteBaseUri);
+        protected abstract string LoginLinkHtml(string requestDirectoryPath);
 
-        public AuthenticationProviderElement GetAuthenticationProviderElement(string siteBaseUri)
+        public AuthenticationProviderElement GetAuthenticationProviderElement(string requestDirectoryPath)
         {
             var authenticationProviderElement = new AuthenticationProviderElement
             {
                 Name = IdentityProviderName,
-                LinkHtml = LoginLinkHtml(siteBaseUri)
+                LinkHtml = LoginLinkHtml(requestDirectoryPath)
             };
-            authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, siteBaseUri + AuthenticateUri);
+            authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, requestDirectoryPath + AuthenticateUri);
 
             return authenticationProviderElement;
         }

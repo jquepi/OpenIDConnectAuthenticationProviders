@@ -23,9 +23,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 yield return $"No {IdentityProviderName} hosted domain specified";
         }
 
-        protected override string LoginLinkHtml(string siteBaseUri)
+        protected override string LoginLinkHtml(string requestDirectoryPath)
         {
-            return $"<a href='{{{{authenticateLink}}}}'><div class=\"external-provider-button googleapps-button\"><img src=\"{siteBaseUri}/images/google_signin_buttons/icon-google.svg\"><div>Sign in with Google</div></div></a>";
+            return $"<a href='{{{{authenticateLink}}}}'><div class=\"external-provider-button googleapps-button\"><img src=\"{requestDirectoryPath}/images/google_signin_buttons/icon-google.svg\"><div>Sign in with Google</div></div></a>";
         }
     }
 }

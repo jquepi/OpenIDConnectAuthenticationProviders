@@ -5,9 +5,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
     public class AzureADCSSContributor : IContributesCSS
     {
-        public IEnumerable<string> GetCSSUris(string siteBaseUri)
+        public IEnumerable<string> GetCSSUris(string requestDirectoryPath)
         {
-            yield return $"{siteBaseUri}/styles/azureAD.css";
+            yield return $"{requestDirectoryPath}/styles/azureAD.css";
         }
     }
 }

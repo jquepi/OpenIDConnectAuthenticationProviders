@@ -7,6 +7,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Diagnostics;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
@@ -55,7 +56,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             {
                 var issuer = ConfigurationStore.GetIssuer();
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
-                var url = urlBuilder.Build(context.Request.Url.SiteBase, issuerConfig, nonce, state);
+                var url = urlBuilder.Build(context.Request.DirectoryPath(), issuerConfig, nonce, state);
 
                 return response.AsRedirect(url)
                     .WithCookie(new NancyCookie("s", State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
