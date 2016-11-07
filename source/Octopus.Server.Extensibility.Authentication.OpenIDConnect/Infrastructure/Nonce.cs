@@ -8,11 +8,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
     {
         static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
 
-        public static string Generate()
+        public static string GenerateUrlSafeNonce()
         {
             var data = new byte[16];
             Rng.GetNonZeroBytes(data);
-            var nonce = Convert.ToBase64String(data);
+            var nonce = Convert.ToBase64String(data).TrimEnd('=').Replace("/", string.Empty).Replace("+", string.Empty);
             return nonce;
         }
 

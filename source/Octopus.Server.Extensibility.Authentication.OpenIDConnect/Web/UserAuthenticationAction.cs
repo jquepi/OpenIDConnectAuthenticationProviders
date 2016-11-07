@@ -49,7 +49,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             var state = "~/app";
             if (string.IsNullOrWhiteSpace(postLoginRedirectTo) == false)
                 state = postLoginRedirectTo;
-            var nonce = Nonce.Generate();
+            var nonce = Nonce.GenerateUrlSafeNonce();
 
             try
             {
