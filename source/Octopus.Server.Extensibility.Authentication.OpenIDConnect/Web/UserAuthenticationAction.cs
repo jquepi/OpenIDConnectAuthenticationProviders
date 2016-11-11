@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
@@ -7,6 +8,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Diagnostics;
+using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
@@ -46,21 +48,33 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             if (context.Request.Url.SiteBase.StartsWith("https://", StringComparison.OrdinalIgnoreCase) == false)
                 log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called without using https.");
 
+            var directoryPathResult = context.Request.AbsoluteVirtualDirectoryPath();
+            if (!directoryPathResult.IsValid)
+            {
+                return ResponseCreator.BadRequest(directoryPathResult.InvalidReason);
+            }
+
             var postLoginRedirectTo = context.Request.Query["redirectTo"];
             var state = "~/app";
             if (string.IsNullOrWhiteSpace(postLoginRedirectTo) == false)
                 state = postLoginRedirectTo;
+
+            string[] whitelist = null;
+            if (Debugger.IsAttached)
+                whitelist = new[] { "http://localhost", "https://localhost" };
+
+            if (!Requests.IsLocalUrl(directoryPathResult.Path, state, whitelist))
+            {
+                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request from the local instance {0} to the non-local url {1}", directoryPathResult.Path, state);
+                return ResponseCreator.BadRequest("Request not allowed, due to potential Open Redirection attack");
+            }
+
             var nonce = Nonce.GenerateUrlSafeNonce();
 
             try
             {
                 var issuer = ConfigurationStore.GetIssuer();
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
-                var directoryPathResult = context.Request.DirectoryPath();
-                if (!directoryPathResult.IsValid)
-                {
-                    return ResponseCreator.BadRequest(directoryPathResult.InvalidReason);
-                }
 
                 var url = urlBuilder.Build(directoryPathResult.Path, issuerConfig, nonce, state);
 
