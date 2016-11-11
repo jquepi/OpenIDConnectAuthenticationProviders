@@ -56,7 +56,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             {
                 var issuer = ConfigurationStore.GetIssuer();
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
-                var url = urlBuilder.Build(context.Request.DirectoryPath(), issuerConfig, nonce, state);
+                var directoryPathResult = context.Request.DirectoryPath();
+                if (!directoryPathResult.IsValid)
+                {
+                    return ResponseCreator.BadRequest(directoryPathResult.InvalidReason);
+                }
+
+                var url = urlBuilder.Build(directoryPathResult.Path, issuerConfig, nonce, state);
 
                 return response.AsRedirect(url)
                     .WithCookie(new NancyCookie("s", State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
