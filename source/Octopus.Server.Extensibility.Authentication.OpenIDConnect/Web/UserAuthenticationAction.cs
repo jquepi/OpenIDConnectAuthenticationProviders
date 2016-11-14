@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
@@ -22,16 +21,19 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
+        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
 
         protected UserAuthenticationAction(
             ILog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAuthorizationEndpointUrlBuilder urlBuilder,
-            IApiActionResponseCreator responseCreator)
+            IApiActionResponseCreator responseCreator,
+            IWebPortalConfigurationStore webPortalConfigurationStore)
         {
             this.log = log;
             ResponseCreator = responseCreator;
+            this.webPortalConfigurationStore = webPortalConfigurationStore;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.urlBuilder = urlBuilder;
@@ -59,9 +61,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             if (string.IsNullOrWhiteSpace(postLoginRedirectTo) == false)
                 state = postLoginRedirectTo;
 
-            string[] whitelist = null;
-            if (Debugger.IsAttached)
-                whitelist = new[] { "http://localhost", "https://localhost" };
+            var whitelist = webPortalConfigurationStore.GetTrustedRedirectUrls();
 
             if (!Requests.IsLocalUrl(directoryPathResult.Path, state, whitelist))
             {
