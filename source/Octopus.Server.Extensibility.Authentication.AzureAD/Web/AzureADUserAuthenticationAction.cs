@@ -4,6 +4,7 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
@@ -14,7 +15,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             IAzureADConfigurationStore configurationStore, 
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAzureADAuthorizationEndpointUrlBuilder urlBuilder,
-            IApiActionResponseCreator responseCreator) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator)
+            IApiActionResponseCreator responseCreator,
+            IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, webPortalConfigurationStore)
         {
         }
     }
