@@ -21,6 +21,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
+        readonly IApiActionModelBinder modelBinder;
         readonly IWebPortalConfigurationStore webPortalConfigurationStore;
 
         protected UserAuthenticationAction(
@@ -29,10 +30,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionResponseCreator responseCreator,
+            IApiActionModelBinder modelBinder,
             IWebPortalConfigurationStore webPortalConfigurationStore)
         {
             this.log = log;
             ResponseCreator = responseCreator;
+            this.modelBinder = modelBinder;
             this.webPortalConfigurationStore = webPortalConfigurationStore;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
@@ -47,25 +50,17 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return ResponseCreator.BadRequest(new string[] { "This authentication provider is disabled." });
             }
 
-            if (context.Request.Url.SiteBase.StartsWith("https://", StringComparison.OrdinalIgnoreCase) == false)
-                log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called without using https.");
+            var model = modelBinder.Bind<LoginRedirectLinkRequestModel>(context);
 
-            var directoryPathResult = context.Request.AbsoluteVirtualDirectoryPath();
-            if (!directoryPathResult.IsValid)
-            {
-                return ResponseCreator.BadRequest(directoryPathResult.InvalidReason);
-            }
-
-            var postLoginRedirectTo = context.Request.Query["redirectTo"];
-            var state = "~/app";
-            if (string.IsNullOrWhiteSpace(postLoginRedirectTo) == false)
-                state = postLoginRedirectTo;
+            var state = model.RedirectAfterLoginTo;
+            if (string.IsNullOrWhiteSpace(state))
+                state = "/";
 
             var whitelist = webPortalConfigurationStore.GetTrustedRedirectUrls();
 
-            if (!Requests.IsLocalUrl(directoryPathResult.Path, state, whitelist))
+            if (!Requests.IsLocalUrl(state, whitelist))
             {
-                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request from the local instance {0} to the non-local url {1}", directoryPathResult.Path, state);
+                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", state);
                 return ResponseCreator.BadRequest("Request not allowed, due to potential Open Redirection attack");
             }
 
@@ -76,9 +71,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 var issuer = ConfigurationStore.GetIssuer();
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
-                var url = urlBuilder.Build(directoryPathResult.Path, issuerConfig, nonce, state);
+                var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, state);
 
-                return response.AsRedirect(url)
+                return ResponseCreator.AsOctopusJson(response, new LoginRedirectLinkResponseModel { ExternalAuthenticationUrl = url })
                     .WithCookie(new NancyCookie("s", State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
                     .WithCookie(new NancyCookie("n", Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
             }
@@ -88,5 +83,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return response.AsRedirect($"{state}?error=Login failed. Please see the Octopus Server logs for more details.");
             }
         }
+    }
+
+    public class LoginRedirectLinkRequestModel
+    {
+        public string ApiAbsUrl { get; set; }
+        public string RedirectAfterLoginTo { get; set; }
+    }
+
+    public class LoginRedirectLinkResponseModel
+    {
+        public string ExternalAuthenticationUrl { get; set; }
     }
 }

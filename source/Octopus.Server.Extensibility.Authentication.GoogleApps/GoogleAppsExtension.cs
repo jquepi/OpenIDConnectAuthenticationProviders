@@ -45,6 +45,10 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             builder.RegisterType<GoogleAppsUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<GoogleAppsCSSContributor>().As<IContributesCSS>().InstancePerDependency();
+            builder.RegisterType<GoogleAppsJavascriptContributor>()
+                .As<IContributesJavascript>()
+                .As<IContributesAngularModules>()
+                .InstancePerDependency();
 
             builder.RegisterType<GoogleAppsAuthenticationProvider>()
                 .As<IAuthenticationProvider>()

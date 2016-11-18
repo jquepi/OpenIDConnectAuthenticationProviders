@@ -38,18 +38,18 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 
         public bool SupportsPasswordManagement => false;
 
-        public string AuthenticateUri => $"/users/authenticate/{ConfigurationStore.ConfigurationSettingsName}";
+        public string AuthenticateUri => $"/api/users/authenticate/{ConfigurationStore.ConfigurationSettingsName}";
 
-        protected abstract string LoginLinkHtml(string requestDirectoryPath);
+        protected abstract string LoginLinkHtml(string absoluteVirtualDirectoryPath);
 
-        public AuthenticationProviderElement GetAuthenticationProviderElement(string requestDirectoryPath)
+        public AuthenticationProviderElement GetAuthenticationProviderElement(string absoluteVirtualDirectoryPath)
         {
             var authenticationProviderElement = new AuthenticationProviderElement
             {
                 Name = IdentityProviderName,
-                LinkHtml = LoginLinkHtml(requestDirectoryPath)
+                LinkHtml = LoginLinkHtml(absoluteVirtualDirectoryPath)
             };
-            authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, requestDirectoryPath + AuthenticateUri);
+            authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, "~" + AuthenticateUri);
 
             return authenticationProviderElement;
         }

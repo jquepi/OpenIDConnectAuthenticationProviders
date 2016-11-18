@@ -15,7 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             Func<WhenEnabledAsyncActionInvoker<GoogleAppsUserAuthenticationAction, IGoogleAppsConfigurationStore>> authenticateUserActionFactory,
             Func<WhenEnabledAsyncActionInvoker<GoogleAppsUserAuthenticatedAction, IGoogleAppsConfigurationStore>> userAuthenticatedActionFactory) : base(configurationStore, authenticationProvider)
         {
-            Get[authenticationProvider.AuthenticateUri, true] = async (_, token) => await authenticateUserActionFactory().ExecuteAsync(Context, Response);
+            Post[authenticationProvider.AuthenticateUri, true] = async (_, token) => await authenticateUserActionFactory().ExecuteAsync(Context, Response);
             Post[configurationStore.RedirectUri, true] = async (_, token) => await userAuthenticatedActionFactory().ExecuteAsync(Context, Response);
         }
     }

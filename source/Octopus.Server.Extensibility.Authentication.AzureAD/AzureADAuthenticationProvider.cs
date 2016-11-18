@@ -21,9 +21,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 yield return $"No {IdentityProviderName} Client ID specified";
         }
 
-        protected override string LoginLinkHtml(string requestDirectoryPath)
+        protected override string LoginLinkHtml(string absoluteVirtualDirectoryPath)
         {
-            return $"<a href='{{{{authenticateLink}}}}'><div class=\"external-provider-button aad-button\"><img src=\"{requestDirectoryPath}/images/microsoft_signin_buttons/microsoft-logo.svg\"><div>Sign in with Microsoft</div></div></a>";
+            return "<azure-auth-provider provider='provider' shouldAutoLogin='shouldAutoLogin'></azure-auth-provider>";
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IGoogleAppsAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionResponseCreator responseCreator,
-            IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, webPortalConfigurationStore)
+            IApiActionModelBinder modelBinder,
+            IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, modelBinder, webPortalConfigurationStore)
         {
         }
     }

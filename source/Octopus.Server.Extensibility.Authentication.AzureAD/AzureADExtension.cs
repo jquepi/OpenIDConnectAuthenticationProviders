@@ -46,6 +46,10 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
             builder.RegisterType<AzureADUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<AzureADCSSContributor>().As<IContributesCSS>().InstancePerDependency();
+            builder.RegisterType<AzureADJavascriptContributor>()
+                .As<IContributesJavascript>()
+                .As<IContributesAngularModules>()
+                .InstancePerDependency();
 
             builder.RegisterType<AzureADAuthenticationProvider>()
                 .As<IAuthenticationProvider>()

@@ -75,12 +75,14 @@
       <HintPath>..\packages\Octopus.Diagnostics.1.0.11\lib\netstandard1.0\Octopus.Diagnostics.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Octopus.Server.Extensibility, Version=1.1.45.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.1.1.45\lib\net45\Octopus.Server.Extensibility.dll</HintPath>
+    <Reference Include="Octopus.Server.Extensibility, Version=1.1.46.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.1.1.46-relativeurl0002\lib\net45\Octopus.Server.Extensibility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.2.0\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
+    <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.1.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.1.15-relativeurls0001\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Octopus.Time, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
@@ -130,6 +132,7 @@
     <Compile Include="Tokens\IGoogleCertificateJsonParser.cs" />
     <Compile Include="Web\GoogleAppsCSSContributor.cs" />
     <Compile Include="Web\GoogleAppsHomeLinksContributor.cs" />
+    <Compile Include="Web\GoogleAppsJavascriptContributor.cs" />
     <Compile Include="Web\GoogleAppsStaticContentFolders.cs" />
     <Compile Include="Web\GoogleAppsUserAuthenticatedAction.cs" />
     <Compile Include="Web\GoogleAppsUserAuthenticationAction.cs" />
@@ -176,6 +179,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Web\Static\fonts\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\controllers\googleApps_auth_provider_controller.js" />
+    <EmbeddedResource Include="Web\Static\areas\users\directives\googleApps_auth_provider.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\googleApps_users_module.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web\Static\areas\users\views\googleApps_auth_provider.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

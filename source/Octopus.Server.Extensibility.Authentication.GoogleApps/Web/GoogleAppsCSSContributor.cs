@@ -7,7 +7,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
     {
         public IEnumerable<string> GetCSSUris(string requestDirectoryPath)
         {
-            yield return $"{requestDirectoryPath}/styles/googleApps.css";
+            yield return "styles/googleApps.css";
         }
     }
 }

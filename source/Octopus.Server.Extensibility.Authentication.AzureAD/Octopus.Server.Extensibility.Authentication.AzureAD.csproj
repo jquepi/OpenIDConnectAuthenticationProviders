@@ -75,12 +75,14 @@
       <HintPath>..\packages\Octopus.Diagnostics.1.0.11\lib\netstandard1.0\Octopus.Diagnostics.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Octopus.Server.Extensibility, Version=1.1.45.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.1.1.45\lib\net45\Octopus.Server.Extensibility.dll</HintPath>
+    <Reference Include="Octopus.Server.Extensibility, Version=1.1.46.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.1.1.46-relativeurl0002\lib\net45\Octopus.Server.Extensibility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.2.0\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
+    <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.1.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.1.15-relativeurls0001\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Octopus.Time, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
@@ -131,6 +133,7 @@
     <Compile Include="Web\AzureADUserAuthenticatedAction.cs" />
     <Compile Include="Web\AzureADUserAuthenticationAction.cs" />
     <Compile Include="AzureADAuthenticationProvider.cs" />
+    <Compile Include="Web\AzureADJavascriptContributor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Octopus.Server.Extensibility.Authentication.OpenIDConnect\Octopus.Server.Extensibility.Authentication.OpenIdConnect.csproj">
@@ -150,6 +153,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Web\Static\styles\azureAD.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\controllers\azureAD_auth_provider_controller.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\directives\azureAD_auth_provider.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\azureAD_users_module.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
