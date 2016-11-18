@@ -25,7 +25,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 
         protected override string LoginLinkHtml(string absoluteVirtualDirectoryPath)
         {
-            return "<google-auth-provider provider='provider' shouldAutoLogin='shouldAutoLogin'></google-auth-provider>";
+            return "<google-auth-provider provider='provider' should-auto-login='shouldAutoLogin'></google-auth-provider>";
         }
     }
 }

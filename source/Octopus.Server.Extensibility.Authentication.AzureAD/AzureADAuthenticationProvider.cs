@@ -23,7 +23,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 
         protected override string LoginLinkHtml(string absoluteVirtualDirectoryPath)
         {
-            return "<azure-auth-provider provider='provider' shouldAutoLogin='shouldAutoLogin'></azure-auth-provider>";
+            return "<azure-auth-provider provider='provider' should-auto-login='shouldAutoLogin'></azure-auth-provider>";
         }
     }
 }
