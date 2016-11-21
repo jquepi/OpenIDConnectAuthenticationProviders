@@ -22,7 +22,7 @@ var assetDir = "./BuildAssets";
 var localPackagesDir = "../LocalPackages";
 var globalAssemblyFile = "./source/Solution Items/VersionInfo.cs";
 var extensionName = "Octopus.Server.Extensibility.Authentication.OpenIDConnect";
-var solutionToBuild = "./source/OctopusOpenIDConnect.sln";
+var solutionToBuild = "./source/OpenIDConnectAuthenticationProvider.sln";
 var cleanups = new List<IDisposable>(); 
 
 var gitVersionInfo = GitVersion(new GitVersionSettings {
