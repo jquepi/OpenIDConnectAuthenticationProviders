@@ -63,5 +63,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
                 SupportsGroupLookup = false
             };
         }
+
+        public string[] GetAuthenticationUrls()
+        {
+            return new[] { AuthenticateUri, ConfigurationStore.RedirectUri };
+        }
     }
 }
