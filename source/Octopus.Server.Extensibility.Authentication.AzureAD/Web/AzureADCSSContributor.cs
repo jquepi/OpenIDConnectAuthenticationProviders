@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
+﻿using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADCSSContributor : IContributesCSS
+    public class AzureADCSSContributor : OpenIDConnectCSSContributor<IAzureADConfigurationStore>
     {
-        public IEnumerable<string> GetCSSUris(string requestDirectoryPath)
+        public AzureADCSSContributor(IAzureADConfigurationStore configurationStore) : base(configurationStore)
         {
-            yield return "styles/azureAD.css";
         }
+
+        public override string CSSFilename => "azureAD";
     }
 }

@@ -75,14 +75,12 @@
       <HintPath>..\packages\Octopus.Diagnostics.1.0.11\lib\netstandard1.0\Octopus.Diagnostics.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Octopus.Server.Extensibility, Version=1.1.46.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.1.1.46-relativeurl0002\lib\net45\Octopus.Server.Extensibility.dll</HintPath>
+    <Reference Include="Octopus.Server.Extensibility, Version=1.1.47.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.1.1.47-relativeurl0002\lib\net45\Octopus.Server.Extensibility.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.2.0\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
-    <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.1.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.1.15-relativeurls0001\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
+    <Reference Include="Octopus.Server.Extensibility.Authentication, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.Authentication.1.2.1-relativeurls0002\lib\net45\Octopus.Server.Extensibility.Authentication.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Octopus.Time, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
@@ -187,9 +185,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Web\Static\areas\users\googleApps_users_module.js" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Web\Static\areas\users\views\googleApps_auth_provider.html" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)Octopus.Server.Extensibility.Authentication.GoogleApps.*" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D</PostBuildEvent>

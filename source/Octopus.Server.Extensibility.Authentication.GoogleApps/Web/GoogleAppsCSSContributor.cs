@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
+﻿using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
-    public class GoogleAppsCSSContributor : IContributesCSS
+    public class GoogleAppsCSSContributor : OpenIDConnectCSSContributor<IGoogleAppsConfigurationStore>
     {
-        public IEnumerable<string> GetCSSUris(string requestDirectoryPath)
+        public GoogleAppsCSSContributor(IGoogleAppsConfigurationStore configurationStore) : base(configurationStore)
         {
-            yield return "styles/googleApps.css";
         }
+
+        public override string CSSFilename => "googleApps";
     }
 }

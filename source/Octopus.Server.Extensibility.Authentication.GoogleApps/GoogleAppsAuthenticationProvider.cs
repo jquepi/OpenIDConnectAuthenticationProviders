@@ -23,9 +23,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 yield return $"No {IdentityProviderName} hosted domain specified";
         }
 
-        protected override string LoginLinkHtml(string absoluteVirtualDirectoryPath)
+        protected override string LoginLinkHtml()
         {
-            return "<google-auth-provider provider='provider' should-auto-login='shouldAutoLogin'></google-auth-provider>";
+            return "<google-auth-provider provider='provider' should-auto-login='shouldAutoLogin' is-submitting='isSubmitting' handle-sign-in-error='handleSignInError'></google-auth-provider>";
         }
     }
 }

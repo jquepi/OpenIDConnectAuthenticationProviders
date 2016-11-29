@@ -1,20 +1,15 @@
-﻿using System.Collections.Generic;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
+﻿using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
-    public class GoogleAppsJavascriptContributor : IContributesJavascript, IContributesAngularModules
+    public class GoogleAppsJavascriptContributor : OpenIDConnectJavascriptContributor<IGoogleAppsConfigurationStore>
     {
-        public IEnumerable<string> GetAngularModuleNames()
+        public GoogleAppsJavascriptContributor(IGoogleAppsConfigurationStore configurationStore) : base(configurationStore)
         {
-            yield return "octopusApp.users.google";
         }
 
-        public IEnumerable<string> GetJavascriptUris(string requestDirectoryPath)
-        {
-            yield return "areas/users/googleApps_users_module.js";
-            yield return "areas/users/controllers/googleApps_auth_provider_controller.js";
-            yield return "areas/users/directives/googleApps_auth_provider.js";
-        }
+        protected override string AngularModuleNameSuffix => "google";
+        public override string JavascriptFilenamePrefix => "googleApps";
     }
 }
