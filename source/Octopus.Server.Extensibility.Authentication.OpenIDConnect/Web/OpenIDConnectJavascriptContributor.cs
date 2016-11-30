@@ -25,6 +25,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         public IEnumerable<string> GetJavascriptUris(string requestDirectoryPath)
         {
+            return GetJavascriptUris();
+        }
+
+        public IEnumerable<string> GetJavascriptUris()
+        {
             if (!configurationStore.GetIsEnabled())
                 return Enumerable.Empty<string>();
             return new[]
