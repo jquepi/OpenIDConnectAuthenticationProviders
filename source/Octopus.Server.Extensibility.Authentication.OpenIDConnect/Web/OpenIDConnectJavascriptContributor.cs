@@ -23,11 +23,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         }
         protected abstract string AngularModuleNameSuffix { get; }
 
-        public IEnumerable<string> GetJavascriptUris(string requestDirectoryPath)
-        {
-            return GetJavascriptUris();
-        }
-
         public IEnumerable<string> GetJavascriptUris()
         {
             if (!configurationStore.GetIsEnabled())

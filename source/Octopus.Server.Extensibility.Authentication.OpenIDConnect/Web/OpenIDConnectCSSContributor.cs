@@ -15,11 +15,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.configurationStore = configurationStore;
         }
 
-        public IEnumerable<string> GetCSSUris(string requestDirectoryPath)
-        {
-            return GetCSSUris();
-        }
-
         public IEnumerable<string> GetCSSUris()
         {
             if (!configurationStore.GetIsEnabled())

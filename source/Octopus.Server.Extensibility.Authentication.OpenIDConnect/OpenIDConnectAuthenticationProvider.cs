@@ -42,11 +42,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 
         protected abstract string LoginLinkHtml();
 
-        public AuthenticationProviderElement GetAuthenticationProviderElement(string absoluteVirtualDirectoryPath)
-        {
-            return GetAuthenticationProviderElement();
-        }
-
         public AuthenticationProviderElement GetAuthenticationProviderElement()
         {
             var authenticationProviderElement = new AuthenticationProviderElement
