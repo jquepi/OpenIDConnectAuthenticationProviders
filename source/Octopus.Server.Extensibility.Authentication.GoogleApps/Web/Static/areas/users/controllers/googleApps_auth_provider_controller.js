@@ -19,7 +19,7 @@ module.controller('GoogleAppsAuthController', function ($scope, $rootScope, octo
         if ($scope.isSubmitting.busy) {
             return;
         }
-        $scope.isSubmitting.promise(octopusClient.post($scope.provider.Links["Authenticate"], { ApiAbsUrl: $scope.resolveLink('~/'), RedirectAfterLoginTo: $rootScope.absoluteRedirectAfterLoginTo }).then(redirectToLink, $scope.handleSignInError));
+        $scope.isSubmitting.promise(octopusClient.post($scope.provider.Links["Authenticate"], { ApiAbsUrl: $scope.resolveLink('~/'), RedirectAfterLoginTo: $rootScope.redirectAfterExternalLoginTo }).then(redirectToLink, $scope.handleSignInError));
     };
 
     if ($scope.shouldAutoLogin) {
