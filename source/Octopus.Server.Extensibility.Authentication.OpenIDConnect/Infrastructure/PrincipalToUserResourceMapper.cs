@@ -3,9 +3,9 @@ using System.Security.Claims;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure
 {
-    public class PrincipalToUserResourceHandler : IPrincipalToUserHandler
+    public class PrincipalToUserResourceMapper : IPrincipalToUserResourceMapper
     {
-        public UserResource GetUserResource(ClaimsPrincipal principal)
+        public UserResource MapToUserResource(ClaimsPrincipal principal)
         {
             var userResource = new UserResource
             {

@@ -24,7 +24,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
     {
         readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
-        readonly IPrincipalToUserHandler principalToUserHandler;
+        readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
         readonly IUserStore userStore;
         readonly IAuthCookieCreator authCookieCreator;
         readonly IInvalidLoginTracker loginTracker;
@@ -36,7 +36,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         protected UserAuthenticatedAction(
             ILog log,
             TAuthTokenHandler authTokenHandler,
-            IPrincipalToUserHandler principalToUserHandler,
+            IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUserStore userStore,
             TStore configurationStore,
             IApiActionResponseCreator responseCreator, 
@@ -46,7 +46,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
-            this.principalToUserHandler = principalToUserHandler;
+            this.principalToUserResourceMapper = principalToUserResourceMapper;
             this.userStore = userStore;
             ConfigurationStore = configurationStore;
             ResponseCreator = responseCreator;
@@ -57,6 +57,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
+
             string stateFromRequest;
             var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request, out stateFromRequest);
             var principal = principalContainer.principal;
@@ -115,7 +116,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return ResponseCreator.BadRequest(message);
             }
 
-            var model = principalToUserHandler.GetUserResource(principal);
+            var model = principalToUserResourceMapper.MapToUserResource(principal);
 
             var action = loginTracker.BeforeAttempt(model.Username, context.Request.UserHostAddress);
             if (action == InvalidLoginAction.Ban)

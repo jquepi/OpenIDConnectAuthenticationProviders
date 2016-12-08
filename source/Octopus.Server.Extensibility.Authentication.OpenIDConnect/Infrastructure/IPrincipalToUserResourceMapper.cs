@@ -2,8 +2,8 @@
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure
 {
-    public interface IPrincipalToUserHandler
+    public interface IPrincipalToUserResourceMapper
     {
-        UserResource GetUserResource(ClaimsPrincipal principal);
+        UserResource MapToUserResource(ClaimsPrincipal principal);
     }
 }

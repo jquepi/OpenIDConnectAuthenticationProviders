@@ -12,7 +12,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
     public class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler>
     {
-        public AzureADUserAuthenticatedAction(ILog log, IAzureADAuthTokenHandler authTokenHandler, IPrincipalToUserHandler principalToUserHandler, IUserStore userStore, IAzureADConfigurationStore configurationStore, IApiActionResponseCreator responseCreator, IAuthCookieCreator authCookieCreator, IInvalidLoginTracker loginTracker, ISleep sleep) : base(log, authTokenHandler, principalToUserHandler, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep)
+        public AzureADUserAuthenticatedAction(ILog log, IAzureADAuthTokenHandler authTokenHandler, IPrincipalToUserResourceMapper principalToUserResourceMapper, IUserStore userStore, IAzureADConfigurationStore configurationStore, IApiActionResponseCreator responseCreator, IAuthCookieCreator authCookieCreator, IInvalidLoginTracker loginTracker, ISleep sleep) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep)
         {
         }
     }
