@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
@@ -20,6 +21,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
         {
             base.Load(builder);
 
+            builder.RegisterType<AzureADPrincipalToUserResourceMapper>().As<IAzureADPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<AzureADConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
 
             builder.RegisterType<AzureADConfigurationStore>()

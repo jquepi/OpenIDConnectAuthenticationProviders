@@ -84,6 +84,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
             SetIssuerSpecificTokenValidationParameters(validationParameters);
 
+            // This is where we actually interpret the token, validate it, and pump out a ClaimsPrincipal
             SecurityToken unused;
             var principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
 
