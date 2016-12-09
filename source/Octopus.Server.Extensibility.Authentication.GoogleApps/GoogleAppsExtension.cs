@@ -37,9 +37,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
              
             builder.RegisterType<GoogleAppsStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 
+            // These are important as Singletons because they cache X509 certificates for performance
             builder.RegisterType<GoogleCertificateJsonParser>().As<IGoogleCertificateJsonParser>().SingleInstance();
             builder.RegisterType<GoogleCertificateRetriever>().As<IGoogleCertificateRetriever>().SingleInstance();
-            builder.RegisterType<GoogleAppsAuthorizationEndpointUrlBuilder>().As<IGoogleAppsAuthorizationEndpointUrlBuilder>().SingleInstance();
 
             builder.RegisterType<GoogleAppsUserAuthenticationAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<GoogleAppsUserAuthenticatedAction>().AsSelf().InstancePerDependency();
