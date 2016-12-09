@@ -18,6 +18,7 @@
 .googleapps-button {
     background-color: #dc4e41;
     color: #ffffff;
+    cursor: pointer;
 }
 
 .googleapps-button:hover {
