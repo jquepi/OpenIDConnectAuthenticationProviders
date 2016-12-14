@@ -23,29 +23,32 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
     {
         readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
-        readonly IPrincipalToUserHandler principalToUserHandler;
+        readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
         readonly IUserStore userStore;
         readonly IAuthCookieCreator authCookieCreator;
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
 
         protected readonly TStore ConfigurationStore;
+        protected readonly IApiActionResponseCreator ResponseCreator;
 
         protected UserAuthenticatedAction(
             ILog log,
             TAuthTokenHandler authTokenHandler,
-            IPrincipalToUserHandler principalToUserHandler,
+            IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUserStore userStore,
             TStore configurationStore,
+            IApiActionResponseCreator responseCreator, 
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
-            this.principalToUserHandler = principalToUserHandler;
+            this.principalToUserResourceMapper = principalToUserResourceMapper;
             this.userStore = userStore;
             ConfigurationStore = configurationStore;
+            ResponseCreator = responseCreator;
             this.authCookieCreator = authCookieCreator;
             this.loginTracker = loginTracker;
             this.sleep = sleep;
@@ -53,75 +56,104 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
-            string state;
-            var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request, out state);
+            // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
+            string stateFromRequest;
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request, out stateFromRequest);
             var principal = principalContainer.principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.error))
             {
-                log.Info($"User login failed - {principalContainer.error}");
-                return RedirectResponse(response, $"{context.Request.Form["state"]}?error={principalContainer.error}");
+                return BadRequest($"The response from the external identity provider contained an error: {principalContainer.error}");
             }
 
-            var cookieStateHash = string.Empty;
+            // Step 2: Validate the state object we passed wasn't tampered with
+            const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
+            var expectedStateHash = string.Empty;
             if (context.Request.Cookies.ContainsKey("s"))
-                cookieStateHash = HttpUtility.UrlDecode(context.Request.Cookies["s"]);
-            if (State.Protect(state) != cookieStateHash)
+                expectedStateHash = HttpUtility.UrlDecode(context.Request.Cookies["s"]);
+            if (string.IsNullOrWhiteSpace(expectedStateHash))
             {
-                log.Info($"User login failed - invalid state");
-                return RedirectResponse(response, $"{state}?error=Invalid state");
+                return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
             }
 
-            var cookieNonceHash = string.Empty;
+            var stateFromRequestHash = State.Protect(stateFromRequest);
+            if (stateFromRequestHash != expectedStateHash)
+            {
+                return BadRequest($"User login failed: Tampered State. {stateDescription} In this case the state object looks like it has been tampered with. The state object is '{stateFromRequest}'. The SHA256 hash of the state was expected to be '{expectedStateHash}' but was '{stateFromRequestHash}'.");
+            }
+
+            // Step 3: Validate the nonce is as we expected to prevent replay attacks
+            const string nonceDescription = "As a security precaution to prevent replay attacks, Octopus ensures the nonce returned in the claims from the external identity provider matches what it expected.";
+
+            var expectedNonceHash = string.Empty;
             if (context.Request.Cookies.ContainsKey("n"))
-                cookieNonceHash = HttpUtility.UrlDecode(context.Request.Cookies["n"]);
-            
-            var nonce = principal.Claims.FirstOrDefault(c => c.Type == "nonce");
-            if (nonce == null || Nonce.Protect(nonce.Value) != cookieNonceHash)
+                expectedNonceHash = HttpUtility.UrlDecode(context.Request.Cookies["n"]);
+
+            if (string.IsNullOrWhiteSpace(expectedNonceHash))
             {
-                log.Info("User login failed - invalid nonce");
-                return RedirectResponse(response, $"{state}?error=Invalid nonce");
+                return BadRequest($"User login failed: Missing Nonce Hash Cookie. {nonceDescription} In this case the Cookie containing the SHA256 hash of the nonce is missing from the request.");
             }
 
-            var model = principalToUserHandler.GetUserResource(principal);
+            var nonceFromClaims = principal.Claims.FirstOrDefault(c => c.Type == "nonce");
+            if (nonceFromClaims == null)
+            {
+                return BadRequest($"User login failed: Missing Nonce Claim. {nonceDescription} In this case the 'nonce' claim is missing from the security token.");
+            }
 
-            var action = loginTracker.BeforeAttempt(model.Username, context.Request.UserHostAddress);
+            var nonceFromClaimsHash = Nonce.Protect(nonceFromClaims.Value);
+            if (nonceFromClaimsHash != expectedNonceHash)
+            {
+                return BadRequest($"User login failed: Tampered Nonce. {nonceDescription} In this case the nonce looks like it has been tampered with or reused. The nonce is '{nonceFromClaims}'. The SHA256 hash of the state was expected to be '{expectedNonceHash}' but was '{nonceFromClaimsHash}'.");
+            }
+
+            // Step 4: Now the integrity of the request has been validated we can figure out which Octopus User this represents
+            var authenticationCandidate = principalToUserResourceMapper.MapToUserResource(principal);
+
+            // Step 4a: Check if this authentication attempt is already being banned
+            var action = loginTracker.BeforeAttempt(authenticationCandidate.Username, context.Request.UserHostAddress);
             if (action == InvalidLoginAction.Ban)
             {
-                return RedirectResponse(response, $"{state}?error=You have had too many failed login attempts in a short period of time. Please try again later.");
+                return BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
             }
 
-            var userResult = GetOrCreateUser(model, principal);
-            if (!userResult.Succeeded)
+            // Step 4b: Try to get or create a the Octopus User this external identity represents
+            var userResult = GetOrCreateUser(authenticationCandidate, principal);
+            if (userResult.Succeeded)
             {
-                loginTracker.RecordFailure(model.Username, context.Request.UserHostAddress);
+                loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
 
-                if (action == InvalidLoginAction.Slow)
-                {
-                    sleep.For(1000);
-                }
+                var cookie = authCookieCreator.CreateAuthCookie(context, userResult.User.IdentificationToken, true);
 
-                return RedirectResponse(response, $"{state}?error={userResult.FailureReason}");
+                return RedirectResponse(response, stateFromRequest)
+                    .WithCookie(cookie)
+                    .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
             }
 
-            if (!userResult.User.IsActive || userResult.User.IsService)
+            // Step 5: Handle other types of failures
+            loginTracker.RecordFailure(authenticationCandidate.Username, context.Request.UserHostAddress);
+
+            // Step 5a: Slow this potential attacker down a bit since they seem to keep failing
+            if (action == InvalidLoginAction.Slow)
             {
-                loginTracker.RecordFailure(model.Username, context.Request.UserHostAddress);
-
-                if (action == InvalidLoginAction.Slow)
-                {
-                    sleep.For(1000);
-                }
-
-                return RedirectResponse(response, $"{state}?error=Invalid username or password");
+                sleep.For(1000);
             }
 
-            loginTracker.RecordSucess(model.Username, context.Request.UserHostAddress);
+            if (!userResult.User.IsActive)
+            {
+                return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
+            }
 
-            var cookie = authCookieCreator.CreateAuthCookie(context, userResult.User.IdentificationToken, true);
+            if (userResult.User.IsService)
+            {
+                return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
+            }
 
-            return RedirectResponse(response, state)
-                .WithCookie(cookie)
-                .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
+            return BadRequest($"User login failed: {userResult.FailureReason}");
+        }
+
+        Response BadRequest(string message)
+        {
+            log.Error(message);
+            return ResponseCreator.BadRequest(message);
         }
 
         Response RedirectResponse(IResponseFormatter response, string uri)

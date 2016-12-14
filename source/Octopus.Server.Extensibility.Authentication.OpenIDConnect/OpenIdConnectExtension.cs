@@ -8,7 +8,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
     {
         public virtual void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<PrincipalToUserResourceHandler>().As<IPrincipalToUserHandler>().InstancePerDependency();
+            builder.RegisterType<PrincipalToUserResourceMapper>().As<IPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<IdentityProviderConfigDiscoverer>().As<IIdentityProviderConfigDiscoverer>().SingleInstance();
         }
     }

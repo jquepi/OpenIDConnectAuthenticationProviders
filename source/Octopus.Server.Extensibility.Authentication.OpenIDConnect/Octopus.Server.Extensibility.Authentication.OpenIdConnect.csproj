@@ -130,8 +130,8 @@
     <Compile Include="Issuer\IIdentityProviderConfigDiscoverer.cs" />
     <Compile Include="Tokens\ClaimsPrincipleContainer.cs" />
     <Compile Include="Tokens\IAuthTokenHandler.cs" />
-    <Compile Include="Infrastructure\IPrincipalToUserHandler.cs" />
-    <Compile Include="Infrastructure\PrincipalToUserResourceHandler.cs" />
+    <Compile Include="Infrastructure\IPrincipalToUserResourceMapper.cs" />
+    <Compile Include="Infrastructure\PrincipalToUserResourceMapper.cs" />
     <Compile Include="Tokens\OpenIDConnectAuthTokenHandler.cs" />
     <Compile Include="Infrastructure\UserResource.cs" />
     <Compile Include="Issuer\IssuerConfiguration.cs" />
