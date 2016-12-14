@@ -118,6 +118,8 @@
     <Compile Include="Configuration\IAzureADConfigurationStore.cs" />
     <Compile Include="Configuration\AzureADConfigurationMapping.cs" />
     <Compile Include="Configuration\AzureADConfigurationStore.cs" />
+    <Compile Include="Infrastructure\AzureADPrincipalToUserResourceMapper.cs" />
+    <Compile Include="Infrastructure\IAzureADPrincipalToUserResourceMapper.cs" />
     <Compile Include="Web\AzureADCSSContributor.cs" />
     <Compile Include="Web\AzureADStaticContentFolders.cs" />
     <Compile Include="Issuer\AzureADAuthorizationEndpointUrlBuilder.cs" />

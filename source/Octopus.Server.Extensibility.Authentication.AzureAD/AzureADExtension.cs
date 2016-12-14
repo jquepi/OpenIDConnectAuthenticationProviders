@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
@@ -20,6 +21,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
         {
             base.Load(builder);
 
+            builder.RegisterType<AzureADPrincipalToUserResourceMapper>().As<IAzureADPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<AzureADConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
 
             builder.RegisterType<AzureADConfigurationStore>()
@@ -36,9 +38,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 
             builder.RegisterType<AzureADHomeLinksContributor>().As<IHomeLinksContributor>().InstancePerDependency();
 
+            // These are important as Singletons because they cache X509 certificates for performance
             builder.RegisterType<DefaultCertificateJsonParser>().As<ICertificateJsonParser>().SingleInstance();
             builder.RegisterType<AzureADCertificateRetriever>().As<ICertificateRetriever>().SingleInstance();
-            builder.RegisterType<AzureADAuthorizationEndpointUrlBuilder>().As<IAzureADAuthorizationEndpointUrlBuilder>().SingleInstance();
 
             builder.RegisterType<AzureADStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 

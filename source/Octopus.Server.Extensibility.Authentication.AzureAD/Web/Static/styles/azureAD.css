@@ -2,6 +2,7 @@
 .aad-button {
     background-color: #000000;
     color: #ffffff;
+    cursor: pointer;
 }
 
 .aad-button:hover {
