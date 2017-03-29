@@ -121,10 +121,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             {
                 loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
 
-                var cookie = authCookieCreator.CreateAuthCookie(context, userResult.User.IdentificationToken, true);
+                var authCookies = authCookieCreator.CreateAuthCookies(context.Request, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
 
                 return RedirectResponse(response, stateFromRequest)
-                    .WithCookie(cookie)
+                    .WithCookies(authCookies)
                     .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
             }
 
