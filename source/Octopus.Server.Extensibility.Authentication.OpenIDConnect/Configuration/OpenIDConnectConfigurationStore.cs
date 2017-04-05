@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
@@ -37,6 +38,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         public void SetIssuer(string issuer)
         {
+            if (!Uri.IsWellFormedUriString(issuer, UriKind.Absolute))
+                throw new ArgumentException($"The {ConfigurationSettingsName} issuer must be an absolute URI (expected format: https://login.microsoftonline.com/[issuer guid])");
             ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.Issuer = issuer);
         }
 
