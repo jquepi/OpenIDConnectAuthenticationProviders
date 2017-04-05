@@ -23,7 +23,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 
         public bool IsEnabled => ConfigurationStore.GetIsEnabled() && IsProviderConfigComplete();
 
-        private bool IsProviderConfigComplete()
+        bool IsProviderConfigComplete()
         {
             var isComplete = true;
             foreach (var reason in ReasonsWhyConfigIsIncomplete())
