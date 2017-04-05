@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
@@ -15,8 +16,11 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
-            if (string.IsNullOrWhiteSpace(ConfigurationStore.GetIssuer()))
+            var issuer = ConfigurationStore.GetIssuer();
+            if (string.IsNullOrWhiteSpace(issuer))
                 yield return $"No {IdentityProviderName} issuer specified";
+            if (!Uri.IsWellFormedUriString(issuer, UriKind.Absolute))
+                yield return $"The {IdentityProviderName} issuer must be an absolute URI (expected format: https://accounts.google.com)";
             if (string.IsNullOrWhiteSpace(ConfigurationStore.GetClientId()))
                 yield return $"No {IdentityProviderName} Client ID specified";
             if (string.IsNullOrWhiteSpace(ConfigurationStore.GetHostedDomain()))

@@ -38,8 +38,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         public void SetIssuer(string issuer)
         {
+            Guid issuerAsGuid;
+            if (Guid.TryParse(issuer, out issuerAsGuid))
+                throw new ArgumentException($"The {ConfigurationSettingsName} issuer must be an absolute URI and not a GUID (please refer to the Octopus auth-provider's documentation for details)");
             if (!Uri.IsWellFormedUriString(issuer, UriKind.Absolute))
-                throw new ArgumentException($"The {ConfigurationSettingsName} issuer must be an absolute URI (expected format: https://login.microsoftonline.com/[issuer guid])");
+                throw new ArgumentException($"The {ConfigurationSettingsName} issuer must be an absolute URI (please refer to the Octopus auth-provider's documentation for details)");
             ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.Issuer = issuer);
         }
 
