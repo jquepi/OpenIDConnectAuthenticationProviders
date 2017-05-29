@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
-    public abstract class OpenIDConnectJavascriptContributor<TStore> : IContributesJavascript, IContributesAngularModules
+    public abstract class OpenIDConnectJavascriptContributor<TStore> : IContributesJavascript//, IContributesAngularModules
         where TStore : IOpenIDConnectConfigurationStore
     {
         readonly TStore configurationStore;

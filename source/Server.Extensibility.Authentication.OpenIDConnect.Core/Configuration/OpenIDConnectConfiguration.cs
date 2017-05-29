@@ -1,5 +1,5 @@
 ﻿using Octopus.Data.Model;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {

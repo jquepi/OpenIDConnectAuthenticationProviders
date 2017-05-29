@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.HostServices.Web;
+using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {

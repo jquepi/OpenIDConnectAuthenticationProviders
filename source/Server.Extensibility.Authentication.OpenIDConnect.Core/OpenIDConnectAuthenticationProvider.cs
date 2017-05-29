@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.Resources;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.Resources;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 {
