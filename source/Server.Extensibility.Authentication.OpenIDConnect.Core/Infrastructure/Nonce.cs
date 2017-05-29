@@ -11,7 +11,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
         public static string GenerateUrlSafeNonce()
         {
             var data = new byte[16];
-            Rng.GetNonZeroBytes(data);
+            // the reason to use 'GetNonZeroBytes' was to avoid x00 which may be interpretted as
+            // https://crypto.stackexchange.com/questions/3396/why-x00-is-usually-avoided-in-salt
+            // but it's not implemented in netcore
+            // the claim is it shouldn't matter - http://stackoverflow.com/a/12704610/75963
+            Rng.GetBytes(data);
             var nonce = Convert.ToBase64String(data).TrimEnd('=').Replace("/", string.Empty).Replace("+", string.Empty);
             return nonce;
         }

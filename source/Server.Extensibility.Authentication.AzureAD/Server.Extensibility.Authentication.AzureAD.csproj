@@ -18,8 +18,4 @@
     <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="4.0.1-enh-odcm0004" />
   </ItemGroup>
 
-  <!--ItemGroup>
-    <ProjectReference Include="..\Server.Extensibility.Authentication.AzureAD.Core\Server.Extensibility.Authentication.AzureAD.Core.csproj" />
-  </ItemGroup-->
-
-  </Project>
+</Project>
