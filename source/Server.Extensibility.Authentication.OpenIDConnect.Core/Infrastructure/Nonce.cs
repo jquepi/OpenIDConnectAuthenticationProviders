@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
 {
     public static class Nonce
     {
-        static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
 
         public static string GenerateUrlSafeNonce()
         {
@@ -18,7 +18,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructu
 
         public static string Protect(string nonce)
         {
-            using (var sha = new SHA256CryptoServiceProvider())
+            using (var sha = SHA256.Create())
             {
                 var nonceHash = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes("OctoNonce" + nonce)));
                 return nonceHash;
