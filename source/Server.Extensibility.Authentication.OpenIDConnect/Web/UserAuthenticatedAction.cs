@@ -8,6 +8,7 @@ using Nancy.Cookies;
 using Nancy.Helpers;
 using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
