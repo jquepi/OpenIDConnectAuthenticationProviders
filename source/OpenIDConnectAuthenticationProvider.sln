@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.GoogleApps", "Server.Extensibility.Authentication.GoogleApps\Server.Extensibility.Authentication.GoogleApps.csproj", "{6796E715-F1FA-445D-AF1F-F6C9023A8D07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Extensibility.Authentication.OpenIDConnect.Core", "Server.Extensibility.Authentication.OpenIDConnect.Core\Server.Extensibility.Authentication.OpenIDConnect.Core.csproj", "{1AA4BB73-2FBD-45AD-B98A-FB5641B79587}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Node.Extensibility.Authentication.OpenIDConnect", "Node.Extensibility.Authentication.OpenIDConnect\Node.Extensibility.Authentication.OpenIDConnect.csproj", "{1AA4BB73-2FBD-45AD-B98A-FB5641B79587}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCenterManager.Extensibility.Authentication.OpenIDConnect", "DataCenterManager.Extensibility.Authentication.OpenIDConnect\DataCenterManager.Extensibility.Authentication.OpenIDConnect.csproj", "{9C8CED60-1849-49DB-B9B1-C057778D7299}"
 EndProject

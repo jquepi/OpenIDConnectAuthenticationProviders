@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
-    <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIdConnect.Core</AssemblyName>
-    <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIdConnect</RootNamespace>
+    <AssemblyName>Octopus.Node.Extensibility.Authentication.OpenIdConnect</AssemblyName>
+    <RootNamespace>Octopus.Node.Extensibility.Authentication.OpenIdConnect</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
