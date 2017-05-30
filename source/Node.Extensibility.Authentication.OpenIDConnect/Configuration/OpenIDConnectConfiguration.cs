@@ -1,7 +1,7 @@
 ﻿using Octopus.Data.Model;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration
 {
     public abstract class OpenIDConnectConfiguration : ExtensionConfigurationDocument, IOverridableId
     {

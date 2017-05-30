@@ -1,10 +1,10 @@
 ﻿using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
-using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {

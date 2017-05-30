@@ -1,5 +1,6 @@
 ﻿using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;

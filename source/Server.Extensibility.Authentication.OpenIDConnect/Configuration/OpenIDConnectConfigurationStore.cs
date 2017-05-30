@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
