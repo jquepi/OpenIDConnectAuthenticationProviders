@@ -17,13 +17,15 @@ var configuration = Argument("configuration", "Release");
 // GLOBAL VARIABLES
 ///////////////////////////////////////////////////////////////////////////////
 var publishDir = "./publish";
+var localPackagesDir = "../LocalPackages";
 var artifactsDir = "./artifacts";
 var assetDir = "./BuildAssets";
-var localPackagesDir = "../LocalPackages";
-var globalAssemblyFile = "./source/Solution Items/VersionInfo.cs";
+
 var extensionName = "Octopus.Server.Extensibility.Authentication.OpenIDConnect";
-var solutionToBuild = "./source/OpenIDConnectAuthenticationProvider.sln";
-var cleanups = new List<IDisposable>(); 
+var extensionPath = "Server.Extensibility.Authentication.OpenIDConnect";
+
+var binPath = "/bin/Release/net451/";
+
 
 var gitVersionInfo = GitVersion(new GitVersionSettings {
     OutputType = GitVersionOutput.Json
@@ -46,11 +48,7 @@ Setup(context =>
 
 Teardown(context =>
 {
-    Information("Cleaning up");
-    foreach(var item in cleanups)
-        item.Dispose();
-
-	Information("Finished running tasks.");
+    Information("Finished running tasks.");
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -60,11 +58,10 @@ Teardown(context =>
 Task("__Default")
     .IsDependentOn("__Clean")
     .IsDependentOn("__Restore")
-    .IsDependentOn("__UpdateAssemblyVersionInformation")
     .IsDependentOn("__Build")
     .IsDependentOn("__Pack")
-	.IsDependentOn("__Publish")
-	.IsDependentOn("__CopyToLocalPackages");
+    .IsDependentOn("__Publish")
+    .IsDependentOn("__CopyToLocalPackages");
 
 Task("__Clean")
     .Does(() =>
@@ -76,50 +73,26 @@ Task("__Clean")
 });
 
 Task("__Restore")
-    .Does(() => NuGetRestore(solutionToBuild));
-	
-Task("__UpdateAssemblyVersionInformation")
-    .Does(() =>
-{
-	cleanups.Add(new AutoRestoreFile(globalAssemblyFile));
-    GitVersion(new GitVersionSettings {
-		UpdateAssemblyInfo = true,
-        UpdateAssemblyInfoFilePath = globalAssemblyFile
-    });
-
-    Information("AssemblyVersion -> {0}", gitVersionInfo.AssemblySemVer);
-    Information("AssemblyFileVersion -> {0}", $"{gitVersionInfo.MajorMinorPatch}.0");
-    Information("AssemblyInformationalVersion -> {0}", gitVersionInfo.InformationalVersion);
-});
+    .Does(() => DotNetCoreRestore("source"));
 
 Task("__Build")
-    .IsDependentOn("__UpdateAssemblyVersionInformation")
     .Does(() =>
 {
-    DotNetBuild(solutionToBuild, settings => settings.SetConfiguration(configuration));
+    DotNetCoreBuild("./source", new DotNetCoreBuildSettings
+    {
+        Configuration = configuration,
+        ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+    });
 });
-
 
 Task("__Pack")
     .Does(() => {
-        var nugetPackDir = Path.Combine(publishDir, "nuget");
-        var nuspecFile = extensionName + ".nuspec";
         
-		CreateDirectory(nugetPackDir);
-        CopyFileToDirectory(Path.Combine(assetDir, nuspecFile), nugetPackDir);
-		
-		var solutionDir = "./source/";
-
-		Information(solutionDir + extensionName + "/bin/System.IdentityModel.Tokens.Jwt.dll");
-		CopyFileToDirectory(solutionDir + extensionName + "/bin/System.IdentityModel.Tokens.Jwt.dll", nugetPackDir);
-		CopyFileToDirectory(solutionDir + extensionName + "/bin/" + extensionName + ".dll", nugetPackDir);
-		
-		CopyFileToDirectory(solutionDir + "Octopus.Server.Extensibility.Authentication.AzureAD/bin/Octopus.Server.Extensibility.Authentication.AzureAD.dll", nugetPackDir);
-		CopyFileToDirectory(solutionDir + "Octopus.Server.Extensibility.Authentication.GoogleApps/bin/Octopus.Server.Extensibility.Authentication.GoogleApps.dll", nugetPackDir);
-
-        NuGetPack(Path.Combine(nugetPackDir, nuspecFile), new NuGetPackSettings {
-            Version = nugetVersion,
-            OutputDirectory = artifactsDir
+        DotNetCorePack("source", new DotNetCorePackSettings {
+            Configuration = configuration,
+            OutputDirectory = artifactsDir,
+            NoBuild = true,
+            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
         });
     });
 
@@ -129,9 +102,9 @@ Task("__Publish")
     .Does(() =>
 {
     NuGetPush($"{artifactsDir}/{extensionName}.{nugetVersion}.nupkg", new NuGetPushSettings {
-		Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
-		ApiKey = EnvironmentVariable("MyGetApiKey")
-	});
+        Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
+        ApiKey = EnvironmentVariable("MyGetApiKey")
+    });
 	
     if (gitVersionInfo.PreReleaseLabel == "")
     {
@@ -154,15 +127,15 @@ Task("__CopyToLocalPackages")
 
 private class AutoRestoreFile : IDisposable
 {
-	private byte[] _contents;
-	private string _filename;
-	public AutoRestoreFile(string filename)
-	{
-		_filename = filename;
-		_contents = IO.File.ReadAllBytes(filename);
-	}
+    private byte[] _contents;
+    private string _filename;
+    public AutoRestoreFile(string filename)
+    {
+        _filename = filename;
+        _contents = IO.File.ReadAllBytes(filename);
+    }
 
-	public void Dispose() => IO.File.WriteAllBytes(_filename, _contents);
+    public void Dispose() => IO.File.WriteAllBytes(_filename, _contents);
 }
 
 //////////////////////////////////////////////////////////////////////
