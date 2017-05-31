@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Nancy;
 using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {

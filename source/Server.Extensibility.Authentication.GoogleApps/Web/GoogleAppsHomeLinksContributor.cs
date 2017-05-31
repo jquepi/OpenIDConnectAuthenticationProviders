@@ -1,5 +1,5 @@
-﻿using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Web;
+using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {

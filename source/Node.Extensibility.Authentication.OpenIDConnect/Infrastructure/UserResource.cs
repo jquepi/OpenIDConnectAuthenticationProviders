@@ -1,4 +1,4 @@
-﻿namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure
+﻿namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure
 {
     public class UserResource
     {

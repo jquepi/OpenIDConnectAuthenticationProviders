@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web

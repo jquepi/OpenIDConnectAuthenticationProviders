@@ -1,4 +1,4 @@
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure
 {

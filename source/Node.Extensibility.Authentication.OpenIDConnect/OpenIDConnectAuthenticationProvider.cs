@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.Resources;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect
 {
     public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport 
         where TStore : IOpenIDConnectConfigurationStore

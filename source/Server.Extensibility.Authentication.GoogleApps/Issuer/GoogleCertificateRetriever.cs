@@ -1,7 +1,7 @@
-﻿using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer

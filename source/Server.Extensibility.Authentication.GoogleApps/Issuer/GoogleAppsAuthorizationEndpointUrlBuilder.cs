@@ -1,4 +1,5 @@
 ﻿using System;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 

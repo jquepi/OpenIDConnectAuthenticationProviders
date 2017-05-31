@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect
 {
     public abstract class OpenIDConnectExtension
     {

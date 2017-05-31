@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens
 {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
 {
     public class ClaimsPrincipleContainer
     {

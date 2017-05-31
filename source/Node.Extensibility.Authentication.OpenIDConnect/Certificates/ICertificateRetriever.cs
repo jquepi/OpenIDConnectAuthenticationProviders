@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates
 {
     public interface ICertificateRetriever
     {

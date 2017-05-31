@@ -1,8 +1,8 @@
 ﻿using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 

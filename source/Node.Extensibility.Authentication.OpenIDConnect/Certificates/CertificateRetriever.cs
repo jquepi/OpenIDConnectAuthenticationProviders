@@ -5,11 +5,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 using Octopus.Time;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates
 {
     public abstract class CertificateRetriever<TStore, TCertificateParser> : ICertificateRetriever
         where TStore : IOpenIDConnectConfigurationStore

@@ -1,6 +1,7 @@
 ﻿using Nancy.Helpers;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using System;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
 {

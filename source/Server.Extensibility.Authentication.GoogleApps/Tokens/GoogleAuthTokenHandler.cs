@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;

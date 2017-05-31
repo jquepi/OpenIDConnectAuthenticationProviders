@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
 using Octopus.Node.Extensibility.HostServices.Web;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Web
 {
     public abstract class OpenIDConnectHomeLinksContributor<TStore, TAuthenticationProvider> : IHomeLinksContributor
         where TStore : IOpenIDConnectConfigurationStore

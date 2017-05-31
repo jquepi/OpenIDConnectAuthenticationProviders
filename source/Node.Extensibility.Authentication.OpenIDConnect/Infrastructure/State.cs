@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure
 {
     public static class State
     {

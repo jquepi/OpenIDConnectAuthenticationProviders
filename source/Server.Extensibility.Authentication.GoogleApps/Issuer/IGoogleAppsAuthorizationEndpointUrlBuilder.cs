@@ -1,4 +1,4 @@
-﻿using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {

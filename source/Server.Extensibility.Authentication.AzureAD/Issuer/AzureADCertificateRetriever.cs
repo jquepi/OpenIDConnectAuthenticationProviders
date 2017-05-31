@@ -1,5 +1,5 @@
-﻿using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer

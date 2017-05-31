@@ -1,6 +1,6 @@
 ﻿using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration
 {
     public interface IOpenIDConnectConfigurationStore : IExtensionConfigurationStore
     {

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure
 {
     public class PrincipalToUserResourceMapper : IPrincipalToUserResourceMapper
     {

@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
@@ -9,8 +11,6 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
