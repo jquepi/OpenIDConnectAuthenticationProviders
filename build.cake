@@ -24,7 +24,11 @@ var assetDir = "./BuildAssets";
 var extensionName = "Octopus.Server.Extensibility.Authentication.OpenIDConnect";
 var extensionPath = "Server.Extensibility.Authentication.OpenIDConnect";
 
-var binPath = "/bin/Release/net451/";
+var bin451 = "/bin/Release/net451/";
+var binNetStd = "/bin/Release/netstandard1.3/";
+
+var extensionNodeName = "Octopus.Node.Extensibility.Authentication.OpenIDConnect";
+var extensionNodePath = "Node.Extensibility.Authentication.OpenIDConnect";
 
 
 var gitVersionInfo = GitVersion(new GitVersionSettings {
@@ -87,12 +91,54 @@ Task("__Build")
 
 Task("__Pack")
     .Does(() => {
+        var solutionDir = "./source/";
         
-        DotNetCorePack("source", new DotNetCorePackSettings {
-            Configuration = configuration,
-            OutputDirectory = artifactsDir,
-            NoBuild = true,
-            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+        // Server.Extensibility.Authentication.*
+        
+        var nugetPackDir = Path.Combine(publishDir, "nuget");
+        var nuspecFile = extensionName + ".nuspec";
+            
+        CreateDirectory(nugetPackDir);
+        CopyFileToDirectory(Path.Combine(assetDir, nuspecFile), nugetPackDir);
+
+        Information(solutionDir + extensionName + bin451 + "System.IdentityModel.Tokens.Jwt.dll");
+        CopyFileToDirectory(solutionDir + extensionPath + bin451 + "/System.IdentityModel.Tokens.Jwt.dll", nugetPackDir);
+        CopyFileToDirectory(solutionDir + extensionPath + bin451 + extensionName + ".dll", nugetPackDir);
+            
+        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.AzureAD" + bin451 + "Octopus.Server.Extensibility.Authentication.AzureAD.dll", nugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.GoogleApps" + bin451 + "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", nugetPackDir);
+
+        NuGetPack(Path.Combine(nugetPackDir, nuspecFile), new NuGetPackSettings {
+            Version = nugetVersion,
+            OutputDirectory = artifactsDir
+        });
+
+        // Node.Extensibility.Authentication.*
+        // DotNetCorePack("source/Node.Extensibility.Authentication.OpenIDConnect", new DotNetCorePackSettings
+        
+        var nugetNodePackDir = Path.Combine(publishDir, "nugetNode");
+        var nugetNodePackDir451 = Path.Combine(nugetNodePackDir, "net451");
+        var nugetNodePackDirStd = Path.Combine(nugetNodePackDir, "netstandard1.3");
+        var nuspecNodeFile = extensionNodeName + ".nuspec";
+            
+        CreateDirectory(nugetNodePackDir);
+        CreateDirectory(nugetNodePackDir451);
+        CreateDirectory(nugetNodePackDirStd);
+        CopyFileToDirectory(Path.Combine(assetDir, nuspecNodeFile), nugetNodePackDir);
+            
+        //Information(solutionDir + extensionName + bin451 + "System.IdentityModel.Tokens.Jwt.dll");
+        //CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + "System.IdentityModel.Tokens.Jwt.dll", nugetNodePackDir451);
+        CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + extensionNodeName + ".dll", nugetNodePackDir451);
+		
+        //CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + "System.IdentityModel.Tokens.Jwt.dll", nugetNodePackDirStd);
+		CopyFileToDirectory(solutionDir + extensionNodePath + binNetStd + extensionNodeName + ".dll", nugetNodePackDirStd);
+            
+        //CopyFileToDirectory(solutionDir + "Node.Extensibility.Authentication.AzureAD" + bin451 + "Octopus.Node.Extensibility.Authentication.AzureAD.dll", nugetNodePackDir);
+        //CopyFileToDirectory(solutionDir + "Node.Extensibility.Authentication.GoogleApps" + bin451 + "Octopus.Node.Extensibility.Authentication.GoogleApps.dll", nugetNodePackDir);
+
+        NuGetPack(Path.Combine(nugetNodePackDir, nuspecNodeFile), new NuGetPackSettings {
+            Version = nugetVersion,
+            OutputDirectory = artifactsDir
         });
     });
 
@@ -105,7 +151,7 @@ Task("__Publish")
         Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
         ApiKey = EnvironmentVariable("MyGetApiKey")
     });
-	
+    
     if (gitVersionInfo.PreReleaseLabel == "")
     {
         NuGetPush($"{artifactsDir}/{extensionName}.{nugetVersion}.nupkg", new NuGetPushSettings {
