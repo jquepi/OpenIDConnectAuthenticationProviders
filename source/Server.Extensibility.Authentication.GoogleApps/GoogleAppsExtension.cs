@@ -9,7 +9,6 @@ using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Web;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {
@@ -53,7 +52,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 
             builder.RegisterType<GoogleAppsAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
-                .As<IAuthenticationProviderWithGroupSupport>()
+                .As<Octopus.Node.Extensibility.Authentication.Extensions.IAuthenticationProviderWithGroupSupport>()
                 .AsSelf()
                 .InstancePerDependency();
         }

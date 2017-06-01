@@ -6,6 +6,7 @@
     <RootNamespace>Octopus.Server.Extensibility.Authentication.GoogleApps</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.GoogleApps</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.GoogleApps</Description>
+    <PostBuildEvent>xcopy "$(TargetDir)Octopus.Server.Extensibility.Authentication.GoogleApps.*" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D</PostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>

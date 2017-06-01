@@ -5,7 +5,7 @@ using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Web
 {
-    public abstract class OpenIDConnectJavascriptContributor<TStore> : IContributesJavascript//, IContributesAngularModules
+    public abstract class OpenIDConnectJavascriptContributor<TStore> : IContributesJavascript, IContributesAngularModules
         where TStore : IOpenIDConnectConfigurationStore
     {
         readonly TStore configurationStore;
