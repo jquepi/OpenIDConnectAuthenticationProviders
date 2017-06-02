@@ -16,7 +16,7 @@ xcopy "$(TargetDir)*OpenIDConnect.dll" "C:\ProgramData\Octopus\CustomExtensions"
     <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.1-enh-odcm0012" />
     <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="4.0.10-enh-odcm0012" />
     <PackageReference Include="Octopus.Time" Version="1.0.9" />
-    <PackageReference Include="System.Net.Http" Version="4.3.2" />
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
