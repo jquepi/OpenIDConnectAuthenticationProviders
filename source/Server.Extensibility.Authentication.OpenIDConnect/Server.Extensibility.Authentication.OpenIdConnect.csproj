@@ -29,4 +29,8 @@ xcopy "$(TargetDir)*OpenIDConnect.dll" "C:\ProgramData\Octopus\CustomExtensions"
     <ProjectReference Include="..\Node.Extensibility.Authentication.OpenIDConnect\Node.Extensibility.Authentication.OpenIDConnect.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tokens\" />
+  </ItemGroup>
+
   </Project>

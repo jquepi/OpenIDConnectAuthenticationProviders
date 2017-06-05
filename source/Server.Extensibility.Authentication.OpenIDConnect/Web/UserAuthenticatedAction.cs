@@ -11,8 +11,8 @@ using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Time;
 

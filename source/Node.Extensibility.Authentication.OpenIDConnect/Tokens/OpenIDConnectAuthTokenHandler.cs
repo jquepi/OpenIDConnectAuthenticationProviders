@@ -2,14 +2,12 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
-using Nancy;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
+namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
 {
     public abstract class OpenIDConnectAuthTokenHandler<TStore, TRetriever> : IAuthTokenHandler
         where TStore : IOpenIDConnectConfigurationStore
@@ -33,20 +31,20 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             this.certificateRetriever = certificateRetriever;
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(Request request, out string state)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(dynamic requestForm, out string state)
         {
             state = null;
-            if (request.Form.ContainsKey("error"))
+            if (requestForm.ContainsKey("error"))
             {
-                var errorDescription = request.Form["error_description"];
+                var errorDescription = requestForm["error_description"];
                 log.Error($"Failed to authenticate user: {errorDescription}");
                 return Task.FromResult(new ClaimsPrincipleContainer(errorDescription));
             }
 
-            var accessToken = request.Form["access_token"];
-            var idToken = request.Form["id_token"];
+            var accessToken = requestForm["access_token"];
+            var idToken = requestForm["id_token"];
 
-            state = request.Form["state"];
+            state = requestForm["state"];
 
             return GetPrincipalFromToken(accessToken, idToken);
         }
@@ -69,7 +67,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
                 ValidateIssuerSigningKey = true,
                 ValidAudience = issuer + "/resources",
                 ValidIssuer = issuerConfig.Issuer,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !certificates.ContainsKey(identifier) ? null : new [] { new X509SecurityKey(certificates[identifier]) }
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !certificates.ContainsKey(identifier) ? null : new[] { new X509SecurityKey(certificates[identifier]) }
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))

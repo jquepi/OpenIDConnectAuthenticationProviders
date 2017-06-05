@@ -1,9 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Octopus.Diagnostics;
+﻿using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 {
