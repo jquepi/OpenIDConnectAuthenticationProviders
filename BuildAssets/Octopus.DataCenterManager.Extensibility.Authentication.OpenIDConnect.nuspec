@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd" xmlns:octopus="http://octopus.org">
   <metadata>
-    <id>Octopus.Node.Extensibility.Authentication.OpenIDConnect</id>
-    <title>Octopus Node Extensibility Authentication - OpenIDConnect</title>
+    <id>Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect</id>
+    <title>Octopus Data Center Manager Extensibility Authentication - OpenIDConnect</title>
     <version>$version$</version>
     <authors>Octopus Deploy</authors>
     <owners>Octopus Deploy</owners>
-    <summary>Octopus Deploy OpenIDConnect authentication providers.</summary>
+    <summary>Octopus DataCenterManager OpenIDConnect authentication providers.</summary>
     <description>
-      Implements the OpenIDConnect authentication providers.
+      Implements the OpenIDConnect authentication providers for Data Center Manager.
     </description>
     <releaseNotes></releaseNotes>
     <language>en-US</language>
@@ -23,7 +23,6 @@
 	</dependencies>
   </metadata>
   <files>
-    <file src="net451\*" target="tools\net451" />
-    <file src="netstandard1.3\*" target="tools\netstandard1.3" />
+    <file src="*" target="tools" />
   </files>
 </package>
