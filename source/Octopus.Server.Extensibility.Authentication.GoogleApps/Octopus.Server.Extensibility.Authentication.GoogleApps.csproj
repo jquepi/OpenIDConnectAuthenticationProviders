@@ -178,11 +178,7 @@
     <None Include="Web\Static\fonts\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\controllers\googleApps_auth_provider_controller.js" />
-    <EmbeddedResource Include="Web\Static\areas\users\directives\googleApps_auth_provider.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\googleApps_users_module.js" />
+    <EmbeddedResource Include="Web\Static\areas\users\googleApps_auth_provider.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

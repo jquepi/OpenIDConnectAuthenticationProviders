@@ -154,13 +154,7 @@
     <EmbeddedResource Include="Web\Static\styles\azureAD.css" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\controllers\azureAD_auth_provider_controller.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\directives\azureAD_auth_provider.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\Static\areas\users\azureAD_users_module.js" />
+    <EmbeddedResource Include="Web\Static\areas\users\azureAD_auth_provider.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
