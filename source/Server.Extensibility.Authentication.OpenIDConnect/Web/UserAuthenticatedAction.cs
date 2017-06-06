@@ -59,13 +59,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
             string stateFromRequest;
-            var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request.Form, out stateFromRequest);
+            ClaimsPrincipleContainer principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request.Form, out stateFromRequest);
             var principal = principalContainer.principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.error))
             {
                 return BadRequest($"The response from the external identity provider contained an error: {principalContainer.error}");
             }
-
+            
             // Step 2: Validate the state object we passed wasn't tampered with
             const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
             var expectedStateHash = string.Empty;
@@ -122,7 +122,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             {
                 loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
 
-                var authCookies = authCookieCreator.CreateAuthCookies(context.Request, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
+                INancyCookie[] authCookies = authCookieCreator.CreateAuthCookies(context.Request, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
 
                 return RedirectResponse(response, stateFromRequest)
                     .WithCookies(authCookies)

@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
@@ -31,7 +32,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
             this.certificateRetriever = certificateRetriever;
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(dynamic requestForm, out string state)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(Dictionary<string, string> requestForm, out string state)
         {
             state = null;
             if (requestForm.ContainsKey("error"))
