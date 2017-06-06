@@ -7,8 +7,6 @@
     <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIdConnect</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.OpenIdConnect</Description>
     <Version>3.0.0</Version>
-    <PostBuildEvent>xcopy "$(TargetDir)*.IdentityModel.Tokens*.dll" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D
-xcopy "$(TargetDir)*OpenIDConnect.dll" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D</PostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,4 +31,7 @@ xcopy "$(TargetDir)*OpenIDConnect.dll" "C:\ProgramData\Octopus\CustomExtensions"
     <Folder Include="Tokens\" />
   </ItemGroup>
 
+  <Target Name="AfterBuildNet451" AfterTargets="Build">
+    <Exec Command="xcopy $(OutputPath)*.IdentityModel.Tokens*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D&#xD;&#xA;          xcopy $(OutputPath)*OpenIDConnect.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
+  </Target>
   </Project>
