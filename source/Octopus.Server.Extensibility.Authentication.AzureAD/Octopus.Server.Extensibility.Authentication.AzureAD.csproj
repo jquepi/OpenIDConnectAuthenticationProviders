@@ -119,7 +119,6 @@
     <Compile Include="Configuration\AzureADConfigurationStore.cs" />
     <Compile Include="Infrastructure\AzureADPrincipalToUserResourceMapper.cs" />
     <Compile Include="Infrastructure\IAzureADPrincipalToUserResourceMapper.cs" />
-    <Compile Include="Web\AzureADCSSContributor.cs" />
     <Compile Include="Web\AzureADStaticContentFolders.cs" />
     <Compile Include="Issuer\AzureADAuthorizationEndpointUrlBuilder.cs" />
     <Compile Include="Issuer\AzureADCertificateRetriever.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Web\AzureADUserAuthenticatedAction.cs" />
     <Compile Include="Web\AzureADUserAuthenticationAction.cs" />
     <Compile Include="AzureADAuthenticationProvider.cs" />
-    <Compile Include="Web\AzureADJavascriptContributor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Octopus.Server.Extensibility.Authentication.OpenIDConnect\Octopus.Server.Extensibility.Authentication.OpenIdConnect.csproj">

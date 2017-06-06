@@ -44,14 +44,11 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             builder.RegisterType<GoogleAppsUserAuthenticationAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<GoogleAppsUserAuthenticatedAction>().AsSelf().InstancePerDependency();
 
-            builder.RegisterType<GoogleAppsCSSContributor>().As<IContributesCSS>().InstancePerDependency();
-            builder.RegisterType<GoogleAppsJavascriptContributor>()
-                .As<IContributesJavascript>()
-                .InstancePerDependency();
-
             builder.RegisterType<GoogleAppsAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
                 .As<IAuthenticationProviderWithGroupSupport>()
+                .As<IContributesCSS>()
+                .As<IContributesJavascript>()
                 .AsSelf()
                 .InstancePerDependency();
         }

@@ -15,8 +15,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.configurationStore = configurationStore;
         }
 
-        protected abstract string AngularModuleNameSuffix { get; }
-
         public IEnumerable<string> GetJavascriptUris()
         {
             return !configurationStore.GetIsEnabled()

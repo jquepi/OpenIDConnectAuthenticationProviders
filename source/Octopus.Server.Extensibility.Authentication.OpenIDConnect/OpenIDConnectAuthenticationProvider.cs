@@ -8,7 +8,10 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 {
-    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport
+    public abstract class OpenIDConnectAuthenticationProvider<TStore> : 
+        IAuthenticationProviderWithGroupSupport,
+        IContributesCSS,
+        IContributesJavascript
         where TStore : IOpenIDConnectConfigurationStore
     {
         readonly ILog log;
@@ -22,6 +25,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
         protected TStore ConfigurationStore { get; }
 
         public abstract string IdentityProviderName { get; }
+        public abstract string FilenamePrefix { get; }
 
         public bool IsEnabled => ConfigurationStore.GetIsEnabled() && IsProviderConfigComplete();
 
@@ -69,6 +73,20 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
         public string[] GetAuthenticationUrls()
         {
             return new[] {AuthenticateUri, ConfigurationStore.RedirectUri};
+        }
+
+        public IEnumerable<string> GetCSSUris()
+        {
+            return !ConfigurationStore.GetIsEnabled()
+                ? Enumerable.Empty<string>()
+                : new[] { $"/areas/users/{FilenamePrefix}_auth_provider.js" };
+        }
+
+        public IEnumerable<string> GetJavascriptUris()
+        {
+            return !ConfigurationStore.GetIsEnabled()
+                ? Enumerable.Empty<string>()
+                : new[] { $"/styles/{FilenamePrefix}.css" };
         }
     }
 }
