@@ -79,14 +79,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
         {
             return !ConfigurationStore.GetIsEnabled()
                 ? Enumerable.Empty<string>()
-                : new[] { $"/areas/users/{FilenamePrefix}_auth_provider.js" };
+                : new[] { $"/styles/{FilenamePrefix}.css" };
         }
 
         public IEnumerable<string> GetJavascriptUris()
         {
             return !ConfigurationStore.GetIsEnabled()
                 ? Enumerable.Empty<string>()
-                : new[] { $"/styles/{FilenamePrefix}.css" };
+                : new[] { $"/areas/users/{FilenamePrefix}_auth_provider.js" };
         }
     }
 }
