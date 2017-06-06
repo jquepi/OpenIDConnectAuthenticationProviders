@@ -17,11 +17,8 @@ function azureADAuthProvider(octopusClient) {
             RedirectAfterLoginTo: redirectAfterLoginToLink
         };
 
-         octopusClient.post(
-             authLink, 
-             postData, 
-             redirectToLink
-         );
+        octopusClient.post(authLink, postData)
+                    .then(redirectToLink);
     };
 
     return {
