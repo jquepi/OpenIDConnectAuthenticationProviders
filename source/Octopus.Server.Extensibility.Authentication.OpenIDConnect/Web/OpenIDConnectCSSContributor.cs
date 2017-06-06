@@ -17,9 +17,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         public IEnumerable<string> GetCSSUris()
         {
-            if (!configurationStore.GetIsEnabled())
-                return Enumerable.Empty<string>();
-            return new[] { "~/styles/" + CSSFilename + ".css"};
+            return !configurationStore.GetIsEnabled()
+                ? Enumerable.Empty<string>()
+                : new[] { $"/styles/{CSSFilename}.css" };
         }
 
         public abstract string CSSFilename { get; }

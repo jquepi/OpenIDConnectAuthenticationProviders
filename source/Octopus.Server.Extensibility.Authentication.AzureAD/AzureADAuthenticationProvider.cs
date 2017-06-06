@@ -13,7 +13,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
         }
 
         public override string IdentityProviderName => "Azure AD";
-        public override string FilenamePrefix => "azureAD";
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
