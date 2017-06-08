@@ -1,7 +1,7 @@
 ﻿namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
 {
-    public class CertificateDetails : KeyDetails
+    public class KeyDetails
     {
-        public string Certificate { get; set; }
+        public string Kid { get; set; }
     }
 }
