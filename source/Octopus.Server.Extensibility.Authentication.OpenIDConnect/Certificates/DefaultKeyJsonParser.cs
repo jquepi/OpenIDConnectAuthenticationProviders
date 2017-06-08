@@ -18,11 +18,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
         static KeyDetails ConvertIssuerKeyToDetails(IssuerKey cert)
         {
             if (cert.x509Chain != null && cert.x509Chain.Any())
+            {
                 return new CertificateDetails
                 {
                     Kid = cert.KeyId,
                     Certificate = cert.x509Chain.First()
                 };
+            }
 
             return new RsaDetails
             {

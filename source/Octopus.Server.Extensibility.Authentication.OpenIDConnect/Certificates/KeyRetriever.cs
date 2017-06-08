@@ -84,7 +84,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
             }
 
             var x509 = keyDetails as CertificateDetails;
-            return new X509SecurityKey(FromBase64String(x509.Kid, x509.Certificate));
+            if (x509 != null)
+            {
+                return new X509SecurityKey(FromBase64String(x509.Kid, x509.Certificate));
+            }
+
+            throw new InvalidOperationException($"Unknown key details type: {keyDetails.GetType().Name}");
         }
 
         X509Certificate2 FromBase64String(string kid, string certificateString)
