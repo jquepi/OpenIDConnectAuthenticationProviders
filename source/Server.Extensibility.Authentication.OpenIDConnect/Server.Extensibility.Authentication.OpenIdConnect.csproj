@@ -6,7 +6,6 @@
     <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIdConnect</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIdConnect</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.OpenIdConnect</Description>
-    <Version>3.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
