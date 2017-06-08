@@ -21,11 +21,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
             {
                 yield return option;
             }
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}CertificateUri=", $"Set the {ConfigurationSettingsName} CertificateUri", v =>
-            {
-                ConfigurationStore.Value.SetCertificateUri(v);
-                Log.Info($"{ConfigurationSettingsName} CertificateUri set to: {v}");
-            });
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}HostedDomain=", $"Set the {ConfigurationSettingsName} HostedDomain.", v =>
             {
                 ConfigurationStore.Value.SetHostedDomain(v);
