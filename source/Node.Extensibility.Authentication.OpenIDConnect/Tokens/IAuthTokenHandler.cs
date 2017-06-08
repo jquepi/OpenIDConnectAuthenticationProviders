@@ -5,6 +5,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
 {
     public interface IAuthTokenHandler
     {
-        Task<ClaimsPrincipleContainer> GetPrincipalAsync(Dictionary<string, string> requestForm, out string state);
+        Task<ClaimsPrincipleContainer> GetPrincipalAsync(dynamic requestForm, out string state);
     }
 }
