@@ -32,7 +32,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             this.keyRetriever = keyRetriever;
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(Dictionary<string, string> requestForm, out string state)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(dynamic requestForm, out string state)
         {
             state = null;
             if (requestForm.ContainsKey("error"))
@@ -90,10 +90,11 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 
             var error = string.Empty;
             DoIssuerSpecificClaimsValidation(principal, out error);
-            if (string.IsNullOrEmpty(error))
+
+            if (string.IsNullOrWhiteSpace(error))
                 return new ClaimsPrincipleContainer(principal);
-            else
-                return new ClaimsPrincipleContainer(error);
+            
+            return new ClaimsPrincipleContainer(error);
         }
 
         protected virtual void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal, out string error)
