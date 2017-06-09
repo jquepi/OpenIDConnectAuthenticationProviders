@@ -1,8 +1,6 @@
 var providerName = "Google Apps";
 
 function googleAuthProvider(octopusClient, provider, redirectAfterLoginToLink, onError) {
-    this.octopusClient = octopusClient;
-    this.provider = provider;
 
     this.linkHtml = '<a><div class="googleapps-button"><img src="' + octopusClient.resolve("~/images/google_signin_buttons/icon-google.svg") + '" /><div>Sign in with Google</div></div></a>';
 
@@ -10,7 +8,7 @@ function googleAuthProvider(octopusClient, provider, redirectAfterLoginToLink, o
 
         console.log("Signing in using " + providerName + " provider");
 
-        var authLink = this.provider.Links.Authenticate;
+        var authLink = provider.Links.Authenticate;
         var redirectToLink = function (externalProviderLink) {
             window.location.href = externalProviderLink.ExternalAuthenticationUrl;
         };
