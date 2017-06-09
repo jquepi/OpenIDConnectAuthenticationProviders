@@ -3,9 +3,9 @@
 
   <PropertyGroup>
     <TargetFramework>net451</TargetFramework>
-    <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIdConnect</RootNamespace>
-    <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIdConnect</AssemblyName>
-    <Description>Octopus Deploy: Extensibility.Authentication.OpenIdConnect</Description>
+    <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIDConnect</RootNamespace>
+    <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIDConnect</AssemblyName>
+    <Description>Octopus Deploy: Extensibility.Authentication.OpenIDConnect</Description>
   </PropertyGroup>
 
   <ItemGroup>

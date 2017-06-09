@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Octopus.Node.Extensibility.Authentication.Extensions;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
@@ -39,8 +39,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
             builder.RegisterType<AzureADHomeLinksContributor>().As<IHomeLinksContributor>().InstancePerDependency();
 
             // These are important as Singletons because they cache X509 certificates for performance
-            builder.RegisterType<DefaultCertificateJsonParser>().As<ICertificateJsonParser>().SingleInstance();
-            builder.RegisterType<AzureADCertificateRetriever>().As<ICertificateRetriever>().SingleInstance();
+            builder.RegisterType<DefaultKeyJsonParser>().As<IKeyJsonParser>().SingleInstance();
+            builder.RegisterType<AzureADKeyRetriever>().As<IKeyRetriever>().SingleInstance();
 
             builder.RegisterType<AzureADStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 

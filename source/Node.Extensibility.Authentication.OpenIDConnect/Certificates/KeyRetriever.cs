@@ -1,39 +1,41 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
+using Microsoft.IdentityModel.Tokens;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Time;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates
+namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
 {
-    public abstract class CertificateRetriever<TStore, TCertificateParser> : ICertificateRetriever
+    public abstract class KeyRetriever<TStore, TKeyParser> : IKeyRetriever
         where TStore : IOpenIDConnectConfigurationStore
-        where TCertificateParser : ICertificateJsonParser
+        where TKeyParser : IKeyJsonParser
     {
         readonly IClock clock;
-        readonly TCertificateParser certificateParser;
+        readonly TKeyParser keyParser;
         DateTime? certificateCacheExpires;
         readonly object funcLock = new object();
-        Task<IDictionary<string, X509Certificate2>> certRetrieveTask;
+        Task<IDictionary<string, AsymmetricSecurityKey>> certRetrieveTask;
 
         protected readonly TStore ConfigurationStore;
 
-        protected CertificateRetriever(
+        protected KeyRetriever(
             IClock clock,
             TStore configurationStore,
-            TCertificateParser certificateParser)
+            TKeyParser keyParser)
         {
             this.clock = clock;
             ConfigurationStore = configurationStore;
-            this.certificateParser = certificateParser;
+            this.keyParser = keyParser;
         }
- 
-        public Task<IDictionary<string, X509Certificate2>> GetCertificatesAsync(IssuerConfiguration issuerConfiguration)
+
+        public Task<IDictionary<string, AsymmetricSecurityKey>> GetKeysAsync(IssuerConfiguration issuerConfiguration)
         {
             lock (funcLock)
             {
@@ -43,7 +45,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates
                 // assume the cache is indefinite by default, and adjust back based on downloaded certificates.
                 certificateCacheExpires = DateTime.MaxValue;
 
-                certRetrieveTask = DoGetCertificateAsync(issuerConfiguration);
+                certRetrieveTask = DoGetKeyAsync(issuerConfiguration);
             }
             return certRetrieveTask;
         }
@@ -53,19 +55,41 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates
             return issuerConfiguration.JwksUri;
         }
 
-        public async Task<IDictionary<string, X509Certificate2>> DoGetCertificateAsync(IssuerConfiguration issuerConfiguration)
+        public async Task<IDictionary<string, AsymmetricSecurityKey>> DoGetKeyAsync(IssuerConfiguration issuerConfiguration)
         {
             using (var client = new HttpClient())
             {
                 var downloadUri = GetDownloadUri(issuerConfiguration);
 
-                var response = await client.GetAsync(downloadUri);
+                var response = await client.GetAsync((string) downloadUri);
                 var content = await response.Content.ReadAsStringAsync();
 
-                var downloadedCerts = certificateParser.Parse(content);
+                var downloadedKeys = keyParser.Parse(content);
 
-                return downloadedCerts.ToDictionary(c => c.Kid, c => FromBase64String(c.Kid, c.Certificate));
+                return downloadedKeys.ToDictionary(c => c.Kid, ConvertDetailsToKey);
             }
+        }
+
+        AsymmetricSecurityKey ConvertDetailsToKey(KeyDetails keyDetails)
+        {
+            var rsa = keyDetails as RsaDetails;
+            if (rsa != null)
+            {
+                return new RsaSecurityKey(
+                    new RSAParameters
+                    {
+                        Exponent = Base64UrlEncoder.DecodeBytes(rsa.Exponent),
+                        Modulus = Base64UrlEncoder.DecodeBytes(rsa.Modulus)
+                    });
+            }
+
+            var x509 = keyDetails as CertificateDetails;
+            if (x509 != null)
+            {
+                return new X509SecurityKey(FromBase64String(x509.Kid, x509.Certificate));
+            }
+
+            throw new InvalidOperationException($"Unknown key details type: {keyDetails.GetType().Name}");
         }
 
         X509Certificate2 FromBase64String(string kid, string certificateString)

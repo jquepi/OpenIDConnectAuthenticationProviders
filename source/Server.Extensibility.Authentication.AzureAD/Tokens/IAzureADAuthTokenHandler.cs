@@ -1,4 +1,4 @@
-﻿using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.HostServices.Web;
 

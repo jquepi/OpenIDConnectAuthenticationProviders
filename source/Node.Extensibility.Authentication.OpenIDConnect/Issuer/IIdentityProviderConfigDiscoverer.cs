@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer
+namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer
 {
     public interface IIdentityProviderConfigDiscoverer
     {

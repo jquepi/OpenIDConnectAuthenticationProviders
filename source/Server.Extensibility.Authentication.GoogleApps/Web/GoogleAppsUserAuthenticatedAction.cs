@@ -1,7 +1,7 @@
 ﻿using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;

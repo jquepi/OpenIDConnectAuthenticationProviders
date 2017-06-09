@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure
+namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure
 {
     public interface IPrincipalToUserResourceMapper
     {

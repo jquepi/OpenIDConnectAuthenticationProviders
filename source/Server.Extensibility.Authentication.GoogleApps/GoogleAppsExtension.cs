@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Octopus.Node.Extensibility.Authentication.Extensions;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
@@ -38,8 +39,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             builder.RegisterType<GoogleAppsStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 
             // These are important as Singletons because they cache X509 certificates for performance
-            builder.RegisterType<GoogleCertificateJsonParser>().As<IGoogleCertificateJsonParser>().SingleInstance();
-            builder.RegisterType<GoogleCertificateRetriever>().As<IGoogleCertificateRetriever>().SingleInstance();
+            builder.RegisterType<DefaultKeyJsonParser>().As<IKeyJsonParser>().SingleInstance();
+            builder.RegisterType<GoogleKeyRetriever>().As<IGoogleKeyRetriever>().SingleInstance();
 
             builder.RegisterType<GoogleAppsUserAuthenticationAction>().AsSelf().InstancePerDependency();
             builder.RegisterType<GoogleAppsUserAuthenticatedAction>().AsSelf().InstancePerDependency();

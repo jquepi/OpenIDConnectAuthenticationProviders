@@ -1,16 +1,16 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens
 {
-    public class GoogleAuthTokenHandler : OpenIDConnectAuthTokenHandler<IGoogleAppsConfigurationStore, IGoogleCertificateRetriever>, IGoogleAuthTokenHandler
+    public class GoogleAuthTokenHandler : OpenIDConnectAuthTokenHandler<IGoogleAppsConfigurationStore, IGoogleKeyRetriever>, IGoogleAuthTokenHandler
     {
-        public GoogleAuthTokenHandler(ILog log, IGoogleAppsConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IGoogleCertificateRetriever certificateRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, certificateRetriever)
+        public GoogleAuthTokenHandler(ILog log, IGoogleAppsConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IGoogleKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
         }
 

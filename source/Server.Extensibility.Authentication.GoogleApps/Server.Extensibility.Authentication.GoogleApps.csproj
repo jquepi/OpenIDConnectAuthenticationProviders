@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIdConnect.csproj" />
+    <ProjectReference Include="..\Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIDConnect.csproj" />
   </ItemGroup>
 
 </Project>

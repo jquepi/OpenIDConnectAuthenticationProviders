@@ -4,18 +4,18 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Certificates;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
+namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 {
     public abstract class OpenIDConnectAuthTokenHandler<TStore, TRetriever> : IAuthTokenHandler
         where TStore : IOpenIDConnectConfigurationStore
-        where TRetriever : ICertificateRetriever
+        where TRetriever : IKeyRetriever
     {
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
-        readonly TRetriever certificateRetriever;
+        readonly TRetriever keyRetriever;
 
         readonly ILog log;
         protected readonly TStore ConfigurationStore;
@@ -24,12 +24,12 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
             ILog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
-            TRetriever certificateRetriever)
+            TRetriever keyRetriever)
         {
             this.log = log;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
-            this.certificateRetriever = certificateRetriever;
+            this.keyRetriever = keyRetriever;
         }
 
         public Task<ClaimsPrincipleContainer> GetPrincipalAsync(Dictionary<string, string> requestForm, out string state)
@@ -60,7 +60,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
             var issuer = ConfigurationStore.GetIssuer();
             var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
-            var certificates = await certificateRetriever.GetCertificatesAsync(issuerConfig);
+            var keys = await keyRetriever.GetKeysAsync(issuerConfig);
 
             var validationParameters = new TokenValidationParameters
             {
@@ -68,7 +68,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Tokens
                 ValidateIssuerSigningKey = true,
                 ValidAudience = issuer + "/resources",
                 ValidIssuer = issuerConfig.Issuer,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !certificates.ContainsKey(identifier) ? null : new[] { new X509SecurityKey(certificates[identifier]) }
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new [] { keys[identifier] }
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))

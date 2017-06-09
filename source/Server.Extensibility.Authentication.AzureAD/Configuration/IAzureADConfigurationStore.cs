@@ -1,4 +1,4 @@
-﻿using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {

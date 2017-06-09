@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Web
+namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web
 {
     public abstract class OpenIDConnectCSSContributor<TStore> : IContributesCSS
         where TStore : IOpenIDConnectConfigurationStore

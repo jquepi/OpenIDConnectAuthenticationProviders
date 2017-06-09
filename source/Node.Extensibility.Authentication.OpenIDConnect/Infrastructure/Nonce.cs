@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure
+namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure
 {
     public static class Nonce
     {

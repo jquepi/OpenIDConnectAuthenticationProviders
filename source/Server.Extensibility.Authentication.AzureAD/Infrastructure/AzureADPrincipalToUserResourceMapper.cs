@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Octopus.Node.Extensibility.Authentication.OpenIdConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure
 {

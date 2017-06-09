@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Solution Items\VersionInfo.cs = Solution Items\VersionInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.OpenIdConnect", "Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIdConnect.csproj", "{90829768-9B06-475D-AC73-C9C6E0F20ACB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.OpenIDConnect", "Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIDConnect.csproj", "{90829768-9B06-475D-AC73-C9C6E0F20ACB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.AzureAD", "Server.Extensibility.Authentication.AzureAD\Server.Extensibility.Authentication.AzureAD.csproj", "{8CBCE54C-D501-4ED8-A716-DE64AE5198DA}"
 EndProject
