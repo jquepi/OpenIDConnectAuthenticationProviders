@@ -2,6 +2,7 @@ var providerName = "Azure AD";
 
 function azureADAuthProvider(octopusClient, provider, redirectAfterLoginToLink, onError) {
     this.octopusClient = octopusClient;
+    this.provider = provider;
 
     this.linkHtml = '<a><div class="aad-button"><img src="' + octopusClient.resolve("~/images/microsoft_signin_buttons/microsoft-logo.svg") + '" /><div>Sign in with Microsoft</div></div></a>';
 
