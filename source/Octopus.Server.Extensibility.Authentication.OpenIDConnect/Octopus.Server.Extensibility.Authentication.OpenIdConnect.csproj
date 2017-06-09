@@ -137,12 +137,10 @@
     <Compile Include="Infrastructure\Nonce.cs" />
     <Compile Include="OpenIDConnectExtension.cs" />
     <Compile Include="Web\NancyResponseExtensions.cs" />
-    <Compile Include="Web\OpenIDConnectCSSContributor.cs" />
     <Compile Include="Web\OpenIDConnectHomeLinksContributor.cs" />
     <Compile Include="OpenIDConnectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\State.cs" />
-    <Compile Include="Web\OpenIDConnectJavascriptContributor.cs" />
     <Compile Include="Web\UserAuthenticatedAction.cs" />
     <Compile Include="Web\UserAuthenticationAction.cs" />
   </ItemGroup>
