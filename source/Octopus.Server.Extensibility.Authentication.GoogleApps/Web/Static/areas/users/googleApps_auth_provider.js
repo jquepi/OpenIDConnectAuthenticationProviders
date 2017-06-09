@@ -1,11 +1,15 @@
-function googleAuthProvider(octopusClient) {
+var providerName = "Google Apps";
+
+function googleAuthProvider(octopusClient, provider, redirectAfterLoginToLink, onError) {
     this.octopusClient = octopusClient;
 
-    this.name = "Google Apps";
-    this.linkHtml = '<a><div class="external-provider-button googleapps-button"><img src="' + octopusClient.resolve("~/images/google_signin_buttons/icon-google.svg") + '" /><div>Sign in with Google</div></div></a>';
+    this.linkHtml = '<a><div class="googleapps-button"><img src="' + octopusClient.resolve("~/images/google_signin_buttons/icon-google.svg") + '" /><div>Sign in with Google</div></div></a>';
 
-    this.signIn = function (authLink, redirectAfterLoginToLink, success) {
+    this.signIn = function () {
 
+        console.log("Signing in using " + providerName + " provider");
+
+        var authLink = this.provider.Links.Authenticate;
         var redirectToLink = function (externalProviderLink) {
             window.location.href = externalProviderLink.ExternalAuthenticationUrl;
         };
@@ -15,15 +19,15 @@ function googleAuthProvider(octopusClient) {
         };
 
         octopusClient.post(authLink, postData)
-                        .then(redirectToLink);
+                    .then(redirectToLink, onError);
     };
 
     return {
-        Name: this.name,
+        Name: providerName,
         LinkHtml: this.linkHtml,
         SignIn: this.signIn
     };
 }
 
-console.log("Registering Google Apps auth provider");
-window.Octopus.registerExtension("Google Apps", "auth_provider", googleAuthProvider);
+console.log("Registering " + providerName + " auth provider");
+window.Octopus.registerExtension(providerName, "auth_provider", googleAuthProvider);

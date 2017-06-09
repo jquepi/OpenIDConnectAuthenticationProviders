@@ -1,14 +1,14 @@
 var providerName = "Azure AD";
 
-function azureADAuthProvider(octopusClient) {
+function azureADAuthProvider(octopusClient, provider, redirectAfterLoginToLink, onError) {
     this.octopusClient = octopusClient;
 
-    this.name = providerName;
-    this.linkHtml = '<a><div class="external-provider-button aad-button"><img src="' + octopusClient.resolve("~/images/microsoft_signin_buttons/microsoft-logo.svg") + '" /><div>Sign in with Microsoft</div></div></a>';
+    this.linkHtml = '<a><div class="aad-button"><img src="' + octopusClient.resolve("~/images/microsoft_signin_buttons/microsoft-logo.svg") + '" /><div>Sign in with Microsoft</div></div></a>';
 
-    this.signIn = function (authLink, redirectAfterLoginToLink, success) {
-        console.log(this.name + " clicked");
+    this.signIn = function () {
+        console.log("Signing in using " + providerName + " provider");
 
+        var authUri = this.provider.Links.Authenticate;
         var redirectToLink = function (externalProviderLink) {
             window.location.href = externalProviderLink.ExternalAuthenticationUrl;
         };
@@ -17,12 +17,12 @@ function azureADAuthProvider(octopusClient) {
             RedirectAfterLoginTo: redirectAfterLoginToLink
         };
 
-        octopusClient.post(authLink, postData)
-                    .then(redirectToLink);
+        octopusClient.post(authUri, postData)
+                    .then(redirectToLink, onError);
     };
 
     return {
-        Name: this.name,
+        Name: providerName,
         LinkHtml: this.linkHtml,
         SignIn: this.signIn
     };
