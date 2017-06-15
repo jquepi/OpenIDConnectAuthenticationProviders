@@ -1,24 +1,9 @@
-﻿@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Medium.ttf') format('truetype');
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/Roboto-Bold.ttf') format('truetype');
-    font-weight: bold;
-}
-
-.googleapps-button {
+﻿.googleapps-button {
     background-color: #dc4e41;
     color: #ffffff;
     cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.12);
 }
 
 .googleapps-button:hover {
@@ -35,9 +20,8 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
     display: inline-block;
-    float: right;
     text-align: left;
-    width: 200px;
+    width: 160px;
     height: 40px;
     line-height: 40px;
     overflow: hidden;

@@ -24,10 +24,5 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
             if (string.IsNullOrWhiteSpace(ConfigurationStore.GetClientId()))
                 yield return $"No {IdentityProviderName} Client ID specified";
         }
-
-        protected override string LoginLinkHtml()
-        {
-            return "<azure-auth-provider provider='provider' should-auto-login='shouldAutoLogin' is-submitting='isSubmitting' handle-sign-in-error='handleSignInError'></azure-auth-provider>";
-        }
     }
 }
