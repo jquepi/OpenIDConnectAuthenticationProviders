@@ -13,6 +13,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
         }
 
         public override string IdentityProviderName => "Google Apps";
+        public override string FilenamePrefix => "googleApps";
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
