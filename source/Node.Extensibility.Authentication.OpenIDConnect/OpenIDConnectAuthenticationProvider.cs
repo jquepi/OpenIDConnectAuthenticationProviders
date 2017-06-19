@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.Extensions;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.Resources;
+using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
 {
-    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport 
+    public abstract class OpenIDConnectAuthenticationProvider<TStore> : 
+        IAuthenticationProviderWithGroupSupport,
+        IContributesCSS,
+        IContributesJavascript
         where TStore : IOpenIDConnectConfigurationStore
     {
         readonly ILog log;
@@ -20,6 +25,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
         protected TStore ConfigurationStore { get; }
 
         public abstract string IdentityProviderName { get; }
+        public abstract string FilenamePrefix { get; }
 
         public bool IsEnabled => ConfigurationStore.GetIsEnabled() && IsProviderConfigComplete();
 
@@ -40,14 +46,11 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
 
         public string AuthenticateUri => $"/api/users/authenticate/{ConfigurationStore.ConfigurationSettingsName}";
 
-        protected abstract string LoginLinkHtml();
-
         public AuthenticationProviderElement GetAuthenticationProviderElement()
         {
             var authenticationProviderElement = new AuthenticationProviderElement
             {
-                Name = IdentityProviderName,
-                LinkHtml = LoginLinkHtml()
+                Name = IdentityProviderName
             };
             authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, "~" + AuthenticateUri);
 
@@ -66,7 +69,21 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
 
         public string[] GetAuthenticationUrls()
         {
-            return new[] { AuthenticateUri, ConfigurationStore.RedirectUri };
+            return new[] {AuthenticateUri, ConfigurationStore.RedirectUri};
+        }
+
+        public IEnumerable<string> GetCSSUris()
+        {
+            return !ConfigurationStore.GetIsEnabled()
+                ? Enumerable.Empty<string>()
+                : new[] { $"~/styles/{FilenamePrefix}.css" };
+        }
+
+        public IEnumerable<string> GetJavascriptUris()
+        {
+            return !ConfigurationStore.GetIsEnabled()
+                ? Enumerable.Empty<string>()
+                : new[] { $"~/areas/users/{FilenamePrefix}_auth_provider.js" };
         }
     }
 }

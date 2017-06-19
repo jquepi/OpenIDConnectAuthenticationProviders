@@ -15,6 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
         }
 
         public override string IdentityProviderName => ProviderName;
+        public override string FilenamePrefix => "googleApps";
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
@@ -27,11 +28,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 yield return $"No {IdentityProviderName} Client ID specified";
             if (string.IsNullOrWhiteSpace(ConfigurationStore.GetHostedDomain()))
                 yield return $"No {IdentityProviderName} hosted domain specified";
-        }
-
-        protected override string LoginLinkHtml()
-        {
-            return "<google-auth-provider provider='provider' should-auto-login='shouldAutoLogin' is-submitting='isSubmitting' handle-sign-in-error='handleSignInError'></google-auth-provider>";
         }
     }
 }

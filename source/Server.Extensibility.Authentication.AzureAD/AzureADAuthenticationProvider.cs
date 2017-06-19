@@ -15,6 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
         }
 
         public override string IdentityProviderName => ProviderName;
+        public override string FilenamePrefix => "azureAD";
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
@@ -25,11 +26,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 yield return $"The {IdentityProviderName} issuer must be an absolute URI (expected format: https://login.microsoftonline.com/[issuer guid])";
             if (string.IsNullOrWhiteSpace(ConfigurationStore.GetClientId()))
                 yield return $"No {IdentityProviderName} Client ID specified";
-        }
-
-        protected override string LoginLinkHtml()
-        {
-            return "<azure-auth-provider provider='provider' should-auto-login='shouldAutoLogin' is-submitting='isSubmitting' handle-sign-in-error='handleSignInError'></azure-auth-provider>";
         }
     }
 }
