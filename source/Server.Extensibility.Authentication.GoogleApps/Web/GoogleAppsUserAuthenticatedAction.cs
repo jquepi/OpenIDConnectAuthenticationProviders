@@ -1,5 +1,4 @@
-﻿using Octopus.Data.Storage.User;
-using Octopus.Diagnostics;
+﻿using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
@@ -18,14 +17,17 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             ILog log,
             IGoogleAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             IGoogleAppsConfigurationStore configurationStore,
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep) 
-            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep)
+            ISleep sleep,
+            IClock clock) 
+            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep, clock)
         {
         }
+
+        protected override string ProviderName => GoogleAppsAuthenticationProvider.ProviderName;
     }
 }

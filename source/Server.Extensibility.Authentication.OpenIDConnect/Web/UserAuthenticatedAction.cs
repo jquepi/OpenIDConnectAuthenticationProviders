@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
 using Nancy.Helpers;
+using Octopus.Data.Model.User;
 using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
@@ -25,10 +26,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
-        readonly IUserStore userStore;
+        readonly IUpdateableUserStore userStore;
         readonly IAuthCookieCreator authCookieCreator;
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
+        readonly IClock clock;
 
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
@@ -37,12 +39,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             ILog log,
             TAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             TStore configurationStore,
             IApiActionResponseCreator responseCreator, 
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep)
+            ISleep sleep,
+            IClock clock)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -53,6 +56,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.authCookieCreator = authCookieCreator;
             this.loginTracker = loginTracker;
             this.sleep = sleep;
+            this.clock = clock;
         }
 
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
@@ -163,23 +167,45 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
                 .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
+        
+        protected abstract string ProviderName { get; }
 
-        UserCreateOrUpdateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal)
+        UserCreateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal)
         {
             var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
 
-            var userResult = userStore.CreateOrUpdate(
+            var user = userStore.GetByIdentity(new OAuthIdentityToMatch(ProviderName, userResource.EmailAddress,
+                userResource.ExternalId));
+
+            if (user != null)
+            {
+                if (!user.Identities.OfType<OAuthIdentity>().Any())
+                {
+                    return new UserCreateResult(userStore.AddIdentity(user.Id,
+                        NewIdentity((user.Identities.Max(x => int.Parse(x.Id)) + 1).ToString(), userResource, groups)));
+                }
+                return new UserCreateResult(user);
+            }
+
+            var userResult = userStore.Create(
                 userResource.Username, 
                 userResource.DisplayName, 
                 userResource.EmailAddress,
-                userResource.ExternalId,
-                null,
-                true,
-                null,
-                false,
-                groups);
+                NewIdentity("1", userResource, groups));
 
             return userResult;
+        }
+
+        OAuthIdentity NewIdentity(string id, UserResource userResource, string[] groups)
+        {
+            var oAuthIdentity = new OAuthIdentity(id, ProviderName, userResource.EmailAddress, userResource.ExternalId);
+
+            if (groups.Any())
+            {
+                oAuthIdentity.SetSecurityGroupIds(groups, clock.GetUtcTime());
+            }
+
+            return oAuthIdentity;
         }
     }
 }

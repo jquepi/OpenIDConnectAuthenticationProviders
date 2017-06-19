@@ -1,5 +1,4 @@
-﻿using Octopus.Data.Storage.User;
-using Octopus.Diagnostics;
+﻿using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
@@ -17,12 +16,13 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             ILog log,
             IAzureADAuthTokenHandler authTokenHandler,
             IAzureADPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             IAzureADConfigurationStore configurationStore,
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep) :
+            ISleep sleep, 
+            IClock clock) :
             base(
                 log,
                 authTokenHandler,
@@ -32,8 +32,11 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
                 responseCreator,
                 authCookieCreator,
                 loginTracker,
-                sleep)
+                sleep,
+                clock)
         {
         }
+
+        protected override string ProviderName => AzureADAuthenticationProvider.ProviderName;
     }
 }

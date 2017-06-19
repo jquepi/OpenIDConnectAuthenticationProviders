@@ -8,11 +8,13 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {
     public class GoogleAppsAuthenticationProvider : OpenIDConnectAuthenticationProvider<IGoogleAppsConfigurationStore>
     {
+        public const string ProviderName = "Google Apps";
+
         public GoogleAppsAuthenticationProvider(ILog log, IGoogleAppsConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 
-        public override string IdentityProviderName => "Google Apps";
+        public override string IdentityProviderName => ProviderName;
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {
