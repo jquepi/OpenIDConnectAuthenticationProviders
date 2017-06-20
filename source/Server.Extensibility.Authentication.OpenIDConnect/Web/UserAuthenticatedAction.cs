@@ -7,7 +7,6 @@ using Nancy;
 using Nancy.Cookies;
 using Nancy.Helpers;
 using Octopus.Data.Model.User;
-using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
@@ -124,6 +123,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             var userResult = GetOrCreateUser(authenticationCandidate, principal);
             if (userResult.Succeeded)
             {
+                var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
+                if (groups.Any())
+                {
+                    userStore.SetSecurityGroupIds(ProviderName, userResult.User.Id, groups, clock.GetUtcTime());
+                }
+
                 loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
 
                 INancyCookie[] authCookies = authCookieCreator.CreateAuthCookies(context.Request, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
@@ -172,17 +177,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         UserCreateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal)
         {
-            var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
-
-            var user = userStore.GetByIdentity(new OAuthIdentityToMatch(ProviderName, userResource.EmailAddress,
+            var user = userStore.GetByIdentity(new OAuthIdentity(ProviderName, userResource.EmailAddress,
                 userResource.ExternalId));
 
             if (user != null)
             {
                 if (!user.Identities.OfType<OAuthIdentity>().Any())
                 {
-                    return new UserCreateResult(userStore.AddIdentity(user.Id,
-                        NewIdentity((user.Identities.Max(x => int.Parse(x.Id)) + 1).ToString(), userResource, groups)));
+                    return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
                 }
                 return new UserCreateResult(user);
             }
@@ -191,21 +193,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 userResource.Username, 
                 userResource.DisplayName, 
                 userResource.EmailAddress,
-                NewIdentity("1", userResource, groups));
+                new [] { NewIdentity(userResource) });
 
             return userResult;
         }
 
-        OAuthIdentity NewIdentity(string id, UserResource userResource, string[] groups)
+        OAuthIdentity NewIdentity(UserResource userResource)
         {
-            var oAuthIdentity = new OAuthIdentity(id, ProviderName, userResource.EmailAddress, userResource.ExternalId);
-
-            if (groups.Any())
-            {
-                oAuthIdentity.SetSecurityGroupIds(groups, clock.GetUtcTime());
-            }
-
-            return oAuthIdentity;
+            return new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId);
         }
     }
 }
