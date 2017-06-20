@@ -12,6 +12,7 @@ using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Node.Extensibility.Authentication.Storage.User;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Time;
@@ -188,6 +189,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 }
                 return new UserCreateResult(user);
             }
+
+            if (!ConfigurationStore.GetAllowAutoUserCreation())
+                return new AuthenticationUserCreateResult("User could not be located and auto user creation is not enabled.");
 
             var userResult = userStore.Create(
                 userResource.Username, 

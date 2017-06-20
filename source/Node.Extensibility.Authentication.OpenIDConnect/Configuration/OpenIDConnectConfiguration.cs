@@ -38,6 +38,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 
         public string LoginLinkLabel { get; set; }
 
+        public bool? AllowAutoUserCreation { get; set; }
+
         public void SetId(string id)
         {
             Id = id;

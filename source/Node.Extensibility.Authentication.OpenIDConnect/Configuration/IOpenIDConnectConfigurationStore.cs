@@ -28,5 +28,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         void SetLoginLinkLabel(string loginLinkLabel);
 
         string RedirectUri { get; }
+
+        bool GetAllowAutoUserCreation();
+        void SetAllowAutoUserCreation(bool allowAutoUserCreation);
     }
 }
