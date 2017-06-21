@@ -24,9 +24,7 @@
     <EmbeddedResource Include="Web\Static\images\microsoft_signin_buttons\microsoft-logo.svg" />
     <EmbeddedResource Include="Web\Static\images\microsoft_signin_buttons\sign-in-with-microsoft-light.png" />
     <EmbeddedResource Include="Web\Static\styles\azureAD.css" />
-    <EmbeddedResource Include="Web\Static\areas\users\controllers\azureAD_auth_provider_controller.js" />
-    <EmbeddedResource Include="Web\Static\areas\users\directives\azureAD_auth_provider.js" />
-    <EmbeddedResource Include="Web\Static\areas\users\azureAD_users_module.js" />
+    <EmbeddedResource Include="Web\Static\areas\users\azureAD_auth_provider.js" />
   </ItemGroup>
 
   <ItemGroup>

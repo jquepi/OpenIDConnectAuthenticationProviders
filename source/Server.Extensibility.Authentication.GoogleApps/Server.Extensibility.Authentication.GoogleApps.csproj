@@ -39,9 +39,7 @@
     <EmbeddedResource Include="Web\Static\images\google_signin_buttons\icon-google.svg" />
     <EmbeddedResource Include="Web\Static\styles\googleApps.css" />
     <None Include="Web\Static\fonts\LICENSE.txt" />
-    <EmbeddedResource Include="Web\Static\areas\users\controllers\googleApps_auth_provider_controller.js" />
-    <EmbeddedResource Include="Web\Static\areas\users\directives\googleApps_auth_provider.js" />
-    <EmbeddedResource Include="Web\Static\areas\users\googleApps_users_module.js" />
+    <EmbeddedResource Include="Web\Static\areas\users\googleApps_auth_provider.js" />
   </ItemGroup>
 
   <ItemGroup>
