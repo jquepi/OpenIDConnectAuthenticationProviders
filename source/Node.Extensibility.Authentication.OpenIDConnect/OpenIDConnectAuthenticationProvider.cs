@@ -50,7 +50,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
         {
             var authenticationProviderElement = new AuthenticationProviderElement
             {
-                Name = IdentityProviderName
+                Name = IdentityProviderName,
+                IdentityType = IdentityType.OAuth
             };
             authenticationProviderElement.Links.Add(AuthenticationProviderElement.AuthenticateLinkName, "~" + AuthenticateUri);
 
