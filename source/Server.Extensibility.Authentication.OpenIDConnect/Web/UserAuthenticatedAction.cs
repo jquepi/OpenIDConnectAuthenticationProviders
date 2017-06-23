@@ -184,7 +184,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             if (user != null)
             {
-                if (!user.Identities.OfType<OAuthIdentity>().Any())
+                if (user.Identities.OfType<OAuthIdentity>().All(x => x.Provider != ProviderName))
                 {
                     return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
                 }
