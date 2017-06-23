@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -63,7 +64,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
             string stateFromRequest;
-            ClaimsPrincipleContainer principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request.Form, out stateFromRequest);
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(((DynamicDictionary)context.Request.Form).ToDictionary(), out stateFromRequest);
             var principal = principalContainer.principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.error))
             {
