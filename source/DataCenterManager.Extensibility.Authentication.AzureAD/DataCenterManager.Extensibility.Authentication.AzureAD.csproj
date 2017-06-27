@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <RootNamespace>Octopus.DataCenterManager.Extensibility.Authentication.AzureAD</RootNamespace>
+    <AssemblyName>Octopus.DataCenterManager.Extensibility.Authentication.AzureAD</AssemblyName>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Authors>Octopus Deploy</Authors>
+    <PackageId>Octopus.DataCenterManager.Extensibility.Authentication.AzureAD</PackageId>
+    <PackageIconUrl>http://i.octopusdeploy.com/resources/Avatar3_360.png</PackageIconUrl>
+    <PackageLicenseUrl>https://octopus.com/</PackageLicenseUrl>
+    <PackageProjectUrl>https://octopus.com/</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataCenterManager.Extensibility.Authentication.OpenIDConnect\DataCenterManager.Extensibility.Authentication.OpenIDConnect.csproj" />
+  </ItemGroup>
+
+</Project>

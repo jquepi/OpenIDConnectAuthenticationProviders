@@ -1,68 +1,34 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
-using Octopus.Diagnostics;
+﻿using Microsoft.IdentityModel.Tokens;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 {
-    public abstract class OpenIDConnectAuthTokenHandler<TStore, TRetriever> : IAuthTokenHandler
+    public abstract class AuthTokenHandler<TStore, TRetriever>
         where TStore : IOpenIDConnectConfigurationStore
         where TRetriever : IKeyRetriever
     {
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever keyRetriever;
-
-        readonly ILog log;
         protected readonly TStore ConfigurationStore;
 
-        protected OpenIDConnectAuthTokenHandler(
-            ILog log,
-            TStore configurationStore,
+        protected AuthTokenHandler(TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             TRetriever keyRetriever)
         {
-            this.log = log;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.keyRetriever = keyRetriever;
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out string state)
-        {
-            state = null;
-            if (requestForm.ContainsKey("error"))
-            {
-                var errorDescription = requestForm["error_description"] as string;
-                log.Error($"Failed to authenticate user: {errorDescription}");
-                return Task.FromResult(new ClaimsPrincipleContainer(errorDescription));
-            }
-
-            string accessToken = null;
-            if (requestForm.ContainsKey("access_token"))
-            {
-                accessToken = requestForm["access_token"] as string;
-            }
-            
-            string idToken = null;
-            if (requestForm.ContainsKey("id_token"))
-            {
-                idToken = requestForm["id_token"] as string;
-            }
-
-            state = requestForm["state"] as string;
-
-            return GetPrincipalFromToken(accessToken, idToken);
-        }
-
         protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
         { }
 
-        async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
+        protected async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
         {
             var handler = new JwtSecurityTokenHandler();
 
@@ -77,7 +43,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 ValidateIssuerSigningKey = true,
                 ValidAudience = issuer + "/resources",
                 ValidIssuer = issuerConfig.Issuer,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new [] { keys[identifier] }
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new[] { keys[identifier] }
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
@@ -102,7 +68,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 
             if (string.IsNullOrWhiteSpace(error))
                 return new ClaimsPrincipleContainer(principal);
-            
+
             return new ClaimsPrincipleContainer(error);
         }
 
@@ -110,5 +76,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
         {
             error = string.Empty;
         }
+
     }
 }

@@ -10,6 +10,7 @@ using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Web;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {
@@ -31,6 +32,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
                 .InstancePerDependency();
 
+            builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();
+
             builder.RegisterType<GoogleAppsAuthorizationEndpointUrlBuilder>().As<IGoogleAppsAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<GoogleAuthTokenHandler>().As<IGoogleAuthTokenHandler>().InstancePerDependency();
 
@@ -47,7 +50,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 
             builder.RegisterType<GoogleAppsAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
-                .As<Octopus.Node.Extensibility.Authentication.Extensions.IAuthenticationProviderWithGroupSupport>()
                 .As<IAuthenticationProviderWithGroupSupport>()
                 .As<IContributesCSS>()
                 .As<IContributesJavascript>()

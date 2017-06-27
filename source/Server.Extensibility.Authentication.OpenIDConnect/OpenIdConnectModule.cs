@@ -2,6 +2,7 @@
 using Octopus.Node.Extensibility.Authentication.Extensions;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect

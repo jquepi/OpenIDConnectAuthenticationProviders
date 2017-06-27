@@ -1,82 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Nancy;
-using Nancy.Cookies;
-using Nancy.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Octopus.Data.Model.User;
-using Octopus.Diagnostics;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
-using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Node.Extensibility.Authentication.Storage.User;
-using Octopus.Server.Extensibility.Authentication.HostServices;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
+using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Time;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
+namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web
 {
-    public abstract class UserAuthenticatedAction<TStore, TAuthTokenHandler> : IAsyncApiAction
+    public abstract class AuthenticatedController<TStore, TAuthTokenHandler> : Controller
         where TStore : IOpenIDConnectConfigurationStore
         where TAuthTokenHandler : IAuthTokenHandler
     {
-        readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
         readonly IUpdateableUserStore userStore;
-        readonly IAuthCookieCreator authCookieCreator;
+        readonly TStore configurationStore;
         readonly IInvalidLoginTracker loginTracker;
+        readonly IUrlEncoder urlEncoder;
         readonly ISleep sleep;
         readonly IClock clock;
 
-        protected readonly TStore ConfigurationStore;
-        protected readonly IApiActionResponseCreator ResponseCreator;
-
-        protected UserAuthenticatedAction(
-            ILog log,
+        protected AuthenticatedController(
             TAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
             TStore configurationStore,
-            IApiActionResponseCreator responseCreator, 
-            IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
+            IUrlEncoder urlEncoder,
             ISleep sleep,
             IClock clock)
         {
-            this.log = log;
             this.authTokenHandler = authTokenHandler;
             this.principalToUserResourceMapper = principalToUserResourceMapper;
             this.userStore = userStore;
-            ConfigurationStore = configurationStore;
-            ResponseCreator = responseCreator;
-            this.authCookieCreator = authCookieCreator;
+            this.configurationStore = configurationStore;
             this.loginTracker = loginTracker;
+            this.urlEncoder = urlEncoder;
             this.sleep = sleep;
             this.clock = clock;
         }
-
-        public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
+        
+        protected abstract string ProviderName { get; }
+        
+        protected async Task<IActionResult> ProcessAuthenticated()
         {
-            // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
             string stateFromRequest;
-            var principalContainer = await authTokenHandler.GetPrincipalAsync(((DynamicDictionary)context.Request.Form).ToDictionary(), out stateFromRequest);
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(Request.Form, out stateFromRequest);
             var principal = principalContainer.principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.error))
             {
                 return BadRequest($"The response from the external identity provider contained an error: {principalContainer.error}");
             }
-            
+
             // Step 2: Validate the state object we passed wasn't tampered with
             const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
             var expectedStateHash = string.Empty;
-            if (context.Request.Cookies.ContainsKey("s"))
-                expectedStateHash = HttpUtility.UrlDecode(context.Request.Cookies["s"]);
+            if (Request.Cookies.ContainsKey("s"))
+                expectedStateHash = urlEncoder.UrlDecode(Request.Cookies["s"]);
             if (string.IsNullOrWhiteSpace(expectedStateHash))
             {
                 return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
@@ -92,8 +78,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             const string nonceDescription = "As a security precaution to prevent replay attacks, Octopus ensures the nonce returned in the claims from the external identity provider matches what it expected.";
 
             var expectedNonceHash = string.Empty;
-            if (context.Request.Cookies.ContainsKey("n"))
-                expectedNonceHash = HttpUtility.UrlDecode(context.Request.Cookies["n"]);
+            if (Request.Cookies.ContainsKey("n"))
+                expectedNonceHash = urlEncoder.UrlDecode(Request.Cookies["n"]);
 
             if (string.IsNullOrWhiteSpace(expectedNonceHash))
             {
@@ -116,7 +102,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             var authenticationCandidate = principalToUserResourceMapper.MapToUserResource(principal);
 
             // Step 4a: Check if this authentication attempt is already being banned
-            var action = loginTracker.BeforeAttempt(authenticationCandidate.Username, context.Request.UserHostAddress);
+            var action = loginTracker.BeforeAttempt(authenticationCandidate.Username, Request.HttpContext.Connection.RemoteIpAddress.ToString());
             if (action == InvalidLoginAction.Ban)
             {
                 return BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
@@ -132,17 +118,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     userStore.SetSecurityGroupIds(ProviderName, userResult.User.Id, groups, clock.GetUtcTime());
                 }
 
-                loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
+                loginTracker.RecordSucess(authenticationCandidate.Username, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
-                INancyCookie[] authCookies = authCookieCreator.CreateAuthCookies(context.Request, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
-
-                return RedirectResponse(response, stateFromRequest)
-                    .WithCookies(authCookies)
-                    .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
+                return Redirect(stateFromRequest);
             }
 
             // Step 5: Handle other types of failures
-            loginTracker.RecordFailure(authenticationCandidate.Username, context.Request.UserHostAddress);
+            loginTracker.RecordFailure(authenticationCandidate.Username, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
             // Step 5a: Slow this potential attacker down a bit since they seem to keep failing
             if (action == InvalidLoginAction.Slow)
@@ -163,21 +145,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             return BadRequest($"User login failed: {userResult.FailureReason}");
         }
 
-        Response BadRequest(string message)
-        {
-            log.Error(message);
-            return ResponseCreator.BadRequest(message);
-        }
-
-        Response RedirectResponse(IResponseFormatter response, string uri)
-        {
-            return response.AsRedirect(uri)
-                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
-                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
-        }
-        
-        protected abstract string ProviderName { get; }
-
         UserCreateResult GetOrCreateUser(UserResource userResource)
         {
             var user = userStore.GetByIdentity(new OAuthIdentity(ProviderName, userResource.EmailAddress,
@@ -193,14 +160,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return new UserCreateResult(user);
             }
 
-            if (!ConfigurationStore.GetAllowAutoUserCreation())
+            if (!configurationStore.GetAllowAutoUserCreation())
                 return new AuthenticationUserCreateResult("User could not be located and auto user creation is not enabled.");
 
             var userResult = userStore.Create(
-                userResource.Username, 
-                userResource.DisplayName, 
+                userResource.Username,
+                userResource.DisplayName,
                 userResource.EmailAddress,
-                new [] { NewIdentity(userResource) });
+                new[] { NewIdentity(userResource) });
 
             return userResult;
         }
@@ -209,5 +176,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             return new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId);
         }
+
     }
 }

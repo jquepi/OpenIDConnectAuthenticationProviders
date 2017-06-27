@@ -11,6 +11,7 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {
@@ -33,6 +34,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
                 .InstancePerDependency();
 
+            builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();
+            
             builder.RegisterType<AzureADAuthorizationEndpointUrlBuilder>().As<IAzureADAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<AzureADAuthTokenHandler>().As<IAzureADAuthTokenHandler>().InstancePerDependency();
 
@@ -49,7 +52,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 
             builder.RegisterType<AzureADAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
-                .As<Octopus.Node.Extensibility.Authentication.Extensions.IAuthenticationProviderWithGroupSupport>()
                 .As<IAuthenticationProviderWithGroupSupport>()
                 .As<IContributesCSS>()
                 .As<IContributesJavascript>()

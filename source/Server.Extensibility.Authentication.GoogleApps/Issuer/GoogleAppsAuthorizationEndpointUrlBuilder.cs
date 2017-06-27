@@ -1,13 +1,13 @@
 ﻿using System;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {
     public class GoogleAppsAuthorizationEndpointUrlBuilder : AuthorizationEndpointUrlBuilder<IGoogleAppsConfigurationStore>, IGoogleAppsAuthorizationEndpointUrlBuilder
     {
-        public GoogleAppsAuthorizationEndpointUrlBuilder(IGoogleAppsConfigurationStore configurationStore) : base(configurationStore)
+        public GoogleAppsAuthorizationEndpointUrlBuilder(IGoogleAppsConfigurationStore configurationStore, IUrlEncoder urlEncoder) : base(configurationStore, urlEncoder)
         {
         }
 

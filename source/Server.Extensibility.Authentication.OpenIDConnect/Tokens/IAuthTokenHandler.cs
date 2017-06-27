@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
 
-namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {
     public interface IAuthTokenHandler
     {

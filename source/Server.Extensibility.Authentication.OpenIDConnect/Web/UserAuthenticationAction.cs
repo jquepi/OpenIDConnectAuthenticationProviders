@@ -8,6 +8,7 @@ using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
@@ -83,16 +84,5 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return response.AsRedirect($"{state}?error=Login failed. Please see the Octopus Server logs for more details.");
             }
         }
-    }
-
-    public class LoginRedirectLinkRequestModel
-    {
-        public string ApiAbsUrl { get; set; }
-        public string RedirectAfterLoginTo { get; set; }
-    }
-
-    public class LoginRedirectLinkResponseModel
-    {
-        public string ExternalAuthenticationUrl { get; set; }
     }
 }
