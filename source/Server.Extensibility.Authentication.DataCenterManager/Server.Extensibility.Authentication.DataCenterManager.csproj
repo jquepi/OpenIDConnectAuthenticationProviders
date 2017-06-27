@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net451</TargetFrameworks>
+    <RootNamespace>Octopus.Server.Extensibility.Authentication.DataCenterManager</RootNamespace>
+    <AssemblyName>Octopus.Server.Extensibility.Authentication.DataCenterManager</AssemblyName>
+    <Description>Octopus Deploy: Extensibility.Authentication.DataCenterManager</Description>
+    <PostBuildEvent>xcopy "$(TargetDir)Octopus.Server.Extensibility.Authentication.DataCenterManager.*" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D</PostBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net451|AnyCPU'">
+    <OutputPath>bin\Debug\net451\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\dcm_auth_provider.js" />
+    <EmbeddedResource Include="Web\Static\images\dcm_signin_buttons\dcm-logo.svg" />
+    <EmbeddedResource Include="Web\Static\styles\dcm.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
+    <PackageReference Include="Octopus.Data" Version="2.0.0-enh-odcm0028" />
+    <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIDConnect.csproj" />
+  </ItemGroup>
+
+</Project>
