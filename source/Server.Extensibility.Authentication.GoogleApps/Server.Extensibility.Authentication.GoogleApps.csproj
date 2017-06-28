@@ -28,14 +28,6 @@
     <EmbeddedResource Include="Web\Static\fonts\Roboto-Regular.ttf" />
     <EmbeddedResource Include="Web\Static\fonts\Roboto-Thin.ttf" />
     <EmbeddedResource Include="Web\Static\fonts\Roboto-ThinItalic.ttf" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_dark_disabled_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_dark_focus_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_dark_normal_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_dark_pressed_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_light_disabled_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_light_focus_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_light_normal_web.png" />
-    <EmbeddedResource Include="Web\Static\images\google_signin_buttons\btn_google_signin_light_pressed_web.png" />
     <EmbeddedResource Include="Web\Static\images\google_signin_buttons\icon-google.svg" />
     <EmbeddedResource Include="Web\Static\styles\googleApps.css" />
     <None Include="Web\Static\fonts\LICENSE.txt" />

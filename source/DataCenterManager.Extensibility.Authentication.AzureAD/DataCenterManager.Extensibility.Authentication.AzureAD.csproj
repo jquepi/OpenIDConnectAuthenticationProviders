@@ -10,7 +10,17 @@
     <PackageIconUrl>http://i.octopusdeploy.com/resources/Avatar3_360.png</PackageIconUrl>
     <PackageLicenseUrl>https://octopus.com/</PackageLicenseUrl>
     <PackageProjectUrl>https://octopus.com/</PackageProjectUrl>
+    <PostBuildEvent>
+      xcopy "$(TargetDir)Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
+      xcopy "$(TargetDir)Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
+      xcopy "$(TargetDir)Octopus.Node.Extensibility.Authentication.OpenIDConnect.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
+      xcopy "$(TargetDir)System.IdentityModel.Tokens.Jwt.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
+    </PostBuildEvent>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Octopus.DataCenterManager.Extensibility" Version="3.0.0-enh-odcm0021" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataCenterManager.Extensibility.Authentication.OpenIDConnect\DataCenterManager.Extensibility.Authentication.OpenIDConnect.csproj" />
