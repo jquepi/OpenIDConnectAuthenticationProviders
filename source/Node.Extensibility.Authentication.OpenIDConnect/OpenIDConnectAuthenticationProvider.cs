@@ -44,7 +44,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
 
         public bool SupportsPasswordManagement => false;
 
-        public string AuthenticateUri => $"/api/users/authenticate/{ConfigurationStore.ConfigurationSettingsName}";
+        public string AuthenticateUri => $"/users/authenticate/{ConfigurationStore.ConfigurationSettingsName}";
 
         public AuthenticationProviderElement GetAuthenticationProviderElement()
         {

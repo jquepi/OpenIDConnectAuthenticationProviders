@@ -11,10 +11,10 @@ using Octopus.Time;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
 {
-    public abstract class AzureADAuthenticatedController : AuthenticatedController<IAzureADConfigurationStore, AzureADAuthTokenHandler>
+    public class AzureADAuthenticatedController : AuthenticatedController<IAzureADConfigurationStore, IAzureADAuthTokenHandler>
     {
-        protected AzureADAuthenticatedController(ILog log,
-            AzureADAuthTokenHandler authTokenHandler,
+        public AzureADAuthenticatedController(ILog log,
+            IAzureADAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
             IAzureADConfigurationStore configurationStore,
@@ -24,7 +24,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             IClock clock) : base(authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock)
         {
         }
-        
+
+        protected override string ProviderName => AzureADAuthenticationProvider.ProviderName;
+
         [HttpPost]
         [Route("users/authenticated/azureAD")]
         public Task<IActionResult> Authenticated()

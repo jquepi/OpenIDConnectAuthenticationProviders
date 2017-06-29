@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
@@ -9,13 +10,13 @@ using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADAuthenticationController : AuthenticationController<AzureADConfigurationStore>
+    public class AzureADAuthenticationController : AuthenticationController<IAzureADConfigurationStore>
     {
         public AzureADAuthenticationController(
             ILog log,
-            AzureADConfigurationStore configurationStore,
+            IAzureADConfigurationStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
-            IAuthorizationEndpointUrlBuilder urlBuilder,
+            IAzureADAuthorizationEndpointUrlBuilder urlBuilder,
             IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, webPortalConfigurationStore)
         {
         }

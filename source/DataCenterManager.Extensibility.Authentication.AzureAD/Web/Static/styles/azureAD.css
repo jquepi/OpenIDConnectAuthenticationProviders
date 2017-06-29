@@ -1,0 +1,28 @@
+﻿.aad-button {
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.24), 0 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.aad-button:hover {
+    background-color: #4a4a4a;
+}
+
+.aad-button img {
+    margin-left: 10px;
+    margin-top: 13px; /* ([container-40h]-[image-14h]) / 2 = 13px */
+    float: left;
+}
+
+.aad-button div {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    display: inline-block;
+    text-align: left;
+    width: 160px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+}

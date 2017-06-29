@@ -14,9 +14,14 @@
       xcopy "$(TargetDir)Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
       xcopy "$(TargetDir)Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
       xcopy "$(TargetDir)Octopus.Node.Extensibility.Authentication.OpenIDConnect.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
-      xcopy "$(TargetDir)System.IdentityModel.Tokens.Jwt.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
     </PostBuildEvent>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\azureAD_auth_provider.js" />
+    <EmbeddedResource Include="Web\Static\images\microsoft_signin_buttons\microsoft-logo.svg" />
+    <EmbeddedResource Include="Web\Static\styles\azureAD.css" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Octopus.DataCenterManager.Extensibility" Version="3.0.0-enh-odcm0021" />
