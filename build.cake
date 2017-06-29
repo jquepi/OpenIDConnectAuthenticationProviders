@@ -37,8 +37,6 @@ Setup(context =>
 {
     if(BuildSystem.IsRunningOnTeamCity)
         BuildSystem.TeamCity.SetBuildNumber(gitVersionInfo.NuGetVersion);
-    if(BuildSystem.IsRunningOnAppVeyor)
-        AppVeyor.UpdateBuildVersion(gitVersionInfo.NuGetVersion);
 
     Information("Building Octopus.Server.Extensibility.Authentication.OpenIDConnect v{0}", nugetVersion);
 });
@@ -102,39 +100,14 @@ Task("__Pack")
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "Octopus.Node.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "Octopus.Server.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
             
-        //CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.AzureAD" + bin451 + "Octopus.Node.Extensibility.Authentication.AzureAD.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.AzureAD" + bin451 + "Octopus.Server.Extensibility.Authentication.AzureAD.dll", odNugetPackDir);
-        //CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.GoogleApps" + bin451 + "Octopus.Node.Extensibility.Authentication.GoogleApps.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.GoogleApps" + bin451 + "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.DataCenterManager" + bin451 + "Octopus.Server.Extensibility.Authentication.DataCenterManager.dll", odNugetPackDir);
 
         NuGetPack(Path.Combine(odNugetPackDir, nuspecFile), new NuGetPackSettings {
             Version = nugetVersion,
             OutputDirectory = artifactsDir
         });
-
-        // Node.Extensibility.Authentication.*
-        // DotNetCorePack("source/Node.Extensibility.Authentication.OpenIDConnect", new DotNetCorePackSettings
-        
-        //var nugetNodePackDir = Path.Combine(publishDir, "dcm");
-        //var nuspecNodeFile = "Octopus.Node.Extensibility.Authentication.OpenIDConnect.nuspec";
-            
-        //CreateDirectory(nugetNodePackDir);
-        //CopyFileToDirectory(Path.Combine(assetDir, nuspecNodeFile), nugetNodePackDir);
-            
-        //CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + "System.IdentityModel.Tokens.Jwt.dll", nugetNodePackDir451);
-        //CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + "Octopus.Node.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
-        //CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + "Octopus.Server.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
-		
-        //CopyFileToDirectory(solutionDir + extensionNodePath + bin451 + "System.IdentityModel.Tokens.Jwt.dll", nugetNodePackDirStd);
-		//CopyFileToDirectory(solutionDir + extensionNodePath + binNetStd + extensionNodeName + ".dll", nugetNodePackDirStd);
-            
-        //CopyFileToDirectory(solutionDir + "Node.Extensibility.Authentication.AzureAD" + bin451 + "Octopus.Node.Extensibility.Authentication.AzureAD.dll", nugetNodePackDir);
-        //CopyFileToDirectory(solutionDir + "Node.Extensibility.Authentication.GoogleApps" + bin451 + "Octopus.Node.Extensibility.Authentication.GoogleApps.dll", nugetNodePackDir);
-
-        // NuGetPack(Path.Combine(nugetNodePackDir, nuspecNodeFile), new NuGetPackSettings {
-            // Version = nugetVersion,
-            // OutputDirectory = artifactsDir
-        // });
     });
 
 
@@ -165,19 +138,6 @@ Task("__CopyToLocalPackages")
     CreateDirectory(localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Server.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg"), localPackagesDir);
 });
-
-private class AutoRestoreFile : IDisposable
-{
-    private byte[] _contents;
-    private string _filename;
-    public AutoRestoreFile(string filename)
-    {
-        _filename = filename;
-        _contents = IO.File.ReadAllBytes(filename);
-    }
-
-    public void Dispose() => IO.File.WriteAllBytes(_filename, _contents);
-}
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
