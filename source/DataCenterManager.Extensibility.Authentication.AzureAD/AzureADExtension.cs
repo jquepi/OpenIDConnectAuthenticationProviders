@@ -45,6 +45,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD
 
             builder.RegisterType<AzureADAuthenticationController>().AsSelf().InstancePerDependency();
             builder.RegisterType<AzureADAuthenticatedController>().AsSelf().InstancePerDependency();
+            builder.RegisterType<AzureADConfigurationController>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<AzureADAuthenticationProvider>()
                 .As<IAuthenticationProvider>()

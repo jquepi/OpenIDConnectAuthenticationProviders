@@ -7,7 +7,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configu
 {
     public class AzureADConfigurationStore : OpenIdConnectConfigurationStore<AzureADConfiguration>, IAzureADConfigurationStore
     {
-        protected override string SingletonId => "authentication-aad";
+        public const string Id = "authentication-aad";
+
+        protected override string SingletonId => Id;
         public override string ConfigurationSettingsName => "AzureAD";
 
         public AzureADConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
