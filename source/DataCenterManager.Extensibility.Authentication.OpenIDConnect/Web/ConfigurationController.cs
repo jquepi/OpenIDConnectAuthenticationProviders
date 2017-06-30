@@ -18,7 +18,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         protected abstract string ConfigurationId { get; }
 
         [HttpGet]
-        public IActionResult Index()
+        public TConfiguration Index()
         {
             var configuration = configurationStore.Get<TConfiguration>(ConfigurationId);
             if (configuration == null)
@@ -26,7 +26,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
                 configuration = new TConfiguration();
                 configuration.SetId(ConfigurationId);
             }
-            return Json(configuration);
+            return configuration;
         }
 
         [HttpPut]
