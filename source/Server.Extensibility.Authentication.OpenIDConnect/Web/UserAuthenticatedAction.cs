@@ -185,12 +185,19 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             if (user != null)
             {
-                var identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider != ProviderName);
-                if (identity == null)
+                var identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.ExternalId == userResource.ExternalId);
+                if (identity != null)
                 {
-                    return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
+                    return new UserCreateResult(user);
                 }
-                return new UserCreateResult(user);
+
+                identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.EmailAddress == userResource.EmailAddress);
+                if (identity != null)
+                {
+                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, NewIdentity(userResource)));
+                }
+
+                return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
             }
 
             if (!ConfigurationStore.GetAllowAutoUserCreation())
