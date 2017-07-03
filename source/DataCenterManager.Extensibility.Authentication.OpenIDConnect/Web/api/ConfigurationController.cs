@@ -2,7 +2,7 @@
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
-namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web
+namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web.api
 {
     public abstract class ConfigurationController<TStore, TConfiguration> : Controller
         where TStore : IConfigurationStore

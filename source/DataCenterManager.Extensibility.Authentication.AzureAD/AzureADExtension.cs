@@ -4,6 +4,7 @@ using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Infrastruct
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web;
+using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web.api;
 using Octopus.DataCenterManager.Extensibility.HostServices.Web;
 using Octopus.Node.Extensibility.Authentication.Extensions;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
