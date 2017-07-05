@@ -65,7 +65,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.A
                 response.Cookies.Append("s", State.Protect(state), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
                 response.Cookies.Append("n", Nonce.Protect(nonce), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
 
-                return new JsonResult(new LoginRedirectLinkResponseModel { ExternalAuthenticationUrl = url });
+                return new RedirectResult(url);
             }
             catch (Exception ex)
             {

@@ -12,8 +12,6 @@
     <PackageProjectUrl>https://octopus.com/</PackageProjectUrl>
     <PostBuildEvent>
       xcopy "$(TargetDir)Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
-      xcopy "$(TargetDir)Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
-      xcopy "$(TargetDir)Octopus.Node.Extensibility.Authentication.OpenIDConnect.*" "C:\Octopus\DataCenterManager\CustomExtensions" /S /Y /I /D
     </PostBuildEvent>
   </PropertyGroup>
 
