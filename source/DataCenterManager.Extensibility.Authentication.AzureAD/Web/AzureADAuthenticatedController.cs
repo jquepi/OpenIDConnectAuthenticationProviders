@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
@@ -21,14 +22,14 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             IInvalidLoginTracker loginTracker,
             IUrlEncoder urlEncoder,
             ISleep sleep,
-            IClock clock) : base(authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock)
+            IClock clock) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock)
         {
         }
 
         protected override string ProviderName => AzureADAuthenticationProvider.ProviderName;
 
         [HttpPost]
-        [Route("users/authenticated/azureAD")]
+        [Route(OpenIdConnectConfigurationStore.AuthenticatedTokenBaseUri + "/azureAD")]
         public Task<IActionResult> Authenticated()
         {
             return ProcessAuthenticated();

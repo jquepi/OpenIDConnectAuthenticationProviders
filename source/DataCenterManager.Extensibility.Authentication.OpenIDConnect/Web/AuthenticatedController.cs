@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.Data.Model.User;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
@@ -17,6 +18,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         where TStore : IOpenIDConnectConfigurationStore
         where TAuthTokenHandler : IAuthTokenHandler
     {
+        readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
         readonly IUpdateableUserStore userStore;
@@ -27,6 +29,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         readonly IClock clock;
 
         protected AuthenticatedController(
+            ILog log,
             TAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
@@ -36,6 +39,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             ISleep sleep,
             IClock clock)
         {
+            this.log = log;
             this.authTokenHandler = authTokenHandler;
             this.principalToUserResourceMapper = principalToUserResourceMapper;
             this.userStore = userStore;
@@ -71,6 +75,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             var stateFromRequestHash = State.Protect(stateFromRequest);
             if (stateFromRequestHash != expectedStateHash)
             {
+                log.ErrorFormat("Tampered state. stateFromRequest: {0} => {1} expectedStateHash: {2}", stateFromRequest, stateFromRequestHash, expectedStateHash);
                 return BadRequest($"User login failed: Tampered State. {stateDescription} In this case the state object looks like it has been tampered with. The state object is '{stateFromRequest}'. The SHA256 hash of the state was expected to be '{expectedStateHash}' but was '{stateFromRequestHash}'.");
             }
 
@@ -95,6 +100,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             var nonceFromClaimsHash = Nonce.Protect(nonceFromClaims.Value);
             if (nonceFromClaimsHash != expectedNonceHash)
             {
+                log.ErrorFormat("Tampered nonce. nonceFromClaims: {0} => {1} expectedNonceHash: {2}", nonceFromClaims, nonceFromClaimsHash, expectedNonceHash);
                 return BadRequest($"User login failed: Tampered Nonce. {nonceDescription} In this case the nonce looks like it has been tampered with or reused. The nonce is '{nonceFromClaims}'. The SHA256 hash of the state was expected to be '{expectedNonceHash}' but was '{nonceFromClaimsHash}'.");
             }
 

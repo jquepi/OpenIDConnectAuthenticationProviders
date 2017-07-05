@@ -42,7 +42,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD
 
             // These are important as Singletons because they cache X509 certificates for performance
             builder.RegisterType<DefaultKeyJsonParser>().As<IKeyJsonParser>().SingleInstance();
-            builder.RegisterType<AzureADKeyRetriever>().As<IKeyRetriever>().SingleInstance();
+            builder.RegisterType<AzureADKeyRetriever>().As<IAzureADKeyRetriever>().SingleInstance();
 
             builder.RegisterType<AzureADStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 

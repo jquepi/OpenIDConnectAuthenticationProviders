@@ -7,6 +7,11 @@ using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration
 {
+    public class OpenIdConnectConfigurationStore
+    {
+        public const string AuthenticatedTokenBaseUri = "/users/authenticatedToken";
+    }
+
     public abstract class OpenIdConnectConfigurationStore<TConfiguration> : IOpenIDConnectConfigurationStore, IHasConfigurationSettings
         where TConfiguration : OpenIDConnectConfiguration, IId, new()
     {
@@ -124,7 +129,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
             ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.AllowAutoUserCreation = allowAutoUserCreation);
         }
 
-        public string RedirectUri => $"/users/authenticatedToken/{ConfigurationSettingsName}";
+        public string RedirectUri => $"{OpenIdConnectConfigurationStore.AuthenticatedTokenBaseUri}/{ConfigurationSettingsName}";
 
         public abstract string ConfigurationSetName { get; }
         public virtual IEnumerable<ConfigurationValue> GetConfigurationValues()
