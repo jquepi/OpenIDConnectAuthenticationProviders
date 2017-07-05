@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration;
-using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Issuer;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authenticate;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
-using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
 {
@@ -15,13 +13,11 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
         public AzureADAuthenticationController(
             ILog log,
             IAzureADConfigurationStore configurationStore,
-            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
-            IAzureADAuthorizationEndpointUrlBuilder urlBuilder,
-            IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, webPortalConfigurationStore)
+            IAuthenticationRedirectUrlBuilder redirectUrlBuilder) : base(log, configurationStore, redirectUrlBuilder)
         {
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("users/authenticate/azureAD")]
         public Task<IActionResult> Authenticate(LoginRedirectLinkRequestModel model)
         {

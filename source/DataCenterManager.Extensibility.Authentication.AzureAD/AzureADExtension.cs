@@ -5,6 +5,7 @@ using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web.api;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authenticate;
 using Octopus.DataCenterManager.Extensibility.HostServices.Web;
 using Octopus.Node.Extensibility.Authentication.Extensions;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
@@ -32,6 +33,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD
                 .InstancePerDependency();
 
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();
+            builder.RegisterType<AzureADAuthenticationRedirectUrlBuilder>().As<IAuthenticationRedirectUrlBuilder>().InstancePerDependency();
             
             builder.RegisterType<AzureADAuthorizationEndpointUrlBuilder>().As<IAzureADAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<AzureADAuthTokenHandler>().As<IAzureADAuthTokenHandler>().InstancePerDependency();

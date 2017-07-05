@@ -81,7 +81,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             catch (Exception ex)
             {
                 log.Error(ex);
-                return response.AsRedirect($"{state}?error=Login failed. Please see the Octopus Server logs for more details.");
+                return ResponseCreator.BadRequest($"{state}?error=Login failed. Please see the Octopus Server logs for more details.");
             }
         }
     }

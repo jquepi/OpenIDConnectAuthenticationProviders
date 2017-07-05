@@ -12,7 +12,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Octopus.Data" Version="2.0.0-enh-odcm0028" />
     <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0021" />
+    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0022" />
     <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="5.0.0-enh-odcm0041" />
     <PackageReference Include="Octopus.Time" Version="1.0.9" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
