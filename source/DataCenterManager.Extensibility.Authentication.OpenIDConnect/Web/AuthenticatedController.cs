@@ -137,7 +137,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
                 // if the stateFromRequest Url is the same site as DCM then we need to return a Cookie
                 if (stateFromRequest.StartsWith(webPortalConfigurationStore.GetPublicBaseUrl()))
                 {
-                    authCookieCreator.CreateAuthCookies(Response, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
+                    authCookieCreator.CreateAuthCookies(Response, userResult.User.IdentificationToken, SessionExpiry.TwentyDays, Request.IsHttps);
 
                     return Redirect(stateFromRequest);
                 }
