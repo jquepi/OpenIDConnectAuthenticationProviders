@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.Data.Model.User;
+using Octopus.DataCenterManager.Extensibility.Authentication.HostServices;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
@@ -27,6 +29,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         readonly IUrlEncoder urlEncoder;
         readonly ISleep sleep;
         readonly IClock clock;
+        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
+        readonly IAuthCookieCreator authCookieCreator;
 
         protected AuthenticatedController(
             ILog log,
@@ -37,7 +41,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             IInvalidLoginTracker loginTracker,
             IUrlEncoder urlEncoder,
             ISleep sleep,
-            IClock clock)
+            IClock clock,
+            IWebPortalConfigurationStore webPortalConfigurationStore,
+            IAuthCookieCreator authCookieCreator)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -48,6 +54,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             this.urlEncoder = urlEncoder;
             this.sleep = sleep;
             this.clock = clock;
+            this.webPortalConfigurationStore = webPortalConfigurationStore;
+            this.authCookieCreator = authCookieCreator;
         }
         
         protected abstract string ProviderName { get; }
@@ -126,7 +134,16 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
 
                 loginTracker.RecordSucess(authenticationCandidate.Username, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
-                return Redirect(stateFromRequest);
+                // if the stateFromRequest Url is the same site as DCM then we need to return a Cookie
+                if (stateFromRequest.StartsWith(webPortalConfigurationStore.GetPublicBaseUrl()))
+                {
+                    authCookieCreator.CreateAuthCookies(Response, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
+
+                    return Redirect(stateFromRequest);
+                }
+
+                // otherwise the call came from a Space, so we need to return a JWT
+                throw new NotImplementedException();
             }
 
             // Step 5: Handle other types of failures

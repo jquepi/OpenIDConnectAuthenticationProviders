@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
+using Octopus.DataCenterManager.Extensibility.Authentication.HostServices;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
@@ -22,7 +23,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             IInvalidLoginTracker loginTracker,
             IUrlEncoder urlEncoder,
             ISleep sleep,
-            IClock clock) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock)
+            IClock clock,
+            IWebPortalConfigurationStore webPortalConfigurationStore,
+            IAuthCookieCreator authCookieCreator) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, webPortalConfigurationStore, authCookieCreator)
         {
         }
 
