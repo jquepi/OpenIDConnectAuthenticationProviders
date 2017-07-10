@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Octopus.Data.Model.User;
 using Octopus.DataCenterManager.Extensibility.Authentication.HostServices;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web.Models;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
@@ -31,6 +32,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         readonly IClock clock;
         readonly IWebPortalConfigurationStore webPortalConfigurationStore;
         readonly IAuthCookieCreator authCookieCreator;
+        readonly IJwtCreator jwtCreator;
 
         protected AuthenticatedController(
             ILog log,
@@ -43,7 +45,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             ISleep sleep,
             IClock clock,
             IWebPortalConfigurationStore webPortalConfigurationStore,
-            IAuthCookieCreator authCookieCreator)
+            IAuthCookieCreator authCookieCreator,
+            IJwtCreator jwtCreator)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -56,6 +59,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             this.clock = clock;
             this.webPortalConfigurationStore = webPortalConfigurationStore;
             this.authCookieCreator = authCookieCreator;
+            this.jwtCreator = jwtCreator;
         }
         
         protected abstract string ProviderName { get; }
@@ -143,7 +147,10 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
                 }
 
                 // otherwise the call came from a Space, so we need to return a JWT
-                throw new NotImplementedException();
+                var token = jwtCreator.CreateFor(userResult.User);
+                Response.Headers["Cache-Control"] = "no-cache, no-store";
+                Response.Headers["Pragma"] = "no-cache";
+                return View("JwtToken", new JwtTokenViewModel(string.Empty, stateFromRequest, token));
             }
 
             // Step 5: Handle other types of failures

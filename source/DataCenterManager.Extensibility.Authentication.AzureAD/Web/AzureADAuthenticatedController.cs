@@ -25,7 +25,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             ISleep sleep,
             IClock clock,
             IWebPortalConfigurationStore webPortalConfigurationStore,
-            IAuthCookieCreator authCookieCreator) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, webPortalConfigurationStore, authCookieCreator)
+            IAuthCookieCreator authCookieCreator,
+            IJwtCreator jwtCreator) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, webPortalConfigurationStore, authCookieCreator, jwtCreator)
         {
         }
 

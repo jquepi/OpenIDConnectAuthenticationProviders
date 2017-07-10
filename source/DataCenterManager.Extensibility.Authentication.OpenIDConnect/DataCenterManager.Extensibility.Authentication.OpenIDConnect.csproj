@@ -14,11 +14,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
-    <PackageReference Include="Octopus.DataCenterManager.Extensibility.Authentication" Version="5.0.0-enh-odcm0043" />
+    <PackageReference Include="Octopus.DataCenterManager.Extensibility.Authentication" Version="5.0.0-enh-odcm0044" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Node.Extensibility.Authentication.OpenIDConnect\Node.Extensibility.Authentication.OpenIDConnect.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Web\Views\Shared\" />
+    <EmbeddedResource Include="Web\**\*.cshtml" />
   </ItemGroup>
 
 </Project>

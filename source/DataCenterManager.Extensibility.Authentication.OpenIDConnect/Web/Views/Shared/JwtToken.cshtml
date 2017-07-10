@@ -1,0 +1,14 @@
+﻿@using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web.Models
+@model Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web.Models.JwtTokenViewModel
+
+<html>
+<head><title>jwt Form</title></head>
+<body onload="javascript:document.forms[0].submit()">
+<form method="post" action="@Model.RedirectUri">
+    <input type="hidden" name="state"
+           value="@Model.State"/>
+    <input type="hidden" name="id_token"
+           value="@Model.Token"/>
+</form>
+</body>
+</html>
