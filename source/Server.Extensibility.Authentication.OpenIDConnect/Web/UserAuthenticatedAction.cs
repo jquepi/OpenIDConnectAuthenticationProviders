@@ -126,6 +126,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             var userResult = GetOrCreateUser(authenticationCandidate);
             if (userResult.Succeeded)
             {
+                if (!userResult.User.IsActive)
+                {
+                    return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
+                }
+
+                if (userResult.User.IsService)
+                {
+                    return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
+                }
+
                 var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
                 if (groups.Any())
                 {
@@ -148,16 +158,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             if (action == InvalidLoginAction.Slow)
             {
                 sleep.For(1000);
-            }
-
-            if (!userResult.User.IsActive)
-            {
-                return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
-            }
-
-            if (userResult.User.IsService)
-            {
-                return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
             }
 
             return BadRequest($"User login failed: {userResult.FailureReason}");
