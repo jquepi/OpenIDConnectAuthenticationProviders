@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authenticate;
 using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
+using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web
 {
@@ -13,14 +16,17 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         readonly ILog log;
         readonly TStore configurationStore;
         readonly IAuthenticationRedirectUrlBuilder redirectUrlBuilder;
+        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
 
         protected AuthenticationController(ILog log,
             TStore configurationStore,
-            IAuthenticationRedirectUrlBuilder redirectUrlBuilder)
+            IAuthenticationRedirectUrlBuilder redirectUrlBuilder,
+            IWebPortalConfigurationStore webPortalConfigurationStore)
         {
             this.log = log;
             this.configurationStore = configurationStore;
             this.redirectUrlBuilder = redirectUrlBuilder;
+            this.webPortalConfigurationStore = webPortalConfigurationStore;
         }
 
         protected async Task<IActionResult> ProcessAuthenticate(LoginRedirectLinkRequestModel model)
@@ -32,8 +38,20 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             }
 
             var state = model.RedirectAfterLoginTo;
+            if (string.IsNullOrWhiteSpace(state))
+                state = "/";
 
-            return await redirectUrlBuilder.GetAuthenticationRedirectUrl(Response, state);
+            var whitelist = webPortalConfigurationStore.GetTrustedRedirectUrls();
+
+            if (!Requests.IsLocalUrl(state, whitelist))
+            {
+                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", state);
+                return new BadRequestObjectResult("Request not allowed, due to potential Open Redirection attack");
+            }
+
+            var nonce = Nonce.GenerateUrlSafeNonce();
+
+            return await redirectUrlBuilder.GetAuthenticationRedirectUrl(Response, State.Encode(state), nonce);
         }
     }
 }

@@ -22,5 +22,17 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure
                 return stateHash;
             }
         }
+
+        public static string Encode(string plainText)
+        {
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            return Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Decode(string encodedState)
+        {
+            var encodedBytes = Convert.FromBase64String(encodedState);
+            return Encoding.UTF8.GetString(encodedBytes);
+        }
     }
 }

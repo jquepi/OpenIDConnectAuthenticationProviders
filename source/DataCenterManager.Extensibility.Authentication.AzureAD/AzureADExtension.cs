@@ -6,6 +6,7 @@ using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web.api;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authenticate;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.DataCenterManager.Extensibility.HostServices.Web;
 using Octopus.Node.Extensibility.Authentication.Extensions;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
@@ -49,6 +50,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD
             builder.RegisterType<AzureADAuthenticationController>().AsSelf().InstancePerDependency();
             builder.RegisterType<AzureADAuthenticatedController>().AsSelf().InstancePerDependency();
             builder.RegisterType<AzureADConfigurationController>().AsSelf().InstancePerDependency();
+
+            builder.RegisterType<NonceChainer>().As<INonceChainer>().InstancePerDependency();
+            builder.RegisterType<StateChainer>().As<IStateChainer>().InstancePerDependency();
 
             builder.RegisterType<AzureADAuthenticationProvider>()
                 .As<IAuthenticationProvider>()

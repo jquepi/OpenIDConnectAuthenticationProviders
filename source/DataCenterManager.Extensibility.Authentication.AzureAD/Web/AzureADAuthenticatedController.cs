@@ -4,6 +4,7 @@ using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configurati
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.DataCenterManager.Extensibility.Authentication.HostServices;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
@@ -24,9 +25,10 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             IUrlEncoder urlEncoder,
             ISleep sleep,
             IClock clock,
-            IWebPortalConfigurationStore webPortalConfigurationStore,
             IAuthCookieCreator authCookieCreator,
-            IJwtCreator jwtCreator) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, webPortalConfigurationStore, authCookieCreator, jwtCreator)
+            IJwtCreator jwtCreator,
+            INonceChainer nonceChainer,
+            IStateChainer stateChainer) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, authCookieCreator, jwtCreator, nonceChainer, stateChainer)
         {
         }
 

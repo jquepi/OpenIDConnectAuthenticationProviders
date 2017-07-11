@@ -3,11 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authenticate
@@ -34,27 +32,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.A
             this.webPortalConfigurationStore = webPortalConfigurationStore;
         }
 
-        public async Task<IActionResult> GetAuthenticationRedirectUrl(HttpResponse response, string state)
+        public async Task<IActionResult> GetAuthenticationRedirectUrl(HttpResponse response, string state, string nonce)
         {
-            if (configurationStore.GetIsEnabled() == false)
-            {
-                log.Warn($"{configurationStore.ConfigurationSettingsName} user authentication API was called while the provider was disabled.");
-                return new BadRequestObjectResult("This authentication provider is disabled.");
-            }
-
-            if (string.IsNullOrWhiteSpace(state))
-                state = "/";
-
-            var whitelist = webPortalConfigurationStore.GetTrustedRedirectUrls();
-
-            if (!Requests.IsLocalUrl(state, whitelist))
-            {
-                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", state);
-                return new BadRequestObjectResult("Request not allowed, due to potential Open Redirection attack");
-            }
-
-            var nonce = Nonce.GenerateUrlSafeNonce();
-
             try
             {
                 var issuer = configurationStore.GetIssuer();
@@ -77,6 +56,6 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.A
 
     public interface IAuthenticationRedirectUrlBuilder
     {
-        Task<IActionResult> GetAuthenticationRedirectUrl(HttpResponse response, string state);
+        Task<IActionResult> GetAuthenticationRedirectUrl(HttpResponse response, string state, string nonce);
     }
 }

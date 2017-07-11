@@ -30,9 +30,10 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         readonly IUrlEncoder urlEncoder;
         readonly ISleep sleep;
         readonly IClock clock;
-        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
         readonly IAuthCookieCreator authCookieCreator;
         readonly IJwtCreator jwtCreator;
+        readonly INonceChainer nonceChainer;
+        readonly IStateChainer stateChainer;
 
         protected AuthenticatedController(
             ILog log,
@@ -44,9 +45,10 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             IUrlEncoder urlEncoder,
             ISleep sleep,
             IClock clock,
-            IWebPortalConfigurationStore webPortalConfigurationStore,
             IAuthCookieCreator authCookieCreator,
-            IJwtCreator jwtCreator)
+            IJwtCreator jwtCreator,
+            INonceChainer nonceChainer,
+            IStateChainer stateChainer)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -57,9 +59,10 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             this.urlEncoder = urlEncoder;
             this.sleep = sleep;
             this.clock = clock;
-            this.webPortalConfigurationStore = webPortalConfigurationStore;
             this.authCookieCreator = authCookieCreator;
             this.jwtCreator = jwtCreator;
+            this.nonceChainer = nonceChainer;
+            this.stateChainer = stateChainer;
         }
         
         protected abstract string ProviderName { get; }
@@ -148,19 +151,22 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
 
                 loginTracker.RecordSucess(authenticationCandidate.Username, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
-                // if the stateFromRequest Url is the same site as DCM then we need to return a Cookie
-                if (stateFromRequest.StartsWith(webPortalConfigurationStore.GetPublicBaseUrl()))
+                var states = stateChainer.Delink(stateFromRequest);
+                var redirectAfterLoginTo = states[0];
+
+                // if there is no chained state, then the auth call originated from the DCM UI
+                if (states.Length == 1)
                 {
                     authCookieCreator.CreateAuthCookies(Response, userResult.User.IdentificationToken, SessionExpiry.TwentyDays, Request.IsHttps);
 
-                    return Redirect(stateFromRequest);
+                    return Redirect(redirectAfterLoginTo);
                 }
 
-                // otherwise the call came from a Space, so we need to return a JWT
-                var token = jwtCreator.CreateFor(userResult.User);
+                // otherwise the call came from a Space, so we need to return a JWT. 2nd state from the chain will be the clientId.
+                var token = jwtCreator.CreateFor(userResult.User, nonceChainer.Delink(nonceFromClaims.Value), states[1]);
                 Response.Headers["Cache-Control"] = "no-cache, no-store";
                 Response.Headers["Pragma"] = "no-cache";
-                return View("JwtToken", new JwtTokenViewModel(string.Empty, stateFromRequest, token));
+                return View("JwtToken", new JwtTokenViewModel(string.Empty, redirectAfterLoginTo, token));
             }
 
             // Step 5: Handle other types of failures

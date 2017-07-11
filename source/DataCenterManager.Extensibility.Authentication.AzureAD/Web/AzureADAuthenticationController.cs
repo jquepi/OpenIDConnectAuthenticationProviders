@@ -5,6 +5,7 @@ using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authe
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
+using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
 {
@@ -13,7 +14,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
         public AzureADAuthenticationController(
             ILog log,
             IAzureADConfigurationStore configurationStore,
-            IAuthenticationRedirectUrlBuilder redirectUrlBuilder) : base(log, configurationStore, redirectUrlBuilder)
+            IAuthenticationRedirectUrlBuilder redirectUrlBuilder,
+            IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, redirectUrlBuilder, webPortalConfigurationStore)
         {
         }
 
