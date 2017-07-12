@@ -31,10 +31,11 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect
         public virtual Task<IActionResult> GetAuthenticationRedirectUrl(
             HttpResponse response, 
             string clientId,
+            string redirectUrl,
             string state, 
             string nonce)
         {
-            var chainedState = stateChainer.Chain(state, clientId);
+            var chainedState = stateChainer.Chain(state, clientId, redirectUrl);
             var chainedNonce = nonceChainer.Chain(nonce, Nonce.GenerateUrlSafeNonce());
 
             return redirectUrlBuilder.GetAuthenticationRedirectUrl(response, chainedState, chainedNonce);
@@ -48,6 +49,6 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect
 
     public interface IDataCenterManagerOpenIDConnectAuthenticationProvider : IDataCenterManagerAuthenticationProvider
     {
-        Task<IActionResult> GetAuthenticationRedirectUrl(HttpResponse response, string clientId, string state, string nonce);
+        Task<IActionResult> GetAuthenticationRedirectUrl(HttpResponse response, string clientId, string redirectUrl, string state, string nonce);
     }
 }

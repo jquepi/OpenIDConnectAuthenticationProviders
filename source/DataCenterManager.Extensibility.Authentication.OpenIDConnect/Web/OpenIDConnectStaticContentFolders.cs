@@ -10,7 +10,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         {
             var type = typeof(OpenIDConnectStaticContentFolders).GetTypeInfo();
             var assembly = type.Assembly;
-            return new[] { new StaticContentEmbeddedResourcesFolder("", assembly, type.Namespace + ".Static") };
+            return new[] { new StaticContentEmbeddedResourcesFolder("", assembly, type.Namespace) };
         }
     }
 }

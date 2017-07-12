@@ -163,10 +163,15 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
                 }
 
                 // otherwise the call came from a Space, so we need to return a JWT. 2nd state from the chain will be the clientId.
-                var token = jwtCreator.CreateFor(userResult.User, nonceChainer.Delink(nonceFromClaims.Value), states[1]);
+                // 3rd is the redirectUrl for where to pass the token back to.
+                var clientId = states[1];
+                var redirectUrl = states[2];
+
+                var token = jwtCreator.CreateFor(userResult.User, nonceChainer.Delink(nonceFromClaims.Value), clientId);
                 Response.Headers["Cache-Control"] = "no-cache, no-store";
                 Response.Headers["Pragma"] = "no-cache";
-                return View("JwtToken", new JwtTokenViewModel(string.Empty, redirectAfterLoginTo, token));
+
+                return View("~/Views/JwtToken.cshtml", new JwtTokenViewModel(redirectUrl, redirectAfterLoginTo, token));
             }
 
             // Step 5: Handle other types of failures

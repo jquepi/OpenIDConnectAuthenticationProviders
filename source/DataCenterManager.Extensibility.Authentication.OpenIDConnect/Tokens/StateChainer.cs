@@ -5,9 +5,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.T
 {
     public class StateChainer : IStateChainer
     {
-        public string Chain(string callerState, string additionalState)
+        public string Chain(params string[] states)
         {
-            return $"{State.Encode(callerState)}.{State.Encode(additionalState)}";
+            return string.Join(".", states.Select(State.Encode));
         }
 
         public string[] Delink(string returnedState)
@@ -18,7 +18,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.T
 
     public interface IStateChainer
     {
-        string Chain(string callerState, string additionalState);
+        string Chain(params string[] states);
         string[] Delink(string returnedState);
     }
 }

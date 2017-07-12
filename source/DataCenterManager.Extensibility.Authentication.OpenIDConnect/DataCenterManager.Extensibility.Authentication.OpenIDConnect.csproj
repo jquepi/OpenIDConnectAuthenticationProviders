@@ -22,7 +22,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Web\Views\Shared\" />
     <EmbeddedResource Include="Web\**\*.cshtml" />
   </ItemGroup>
 
