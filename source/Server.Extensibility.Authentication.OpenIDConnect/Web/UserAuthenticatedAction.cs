@@ -73,8 +73,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             // Step 2: Validate the state object we passed wasn't tampered with
             const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
             var expectedStateHash = string.Empty;
-            if (context.Request.Cookies.ContainsKey("s"))
-                expectedStateHash = HttpUtility.UrlDecode(context.Request.Cookies["s"]);
+            if (context.Request.Cookies.ContainsKey(UserAuthConstants.OctopusStateCookieName))
+                expectedStateHash = HttpUtility.UrlDecode(context.Request.Cookies[UserAuthConstants.OctopusStateCookieName]);
             if (string.IsNullOrWhiteSpace(expectedStateHash))
             {
                 return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
@@ -90,8 +90,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             const string nonceDescription = "As a security precaution to prevent replay attacks, Octopus ensures the nonce returned in the claims from the external identity provider matches what it expected.";
 
             var expectedNonceHash = string.Empty;
-            if (context.Request.Cookies.ContainsKey("n"))
-                expectedNonceHash = HttpUtility.UrlDecode(context.Request.Cookies["n"]);
+            if (context.Request.Cookies.ContainsKey(UserAuthConstants.OctopusNonceCookieName))
+                expectedNonceHash = HttpUtility.UrlDecode(context.Request.Cookies[UserAuthConstants.OctopusNonceCookieName]);
 
             if (string.IsNullOrWhiteSpace(expectedNonceHash))
             {
@@ -170,8 +170,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         Response RedirectResponse(IResponseFormatter response, string uri)
         {
             return response.AsRedirect(uri)
-                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
-                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
+                .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
+                .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
         
         protected abstract string ProviderName { get; }

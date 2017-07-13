@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
@@ -41,8 +42,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.A
 
                 var url = urlBuilder.Build(webPortalConfigurationStore.GetPublicBaseUrl(), issuerConfig, nonce, state);
 
-                response.Cookies.Append("s", State.Protect(state), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
-                response.Cookies.Append("n", Nonce.Protect(nonce), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
+                response.Cookies.Append(UserAuthConstants.DCMStateCookieName, State.Protect(state), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
+                response.Cookies.Append(UserAuthConstants.DCMNonceCookieName, Nonce.Protect(nonce), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
 
                 return new RedirectResult(url);
             }

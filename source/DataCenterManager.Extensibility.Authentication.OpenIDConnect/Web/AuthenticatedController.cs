@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.Data.Model.User;
 using Octopus.DataCenterManager.Extensibility.Authentication.HostServices;
@@ -80,8 +81,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             // Step 2: Validate the state object we passed wasn't tampered with
             const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
             var expectedStateHash = string.Empty;
-            if (Request.Cookies.ContainsKey("s"))
-                expectedStateHash = urlEncoder.UrlDecode(Request.Cookies["s"]);
+            if (Request.Cookies.ContainsKey(UserAuthConstants.DCMStateCookieName))
+                expectedStateHash = urlEncoder.UrlDecode(Request.Cookies[UserAuthConstants.DCMStateCookieName]);
             if (string.IsNullOrWhiteSpace(expectedStateHash))
             {
                 return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
@@ -98,8 +99,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             const string nonceDescription = "As a security precaution to prevent replay attacks, Octopus ensures the nonce returned in the claims from the external identity provider matches what it expected.";
 
             var expectedNonceHash = string.Empty;
-            if (Request.Cookies.ContainsKey("n"))
-                expectedNonceHash = urlEncoder.UrlDecode(Request.Cookies["n"]);
+            if (Request.Cookies.ContainsKey(UserAuthConstants.DCMNonceCookieName))
+                expectedNonceHash = urlEncoder.UrlDecode(Request.Cookies[UserAuthConstants.DCMNonceCookieName]);
 
             if (string.IsNullOrWhiteSpace(expectedNonceHash))
             {
@@ -153,6 +154,10 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
 
                 var states = stateChainer.Delink(stateFromRequest);
                 var redirectAfterLoginTo = states[0];
+
+                // Invalidate the state and nonce cookies
+                Response.Cookies.Append(UserAuthConstants.DCMStateCookieName, Guid.NewGuid().ToString(), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
+                Response.Cookies.Append(UserAuthConstants.DCMNonceCookieName, Guid.NewGuid().ToString(), new CookieOptions { Secure = false, HttpOnly = true, Expires = DateTime.UtcNow.AddMinutes(20) });
 
                 // if there is no chained state, then the auth call originated from the DCM UI
                 if (states.Length == 1)

@@ -27,6 +27,6 @@
   </ItemGroup>
 
   <Target Name="AfterBuildNet451" AfterTargets="Build">
-    <Exec Command="xcopy $(OutputPath)*.IdentityModel.Tokens*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D&#xD;&#xA;          xcopy $(OutputPath)*OpenIDConnect.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
+    <Exec Command="xcopy $(OutputPath)*.IdentityModel.Tokens*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D&#xD;&#xA;xcopy $(OutputPath)*OpenIDConnect.* C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
   </Target>
   </Project>
