@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
@@ -19,6 +20,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
         readonly ILog log;
         protected readonly TStore ConfigurationStore;
+        readonly HashSet<string> badKeys = new HashSet<string>();
 
         protected OpenIDConnectAuthTokenHandler(
             ILog log,
@@ -62,13 +64,32 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
             var keys = await keyRetriever.GetCertificatesAsync(issuerConfig);
 
+            var keyFound = false;
+            var hadBadKey = false;
+
             var validationParameters = new TokenValidationParameters
             {
                 ValidateActor = true,
                 ValidateIssuerSigningKey = true,
                 ValidAudience = issuer + "/resources",
                 ValidIssuer = issuerConfig.Issuer,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new [] { keys[identifier] }
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                {
+                    if (badKeys.Contains(identifier))
+                    {
+                        hadBadKey = true;
+                        return null;
+                    }
+
+                    if (!keys.ContainsKey(identifier))
+                    {
+                        badKeys.Add(identifier);
+                        hadBadKey = true;
+                        return null;
+                    }
+                    keyFound = true;
+                    return new[] {keys[identifier]};
+                }
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
@@ -86,7 +107,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
             // This is where we actually interpret the token, validate it, and pump out a ClaimsPrincipal
             SecurityToken unused;
+
             var principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+            if (!keyFound && !hadBadKey)
+            {
+                keyRetriever.FlushCache();
+                keys = await keyRetriever.GetCertificatesAsync(issuerConfig);
+                principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+            }
 
             var error = string.Empty;
             DoIssuerSpecificClaimsValidation(principal, out error);

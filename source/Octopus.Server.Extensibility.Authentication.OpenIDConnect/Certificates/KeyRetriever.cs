@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
 {
@@ -17,33 +16,33 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
         where TStore : IOpenIDConnectConfigurationStore
         where TCertificateParser : IKeyJsonParser
     {
-        readonly IClock clock;
         readonly TCertificateParser keyParser;
-        DateTime? certificateCacheExpires;
         readonly object funcLock = new object();
         Task<IDictionary<string, AsymmetricSecurityKey>> certRetrieveTask;
 
         protected readonly TStore ConfigurationStore;
 
-        protected KeyRetriever(
-            IClock clock,
-            TStore configurationStore,
+        protected KeyRetriever(TStore configurationStore,
             TCertificateParser keyParser)
         {
-            this.clock = clock;
             ConfigurationStore = configurationStore;
             this.keyParser = keyParser;
         }
- 
+
+        public void FlushCache()
+        {
+            lock (funcLock)
+            {
+                certRetrieveTask = null;
+            }
+        }
+
         public Task<IDictionary<string, AsymmetricSecurityKey>> GetCertificatesAsync(IssuerConfiguration issuerConfiguration)
         {
             lock (funcLock)
             {
-                if (certRetrieveTask != null && certificateCacheExpires > clock.GetLocalTime())
+                if (certRetrieveTask != null)
                     return certRetrieveTask;
-
-                // assume the cache is indefinite by default, and adjust back based on downloaded certificates.
-                certificateCacheExpires = DateTime.MaxValue;
 
                 certRetrieveTask = DoGetKeyAsync(issuerConfiguration);
             }
@@ -103,12 +102,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
                 File.WriteAllBytes(file, raw);
 
                 var certificate = new X509Certificate2(file);
-
-                if (certificate.NotAfter < certificateCacheExpires)
-                {
-                    // eagerly refresh the cache in the last 5min before the certificate will expire.
-                    certificateCacheExpires = certificate.NotAfter.Subtract(TimeSpan.FromMinutes(5));
-                }
 
                 return certificate;
             }
