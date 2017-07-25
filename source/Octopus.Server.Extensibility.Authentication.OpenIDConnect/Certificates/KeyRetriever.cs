@@ -29,24 +29,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
             this.keyParser = keyParser;
         }
 
-        public void FlushCache()
+        public Task<IDictionary<string, AsymmetricSecurityKey>> GetCertificatesAsync(IssuerConfiguration issuerConfiguration, bool forceReload=false)
         {
             lock (funcLock)
             {
-                certRetrieveTask = null;
-            }
-        }
-
-        public Task<IDictionary<string, AsymmetricSecurityKey>> GetCertificatesAsync(IssuerConfiguration issuerConfiguration)
-        {
-            lock (funcLock)
-            {
-                if (certRetrieveTask != null)
+                if (certRetrieveTask != null && !forceReload)
                     return certRetrieveTask;
 
                 certRetrieveTask = DoGetKeyAsync(issuerConfiguration);
-            }
-            return certRetrieveTask;
+                return certRetrieveTask;
+            }           
         }
 
         protected virtual string GetDownloadUri(IssuerConfiguration issuerConfiguration)

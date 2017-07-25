@@ -7,7 +7,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
 {
     public interface IKeyRetriever
     {
-        Task<IDictionary<string, AsymmetricSecurityKey>> GetCertificatesAsync(IssuerConfiguration issuerConfiguration);
-        void FlushCache();
+        Task<IDictionary<string, AsymmetricSecurityKey>> GetCertificatesAsync(IssuerConfiguration issuerConfiguration, bool forceReload=false);
     }
 }
