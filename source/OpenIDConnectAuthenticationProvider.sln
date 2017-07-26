@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octopus.Server.Extensibilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octopus.Server.Extensibility.Authentication.GoogleApps", "Octopus.Server.Extensibility.Authentication.GoogleApps\Octopus.Server.Extensibility.Authentication.GoogleApps.csproj", "{6796E715-F1FA-445D-AF1F-F6C9023A8D07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octopus.Server.Extensibility.Authentication.Okta", "Octopus.Server.Extensibility.Authentication.Okta\Octopus.Server.Extensibility.Authentication.Okta.csproj", "{3C7C3079-DF0E-484F-8556-10B18127450B}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C354DA8E-D532-4DAE-8D61-E4F50A0139C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octopus.Server.Extensibility.Authentication.Tests", "Octopus.Server.Extensibility.Authentication.Tests\Octopus.Server.Extensibility.Authentication.Tests.csproj", "{00680371-A6E1-435F-9966-2450C2723E91}"
@@ -37,6 +39,10 @@ Global
 		{6796E715-F1FA-445D-AF1F-F6C9023A8D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6796E715-F1FA-445D-AF1F-F6C9023A8D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6796E715-F1FA-445D-AF1F-F6C9023A8D07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C7C3079-DF0E-484F-8556-10B18127450B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C7C3079-DF0E-484F-8556-10B18127450B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C7C3079-DF0E-484F-8556-10B18127450B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C7C3079-DF0E-484F-8556-10B18127450B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00680371-A6E1-435F-9966-2450C2723E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00680371-A6E1-435F-9966-2450C2723E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00680371-A6E1-435F-9966-2450C2723E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
