@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
@@ -50,10 +51,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             return GetPrincipalFromToken(accessToken, idToken);
         }
 
-        protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
-        { }
-
-        async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
+        internal async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
         {
             var handler = new JwtSecurityTokenHandler();
 
@@ -65,10 +63,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             var validationParameters = new TokenValidationParameters
             {
                 ValidateActor = true,
-                ValidateIssuerSigningKey = true,
+                ValidateAudience = true,
                 ValidAudience = issuer + "/resources",
+                ValidateIssuer = true,
                 ValidIssuer = issuerConfig.Issuer,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new [] { keys[identifier] }
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new[] { keys[identifier] }
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
@@ -86,7 +86,25 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 
             // This is where we actually interpret the token, validate it, and pump out a ClaimsPrincipal
             SecurityToken unused;
-            var principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+
+            var signatureError = false;
+            ClaimsPrincipal principal = null;
+            try
+            {
+                principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+            }
+            catch (SecurityTokenInvalidSignatureException)
+            {
+                signatureError = true;
+            }
+
+            // If we receive an invalid signature, it might be because the provider has recylced their keys.
+            // So reflush the key cache, reload the keys, and try once more.
+            if (signatureError)
+            {
+                keys = await keyRetriever.GetCertificatesAsync(issuerConfig, true);
+                principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+            }
 
             var error = string.Empty;
             DoIssuerSpecificClaimsValidation(principal, out error);
@@ -95,6 +113,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             else
                 return new ClaimsPrincipleContainer(error);
         }
+
+        protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
+        { }
 
         protected virtual void DoIssuerSpecificClaimsValidation(ClaimsPrincipal principal, out string error)
         {
