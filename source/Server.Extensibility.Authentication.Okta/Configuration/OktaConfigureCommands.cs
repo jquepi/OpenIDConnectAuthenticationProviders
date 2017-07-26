@@ -5,19 +5,19 @@ using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
-namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
+namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class AzureADConfigureCommands : OpenIdConnectConfigureCommands<IAzureADConfigurationStore>
+    public class OktaConfigureCommands : OpenIdConnectConfigureCommands<IOktaConfigurationStore>
     {
-        public AzureADConfigureCommands(
+        public OktaConfigureCommands(
             ILog log,
-            Lazy<IAzureADConfigurationStore> configurationStore,
+            Lazy<IOktaConfigurationStore> configurationStore,
             Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
             : base(log, configurationStore, webPortalConfigurationStore)
         {
         }
 
-        protected override string ConfigurationSettingsName => "azureAD";
+        protected override string ConfigurationSettingsName => "okta";
 
         public override IEnumerable<ConfigureCommandOption> GetOptions()
         {

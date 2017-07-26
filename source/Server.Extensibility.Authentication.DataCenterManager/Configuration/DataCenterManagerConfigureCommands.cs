@@ -9,7 +9,7 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
 {
     public class DataCenterManagerConfigureCommands : OpenIdConnectConfigureCommands<IDataCenterManagerConfigurationStore>
     {
-        public DataCenterManagerConfigureCommands(ILog log, Lazy<IDataCenterManagerConfigurationStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, webPortalConfigurationStore)
+        public DataCenterManagerConfigureCommands(ILog log, Lazy<IDataCenterManagerConfigurationStore> configurationStore, Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore) : base(log, configurationStore, webPortalConfigurationStore)
         {
         }
 

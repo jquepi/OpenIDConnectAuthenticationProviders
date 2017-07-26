@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Time;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
 {
@@ -17,37 +16,29 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
         where TStore : IOpenIDConnectConfigurationStore
         where TKeyParser : IKeyJsonParser
     {
-        readonly IClock clock;
         readonly TKeyParser keyParser;
-        DateTime? certificateCacheExpires;
         readonly object funcLock = new object();
         Task<IDictionary<string, AsymmetricSecurityKey>> certRetrieveTask;
 
         protected readonly TStore ConfigurationStore;
 
-        protected KeyRetriever(
-            IClock clock,
-            TStore configurationStore,
+        protected KeyRetriever(TStore configurationStore,
             TKeyParser keyParser)
         {
-            this.clock = clock;
             ConfigurationStore = configurationStore;
             this.keyParser = keyParser;
         }
 
-        public Task<IDictionary<string, AsymmetricSecurityKey>> GetKeysAsync(IssuerConfiguration issuerConfiguration)
+        public Task<IDictionary<string, AsymmetricSecurityKey>> GetKeysAsync(IssuerConfiguration issuerConfiguration, bool forceReload=false)
         {
             lock (funcLock)
             {
-                if (certRetrieveTask != null && certificateCacheExpires > clock.GetLocalTime())
+                if (certRetrieveTask != null && !forceReload)
                     return certRetrieveTask;
 
-                // assume the cache is indefinite by default, and adjust back based on downloaded certificates.
-                certificateCacheExpires = DateTime.MaxValue;
-
                 certRetrieveTask = DoGetKeyAsync(issuerConfiguration);
-            }
-            return certRetrieveTask;
+                return certRetrieveTask;
+            }           
         }
 
         protected virtual string GetDownloadUri(IssuerConfiguration issuerConfiguration)
@@ -103,12 +94,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
                 File.WriteAllBytes(file, raw);
 
                 var certificate = new X509Certificate2(file);
-
-                if (certificate.NotAfter < certificateCacheExpires)
-                {
-                    // eagerly refresh the cache in the last 5min before the certificate will expire.
-                    certificateCacheExpires = certificate.NotAfter.Subtract(TimeSpan.FromMinutes(5));
-                }
 
                 return certificate;
             }

@@ -7,6 +7,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
 {
     public interface IKeyRetriever
     {
-        Task<IDictionary<string, AsymmetricSecurityKey>> GetKeysAsync(IssuerConfiguration issuer);
+        Task<IDictionary<string, AsymmetricSecurityKey>> GetKeysAsync(IssuerConfiguration issuer, bool forceReload = false);
     }
 }

@@ -9,7 +9,11 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
     public class GoogleAppsConfigureCommands : OpenIdConnectConfigureCommands<IGoogleAppsConfigurationStore>
     {
-        public GoogleAppsConfigureCommands(ILog log, Lazy<IGoogleAppsConfigurationStore> configurationStore, IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, webPortalConfigurationStore)
+        public GoogleAppsConfigureCommands(
+            ILog log,
+            Lazy<IGoogleAppsConfigurationStore> configurationStore,
+            Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
+            : base(log, configurationStore, webPortalConfigurationStore)
         {
         }
 

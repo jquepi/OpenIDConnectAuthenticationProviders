@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net451</TargetFrameworks>
+    <RootNamespace>Octopus.Server.Extensibility.Authentication.Okta</RootNamespace>
+    <AssemblyName>Octopus.Server.Extensibility.Authentication.Okta</AssemblyName>
+    <Description>Octopus Deploy: Extensibility.Authentication.Okta</Description>
+    <PostBuildEvent>xcopy "$(TargetDir)Octopus.Server.Extensibility.Authentication.Okta.*" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D</PostBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net451|AnyCPU'">
+    <OutputPath>bin\Debug\net451\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
+    <PackageReference Include="Octopus.Data" Version="2.0.0-alpha0038" />
+    <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\okta_auth_provider.js" />
+    <EmbeddedResource Include="Web\Static\styles\okta.css" />
+    <EmbeddedResource Include="Web\Static\images\okta\logo_blue_medium.png" />
+    <EmbeddedResource Include="Web\Static\images\okta\aura_solid_blue.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIDConnect.csproj" />
+  </ItemGroup>
+
+</Project>
