@@ -8,11 +8,13 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 {
     public class OktaAuthenticationProvider : OpenIDConnectAuthenticationProvider<IOktaConfigurationStore>
     {
+        public const string ProviderName = "Okta";
+
         public OktaAuthenticationProvider(ILog log, IOktaConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 
-        public override string IdentityProviderName => "Okta";
+        public override string IdentityProviderName => ProviderName;
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {

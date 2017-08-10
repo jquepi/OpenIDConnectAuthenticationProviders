@@ -15,5 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
         public GoogleAppsUserAuthenticatedAction(ILog log, IGoogleAuthTokenHandler authTokenHandler, IPrincipalToUserResourceMapper principalToUserResourceMapper, IUserStore userStore, IGoogleAppsConfigurationStore configurationStore, IApiActionResponseCreator responseCreator, IAuthCookieCreator authCookieCreator, IInvalidLoginTracker loginTracker, ISleep sleep) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep)
         {
         }
+
+        protected override string ProviderName => GoogleAppsAuthenticationProvider.ProviderName;
     }
 }

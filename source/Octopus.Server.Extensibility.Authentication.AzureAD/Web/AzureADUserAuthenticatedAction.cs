@@ -34,5 +34,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
                 sleep)
         {
         }
+
+        protected override string ProviderName => AzureADAuthenticationProvider.ProviderName;
     }
 }

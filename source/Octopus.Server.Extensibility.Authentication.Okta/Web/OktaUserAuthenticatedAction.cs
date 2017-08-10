@@ -34,5 +34,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 sleep)
         {
         }
+
+        protected override string ProviderName => OktaAuthenticationProvider.ProviderName;
     }
 }
