@@ -26,7 +26,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
-        readonly IUserStore userStore;
+        readonly IUpdateableUserStore userStore;
         readonly IAuthCookieCreator authCookieCreator;
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
@@ -38,7 +38,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             ILog log,
             TAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             TStore configurationStore,
             IApiActionResponseCreator responseCreator, 
             IAuthCookieCreator authCookieCreator,
@@ -175,21 +175,46 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
 
-        UserCreateOrUpdateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal, CancellationToken cancellationToken)
+        UserCreateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal, CancellationToken cancellationToken)
         {
             var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
 
-            var userResult = userStore.CreateOrUpdate(
+            var user = userStore.GetByIdentity(new OAuthIdentityToMatch(ProviderName, userResource.EmailAddress, userResource.ExternalId));
+
+            if (user != null)
+            {
+                var identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.ExternalId == userResource.ExternalId);
+                if (identity != null)
+                {
+                    return new UserCreateResult(user);
+                }
+
+                identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.EmailAddress == userResource.EmailAddress);
+                if (identity != null)
+                {
+                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, NewIdentity(userResource)));
+                }
+
+                return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
+            }
+
+            if (!ConfigurationStore.GetAllowAutoUserCreation())
+                return new UserCreateResult("User could not be located and auto user creation is not enabled.");
+
+            var userResult = userStore.Create(
                 userResource.Username, 
                 userResource.DisplayName, 
                 userResource.EmailAddress,
-                null,
-                false,
-                new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId), 
                 cancellationToken,
-                new ProviderUserGroups { ProviderName = ProviderName, GroupIds = groups });
+                new ProviderUserGroups { ProviderName = ProviderName, GroupIds = groups },
+                new[] { new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId) });
 
             return userResult;
+        }
+
+        OAuthIdentity NewIdentity(UserResource userResource)
+        {
+            return new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId);
         }
     }
 }

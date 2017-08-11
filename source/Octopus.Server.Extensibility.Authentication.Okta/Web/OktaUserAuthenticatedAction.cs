@@ -1,5 +1,4 @@
-﻿using Octopus.Data.Storage.User;
-using Octopus.Diagnostics;
+﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
@@ -16,7 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             ILog log,
             IOktaAuthTokenHandler authTokenHandler,
             IOktaPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             IOktaConfigurationStore configurationStore,
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,

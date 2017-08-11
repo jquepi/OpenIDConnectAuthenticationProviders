@@ -1,5 +1,4 @@
-﻿using Octopus.Data.Storage.User;
-using Octopus.Diagnostics;
+﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
@@ -16,7 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             ILog log,
             IAzureADAuthTokenHandler authTokenHandler,
             IAzureADPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             IAzureADConfigurationStore configurationStore,
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
