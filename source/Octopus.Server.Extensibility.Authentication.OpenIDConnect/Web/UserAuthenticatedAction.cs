@@ -179,7 +179,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
 
-            var user = userStore.GetByIdentity(new OAuthIdentityToMatch(ProviderName, userResource.EmailAddress, userResource.ExternalId));
+            var user = userStore.GetByIdentity(new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId));
 
             if (user != null)
             {
