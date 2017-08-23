@@ -119,10 +119,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
             }
 
-            using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
+            using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
             {
                 // Step 4b: Try to get or create a the Octopus User this external identity represents
-                var userResult = GetOrCreateUser(authenticationCandidate, principal, cancellationToken.Token);
+                var userResult = GetOrCreateUser(authenticationCandidate, principal, cts.Token);
                 if (userResult.Succeeded)
                 {
                     loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
