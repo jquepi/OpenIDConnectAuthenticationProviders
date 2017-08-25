@@ -1,5 +1,6 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Identities;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
@@ -9,7 +10,7 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler>
+    public class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
         public AzureADUserAuthenticatedAction(
             ILog log,
@@ -20,7 +21,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep) :
+            ISleep sleep,
+            IAzureADIdentityCreator identityCreator) :
             base(
                 log,
                 authTokenHandler,
@@ -30,7 +32,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
                 responseCreator,
                 authCookieCreator,
                 loginTracker,
-                sleep)
+                sleep,
+                identityCreator)
         {
         }
 

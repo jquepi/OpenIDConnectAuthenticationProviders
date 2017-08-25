@@ -3,13 +3,14 @@ using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
+using Octopus.Server.Extensibility.Authentication.Okta.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    public class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler>
+    public class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
     {
         public OktaUserAuthenticatedAction(
             ILog log,
@@ -20,7 +21,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep) :
+            ISleep sleep,
+            IOktaIdentityCreator identityCreator) :
             base(
                 log,
                 authTokenHandler,
@@ -30,7 +32,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 responseCreator,
                 authCookieCreator,
                 loginTracker,
-                sleep)
+                sleep,
+                identityCreator)
         {
         }
 

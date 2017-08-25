@@ -12,6 +12,7 @@ using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
@@ -19,9 +20,10 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
-    public abstract class UserAuthenticatedAction<TStore, TAuthTokenHandler> : IAsyncApiAction
+    public abstract class UserAuthenticatedAction<TStore, TAuthTokenHandler, TIdentityCreator> : IAsyncApiAction
         where TStore : IOpenIDConnectConfigurationStore
         where TAuthTokenHandler : IAuthTokenHandler
+        where TIdentityCreator : IIdentityCreator
     {
         readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
@@ -30,6 +32,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         readonly IAuthCookieCreator authCookieCreator;
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
+        readonly TIdentityCreator identityCreator;
 
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
@@ -43,7 +46,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             IApiActionResponseCreator responseCreator, 
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep)
+            ISleep sleep,
+            TIdentityCreator identityCreator)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -54,6 +58,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.authCookieCreator = authCookieCreator;
             this.loginTracker = loginTracker;
             this.sleep = sleep;
+            this.identityCreator = identityCreator;
         }
 
         protected abstract string ProviderName { get; }
@@ -179,23 +184,25 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
 
-            var user = userStore.GetByIdentity(new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId));
+            var identityToMatch = NewIdentity(userResource);
+
+            var user = userStore.GetByIdentity(identityToMatch);
 
             if (user != null)
             {
-                var identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.ExternalId == userResource.ExternalId);
+                var identity = user.Identities.FirstOrDefault(x => x.Provider == ProviderName && x.Claims[IdentityCreator.ExternalIdClaimType].Value == userResource.ExternalId);
                 if (identity != null)
                 {
                     return new UserCreateResult(user);
                 }
 
-                identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.EmailAddress == userResource.EmailAddress);
+                identity = user.Identities.FirstOrDefault(x => x.Provider == ProviderName && x.Claims[IdentityCreator.EmailClaimType].Value == userResource.EmailAddress);
                 if (identity != null)
                 {
-                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, NewIdentity(userResource)));
+                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, identityToMatch));
                 }
 
-                return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
+                return new UserCreateResult(userStore.AddIdentity(user.Id, identityToMatch));
             }
 
             if (!ConfigurationStore.GetAllowAutoUserCreation())
@@ -207,14 +214,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 userResource.EmailAddress,
                 cancellationToken,
                 new ProviderUserGroups { ProviderName = ProviderName, GroupIds = groups },
-                new[] { new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId) });
+                new[] { identityToMatch });
 
             return userResult;
         }
 
-        OAuthIdentity NewIdentity(UserResource userResource)
+        Identity NewIdentity(UserResource userResource)
         {
-            return new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId);
+            return identityCreator.Create(userResource.EmailAddress, userResource.ExternalId);
         }
     }
 }
