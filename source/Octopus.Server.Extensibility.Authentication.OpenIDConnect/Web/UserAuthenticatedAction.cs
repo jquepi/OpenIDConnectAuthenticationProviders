@@ -15,6 +15,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Time;
 
@@ -196,7 +197,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     return new UserCreateResult(user);
                 }
 
-                identity = user.Identities.FirstOrDefault(x => x.Provider == ProviderName && x.Claims[IdentityCreator.EmailClaimType].Value == userResource.EmailAddress);
+                identity = user.Identities.FirstOrDefault(x => x.Provider == ProviderName && x.Claims[ClaimDescriptor.EmailClaimType].Value == userResource.EmailAddress);
                 if (identity != null)
                 {
                     return new UserCreateResult(userStore.UpdateIdentity(user.Id, identityToMatch));
@@ -221,7 +222,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
         Identity NewIdentity(UserResource userResource)
         {
-            return identityCreator.Create(userResource.EmailAddress, userResource.ExternalId);
+            return identityCreator.Create(
+                userResource.EmailAddress,
+                userResource.DisplayName,
+                userResource.ExternalId);
         }
     }
 }

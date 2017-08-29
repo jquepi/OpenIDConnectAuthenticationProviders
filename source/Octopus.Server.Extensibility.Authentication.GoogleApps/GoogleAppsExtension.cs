@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
@@ -57,6 +58,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             builder.RegisterType<GoogleAppsAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
                 .As<IAuthenticationProviderWithGroupSupport>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }

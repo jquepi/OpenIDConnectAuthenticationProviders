@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Identities;
 using Octopus.Server.Extensibility.Authentication.Resources;
+using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
 {
-    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport 
+    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport, IUseAuthenticationIdentities
         where TStore : IOpenIDConnectConfigurationStore
     {
         readonly ILog log;
@@ -67,6 +70,19 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
         public string[] GetAuthenticationUrls()
         {
             return new[] { AuthenticateUri, ConfigurationStore.RedirectUri };
+        }
+
+        public IdentityMetadataResource GetMetadata()
+        {
+            return new IdentityMetadataResource
+            {
+                ProviderName = IdentityProviderName,
+                ClaimDescriptors = new[]
+                {
+                    new ClaimDescriptor { Type = ClaimDescriptor.DisplayNameClaimType, Label = "Display name", IsIdentifyingClaim = false},
+                    new ClaimDescriptor { Type = ClaimDescriptor.EmailClaimType, Label = "Email address", IsIdentifyingClaim = true}
+                }
+            };
         }
     }
 }

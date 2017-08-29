@@ -5,6 +5,7 @@ using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.Okta.Web;
 using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Server.Extensibility.Authentication.Okta.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
@@ -59,6 +60,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
             builder.RegisterType<OktaAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
                 .As<IAuthenticationProviderWithGroupSupport>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }

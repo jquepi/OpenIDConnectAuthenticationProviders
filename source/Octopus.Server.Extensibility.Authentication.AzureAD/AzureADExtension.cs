@@ -6,6 +6,7 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
 using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Server.Extensibility.Extensions;
@@ -59,6 +60,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
             builder.RegisterType<AzureADAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
                 .As<IAuthenticationProviderWithGroupSupport>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }
