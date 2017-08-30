@@ -1,27 +1,28 @@
-﻿using Octopus.Data.Storage.User;
-using Octopus.Diagnostics;
+﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
+using Octopus.Server.Extensibility.Authentication.Okta.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    public class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler>
+    public class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
     {
         public OktaUserAuthenticatedAction(
             ILog log,
             IOktaAuthTokenHandler authTokenHandler,
             IOktaPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUserStore userStore,
+            IUpdateableUserStore userStore,
             IOktaConfigurationStore configurationStore,
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep) :
+            ISleep sleep,
+            IOktaIdentityCreator identityCreator) :
             base(
                 log,
                 authTokenHandler,
@@ -31,8 +32,11 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 responseCreator,
                 authCookieCreator,
                 loginTracker,
-                sleep)
+                sleep,
+                identityCreator)
         {
         }
+
+        protected override string ProviderName => OktaAuthenticationProvider.ProviderName;
     }
 }

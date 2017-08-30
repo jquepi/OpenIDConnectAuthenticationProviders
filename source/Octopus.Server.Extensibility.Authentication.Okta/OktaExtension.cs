@@ -5,6 +5,8 @@ using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.Okta.Web;
 using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
+using Octopus.Server.Extensibility.Authentication.Okta.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Server.Extensibility.Extensions;
@@ -23,6 +25,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             builder.RegisterType<OktaPrincipalToUserResourceMapper>().As<IOktaPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<OktaConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
+
+            builder.RegisterType<OktaIdentityCreator>().As<IOktaIdentityCreator>().SingleInstance();
 
             builder.RegisterType<OktaConfigurationStore>()
                 .As<IOktaConfigurationStore>()
@@ -56,6 +60,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
             builder.RegisterType<OktaAuthenticationProvider>()
                 .As<IAuthenticationProvider>()
                 .As<IAuthenticationProviderWithGroupSupport>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }

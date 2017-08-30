@@ -8,11 +8,13 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {
     public class AzureADAuthenticationProvider : OpenIDConnectAuthenticationProvider<IAzureADConfigurationStore>
     {
+        public const string ProviderName = "Azure AD";
+
         public AzureADAuthenticationProvider(ILog log, IAzureADConfigurationStore configurationStore) : base(log, configurationStore)
         {
         }
 
-        public override string IdentityProviderName => "Azure AD";
+        public override string IdentityProviderName => ProviderName;
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {

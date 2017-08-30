@@ -84,6 +84,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetLoginLinkLabel(v);
                 Log.Info($"{ConfigurationSettingsName} LoginLinkLabel set to: {v}");
             });
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}AllowAutoUserCreation=", $"Set {ConfigurationSettingsName} AllowAutoUserCreation.", v =>
+            {
+                var isAllowed = bool.Parse(v);
+                ConfigurationStore.Value.SetAllowAutoUserCreation(isAllowed);
+                Log.Info($"{ConfigurationSettingsName} AllowAutoUserCreation set to: {isAllowed}");
+            });
         }
 
         public void Handle(string webAuthenticationMode)

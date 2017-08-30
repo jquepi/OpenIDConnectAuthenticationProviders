@@ -112,6 +112,17 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.LoginLinkLabel = loginLinkLabel);
         }
 
+        public bool GetAllowAutoUserCreation()
+        {
+            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
+            return doc?.AllowAutoUserCreation.GetValueOrDefault(true) ?? true;
+        }
+
+        public void SetAllowAutoUserCreation(bool allowAutoUserCreation)
+        {
+            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.AllowAutoUserCreation = allowAutoUserCreation);
+        }
+
         public string RedirectUri => $"/api/users/authenticatedToken/{ConfigurationSettingsName}";
 
         public abstract string ConfigurationSetName { get; }
@@ -126,6 +137,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RedirectUri", RedirectUri, GetIsEnabled(), "RedirectUri");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.NameClaimType", GetNameClaimType(), GetIsEnabled() && GetNameClaimType() != OpenIDConnectConfiguration.DefaultNameClaimType, "Name Claim Type");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.LoginLinkLabel", GetLoginLinkLabel(), false);
+            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.AllowAutoUserCreation", GetAllowAutoUserCreation().ToString(), GetIsEnabled(), "Allow auto user creation");
         }
     }
 }
