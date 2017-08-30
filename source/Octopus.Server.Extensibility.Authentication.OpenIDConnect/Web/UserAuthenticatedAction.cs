@@ -191,13 +191,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             if (user != null)
             {
-                var identity = user.Identities.FirstOrDefault(x => x.Provider == ProviderName && x.Claims[IdentityCreator.ExternalIdClaimType].Value == userResource.ExternalId);
+                var identity = user.Identities.FirstOrDefault(x => x.IdentityProviderName == ProviderName && x.Claims[IdentityCreator.ExternalIdClaimType].Value == userResource.ExternalId);
                 if (identity != null)
                 {
                     return new UserCreateResult(user);
                 }
 
-                identity = user.Identities.FirstOrDefault(x => x.Provider == ProviderName && x.Claims[ClaimDescriptor.EmailClaimType].Value == userResource.EmailAddress);
+                identity = user.Identities.FirstOrDefault(x => x.IdentityProviderName == ProviderName && x.Claims[ClaimDescriptor.EmailClaimType].Value == userResource.EmailAddress);
                 if (identity != null)
                 {
                     return new UserCreateResult(userStore.UpdateIdentity(user.Id, identityToMatch));
@@ -214,7 +214,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 userResource.DisplayName, 
                 userResource.EmailAddress,
                 cancellationToken,
-                new ProviderUserGroups { ProviderName = ProviderName, GroupIds = groups },
+                new ProviderUserGroups { IdentityProviderName = ProviderName, GroupIds = groups },
                 new[] { identityToMatch });
 
             return userResult;

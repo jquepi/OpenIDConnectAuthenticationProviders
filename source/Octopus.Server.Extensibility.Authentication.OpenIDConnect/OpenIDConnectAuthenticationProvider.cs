@@ -76,7 +76,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
         {
             return new IdentityMetadataResource
             {
-                ProviderName = IdentityProviderName,
+                IdentityProviderName = IdentityProviderName,
                 ClaimDescriptors = new[]
                 {
                     new ClaimDescriptor { Type = ClaimDescriptor.DisplayNameClaimType, Label = "Display name", IsIdentifyingClaim = false},
