@@ -191,7 +191,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             if (user != null)
             {
-                var identity = user.Identities.FirstOrDefault(x => x.IdentityProviderName == ProviderName && x.Claims[IdentityCreator.ExternalIdClaimType].Value == userResource.ExternalId);
+                var identity = user.Identities.FirstOrDefault(x => MatchesProviderAndExternalId(userResource, x));
                 if (identity != null)
                 {
                     return new UserCreateResult(user);
@@ -218,6 +218,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 new[] { identityToMatch });
 
             return userResult;
+        }
+
+        bool MatchesProviderAndExternalId(UserResource userResource, Identity x)
+        {
+            return x.IdentityProviderName == ProviderName && x.Claims.ContainsKey(IdentityCreator.ExternalIdClaimType) && x.Claims[IdentityCreator.ExternalIdClaimType].Value == userResource.ExternalId;
         }
 
         Identity NewIdentity(UserResource userResource)
