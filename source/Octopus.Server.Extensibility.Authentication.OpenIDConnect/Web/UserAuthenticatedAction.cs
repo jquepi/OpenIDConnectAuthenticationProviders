@@ -200,10 +200,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 identity = user.Identities.FirstOrDefault(x => x.IdentityProviderName == ProviderName && x.Claims[ClaimDescriptor.EmailClaimType].Value == userResource.EmailAddress);
                 if (identity != null)
                 {
-                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, identityToMatch));
+                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, identityToMatch, cancellationToken));
                 }
 
-                return new UserCreateResult(userStore.AddIdentity(user.Id, identityToMatch));
+                return new UserCreateResult(userStore.AddIdentity(user.Id, identityToMatch, cancellationToken));
             }
 
             if (!ConfigurationStore.GetAllowAutoUserCreation())
