@@ -1,5 +1,6 @@
 ﻿using System;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration;
+using Octopus.Server.Extensibility.Authentication.DataCenterManager.Identities;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Tokens;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Web;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
@@ -7,7 +8,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.DataCenterManager
 {
-    public class DataCenterManagerApi : OpenIDConnectModule<DataCenterManagerUserAuthenticationAction, IDataCenterManagerConfigurationStore, DataCenterManagerUserAuthenticatedAction, IDataCenterManagerAuthTokenHandler>
+    public class DataCenterManagerApi : OpenIDConnectModule<DataCenterManagerUserAuthenticationAction, IDataCenterManagerConfigurationStore, DataCenterManagerUserAuthenticatedAction, IDataCenterManagerAuthTokenHandler, IDataCenterManagerIdentityCreator>
     {
         public DataCenterManagerApi(
             IDataCenterManagerConfigurationStore configurationStore, 

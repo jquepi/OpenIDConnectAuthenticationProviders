@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Identities;
 using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.DataCenterManager.Extensibility.Authentication.HostServices;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration;
@@ -14,7 +15,7 @@ using Octopus.Time;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADAuthenticatedController : AuthenticatedController<IAzureADConfigurationStore, IAzureADAuthTokenHandler>
+    public class AzureADAuthenticatedController : AuthenticatedController<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
         public AzureADAuthenticatedController(ILog log,
             IAzureADAuthTokenHandler authTokenHandler,
@@ -28,7 +29,8 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             IAuthCookieCreator authCookieCreator,
             IJwtCreator jwtCreator,
             INonceChainer nonceChainer,
-            IStateChainer stateChainer) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, authCookieCreator, jwtCreator, nonceChainer, stateChainer)
+            IStateChainer stateChainer,
+            IAzureADIdentityCreator identityCreator) : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, loginTracker, urlEncoder, sleep, clock, authCookieCreator, jwtCreator, nonceChainer, stateChainer, identityCreator)
         {
         }
 

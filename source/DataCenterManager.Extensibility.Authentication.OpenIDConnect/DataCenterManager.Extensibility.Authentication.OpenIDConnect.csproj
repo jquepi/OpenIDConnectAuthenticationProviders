@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
-    <PackageReference Include="Octopus.DataCenterManager.Extensibility.Authentication" Version="5.0.0-enh-odcm0046" />
+    <PackageReference Include="Octopus.DataCenterManager.Extensibility.Authentication" Version="4.1.1-enh-odcm0053" />
   </ItemGroup>
   
   <ItemGroup>

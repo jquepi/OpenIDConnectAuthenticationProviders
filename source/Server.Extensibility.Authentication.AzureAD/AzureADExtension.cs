@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
@@ -7,6 +8,7 @@ using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
+using Octopus.Server.Extensibility.Authentication.AzureAD.Identities;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
@@ -24,6 +26,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 
             builder.RegisterType<AzureADPrincipalToUserResourceMapper>().As<IAzureADPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<AzureADConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
+
+            builder.RegisterType<AzureADIdentityCreator>().As<IAzureADIdentityCreator>().SingleInstance();
 
             builder.RegisterType<AzureADConfigurationStore>()
                 .As<IAzureADConfigurationStore>()
@@ -55,6 +59,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 .As<IAuthenticationProviderWithGroupSupport>()
                 .As<IContributesCSS>()
                 .As<IContributesJavascript>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }

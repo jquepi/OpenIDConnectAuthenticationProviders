@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
@@ -11,6 +12,7 @@ using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.Okta.Web;
+using Octopus.Server.Extensibility.Authentication.Okta.Identities;
 using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta
@@ -24,6 +26,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             builder.RegisterType<OktaPrincipalToUserResourceMapper>().As<IOktaPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<OktaConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
+
+            builder.RegisterType<OktaIdentityCreator>().As<IOktaIdentityCreator>().SingleInstance();
 
             builder.RegisterType<OktaConfigurationStore>()
                 .As<IOktaConfigurationStore>()
@@ -55,6 +59,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
                 .As<IAuthenticationProviderWithGroupSupport>()
                 .As<IContributesCSS>()
                 .As<IContributesJavascript>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }

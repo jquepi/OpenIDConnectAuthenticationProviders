@@ -7,6 +7,7 @@ using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration;
+using Octopus.Server.Extensibility.Authentication.DataCenterManager.Identities;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Issuer;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Tokens;
@@ -24,6 +25,8 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager
 
             builder.RegisterType<DataCenterManagerPrincipalToUserResourceMapper>().As<IDataCenterManagerPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<DataCenterManagerConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
+
+            builder.RegisterType<DataCenterManagerIdentityCreator>().As<IDataCenterManagerIdentityCreator>().SingleInstance();
 
             builder.RegisterType<DataCenterManagerConfigurationStore>()
                 .As<IDataCenterManagerConfigurationStore>()

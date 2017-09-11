@@ -2,14 +2,16 @@
 using System.Linq;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.Resources;
+using Octopus.Node.Extensibility.Authentication.Resources.Identities;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
 {
-    public abstract class OpenIDConnectAuthenticationProvider<TStore> : 
-        IAuthenticationProviderWithGroupSupport,
+    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport, 
+        IUseAuthenticationIdentities,
         IContributesCSS,
         IContributesJavascript
         where TStore : IOpenIDConnectConfigurationStore
@@ -85,6 +87,19 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
             return !ConfigurationStore.GetIsEnabled()
                 ? Enumerable.Empty<string>()
                 : new[] { $"~/areas/users/{FilenamePrefix}_auth_provider.js" };
+		}
+				
+        public IdentityMetadataResource GetMetadata()
+        {
+            return new IdentityMetadataResource
+            {
+                IdentityProviderName = IdentityProviderName,
+                ClaimDescriptors = new[]
+                {
+                    new ClaimDescriptor { Type = ClaimDescriptor.EmailClaimType, Label = "Email address", IsIdentifyingClaim = true, Description = "Email identifier."},
+                    new ClaimDescriptor { Type = ClaimDescriptor.DisplayNameClaimType, Label = "Display name", IsIdentifyingClaim = false, Description = "User's display name."}
+                }
+            };
         }
     }
 }

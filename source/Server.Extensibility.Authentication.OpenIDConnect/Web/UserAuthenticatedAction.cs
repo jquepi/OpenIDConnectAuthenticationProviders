@@ -2,15 +2,19 @@
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
 using Nancy.Helpers;
 using Octopus.Data.Model.User;
+using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.Resources.Identities;
 using Octopus.Node.Extensibility.Authentication.Storage.User;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
@@ -19,9 +23,10 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
-    public abstract class UserAuthenticatedAction<TStore, TAuthTokenHandler> : IAsyncApiAction
+    public abstract class UserAuthenticatedAction<TStore, TAuthTokenHandler, TIdentityCreator> : IAsyncApiAction
         where TStore : IOpenIDConnectConfigurationStore
         where TAuthTokenHandler : IAuthTokenHandler
+        where TIdentityCreator : IIdentityCreator
     {
         readonly ILog log;
         readonly TAuthTokenHandler authTokenHandler;
@@ -30,7 +35,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         readonly IAuthCookieCreator authCookieCreator;
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
-        readonly IClock clock;
+        readonly TIdentityCreator identityCreator;
 
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
@@ -45,7 +50,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
-            IClock clock)
+            TIdentityCreator identityCreator)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -56,8 +61,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.authCookieCreator = authCookieCreator;
             this.loginTracker = loginTracker;
             this.sleep = sleep;
-            this.clock = clock;
+            this.identityCreator = identityCreator;
         }
+
+        protected abstract string ProviderName { get; }
 
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
@@ -120,45 +127,47 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return BadRequest("You have had too many failed login attempts in a short period of time. Please try again later.");
             }
 
-            // Step 4b: Try to get or create a the Octopus User this external identity represents
-            var userResult = GetOrCreateUser(authenticationCandidate);
-            if (userResult.Succeeded)
+            using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
             {
-                if (!userResult.User.IsActive)
+                // Step 4b: Try to get or create a the Octopus User this external identity represents
+                var userResult = GetOrCreateUser(authenticationCandidate, principal, cts.Token);
+                if (userResult.Succeeded)
                 {
-                    return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
+                    loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
+
+                    var authCookies = authCookieCreator.CreateAuthCookies(context.Request,
+                        userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
+
+                    if (!userResult.User.IsActive)
+                    {
+                        return BadRequest(
+                            $"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
+                    }
+
+                    if (userResult.User.IsService)
+                    {
+                        return BadRequest(
+                            $"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
+                    }
+
+                    return RedirectResponse(response, stateFromRequest)
+                        .WithCookies(authCookies)
+                        .WithHeader("Expires",
+                            DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
                 }
 
-                if (userResult.User.IsService)
+
+                // Step 5: Handle other types of failures
+                loginTracker.RecordFailure(authenticationCandidate.Username, context.Request.UserHostAddress);
+
+                // Step 5a: Slow this potential attacker down a bit since they seem to keep failing
+                if (action == InvalidLoginAction.Slow)
                 {
-                    return BadRequest($"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
+                    sleep.For(1000);
                 }
 
-                var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
-                if (groups.Any())
-                {
-                    userStore.SetSecurityGroupIds(ProviderName, userResult.User.Id, groups, clock.GetUtcTime());
-                }
-
-                loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
-
-                INancyCookie[] authCookies = authCookieCreator.CreateAuthCookies(context.Request, userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
-
-                return RedirectResponse(response, stateFromRequest)
-                    .WithCookies(authCookies)
-                    .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
+                return BadRequest($"User login failed: {userResult.FailureReason}");
             }
-
-            // Step 5: Handle other types of failures
-            loginTracker.RecordFailure(authenticationCandidate.Username, context.Request.UserHostAddress);
-
-            // Step 5a: Slow this potential attacker down a bit since they seem to keep failing
-            if (action == InvalidLoginAction.Slow)
-            {
-                sleep.For(1000);
-            }
-
-            return BadRequest($"User login failed: {userResult.FailureReason}");
         }
 
         Response BadRequest(string message)
@@ -170,32 +179,33 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         Response RedirectResponse(IResponseFormatter response, string uri)
         {
             return response.AsRedirect(uri)
-                .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
-                .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
+                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
+                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
-        
-        protected abstract string ProviderName { get; }
 
-        UserCreateResult GetOrCreateUser(UserResource userResource)
+        UserCreateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal, CancellationToken cancellationToken)
         {
-            var user = userStore.GetByIdentity(new OAuthIdentity(ProviderName, userResource.EmailAddress,
-                userResource.ExternalId));
+            var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
+
+            var identityToMatch = NewIdentity(userResource);
+
+            var user = userStore.GetByIdentity(identityToMatch);
 
             if (user != null)
             {
-                var identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.ExternalId == userResource.ExternalId);
+                var identity = user.Identities.FirstOrDefault(x => MatchesProviderAndExternalId(userResource, x));
                 if (identity != null)
                 {
                     return new UserCreateResult(user);
                 }
 
-                identity = user.Identities.OfType<OAuthIdentity>().FirstOrDefault(x => x.Provider == ProviderName && x.EmailAddress == userResource.EmailAddress);
+                identity = user.Identities.FirstOrDefault(x => x.IdentityProviderName == ProviderName && x.Claims[ClaimDescriptor.EmailClaimType].Value == userResource.EmailAddress);
                 if (identity != null)
                 {
-                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, NewIdentity(userResource)));
+                    return new UserCreateResult(userStore.UpdateIdentity(user.Id, identityToMatch, cancellationToken));
                 }
 
-                return new UserCreateResult(userStore.AddIdentity(user.Id, NewIdentity(userResource)));
+                return new UserCreateResult(userStore.AddIdentity(user.Id, identityToMatch, cancellationToken));
             }
 
             if (!ConfigurationStore.GetAllowAutoUserCreation())
@@ -205,14 +215,24 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 userResource.Username, 
                 userResource.DisplayName, 
                 userResource.EmailAddress,
-                new [] { NewIdentity(userResource) });
+                cancellationToken,
+                new ProviderUserGroups { IdentityProviderName = ProviderName, GroupIds = groups },
+                new[] { identityToMatch });
 
             return userResult;
         }
 
-        OAuthIdentity NewIdentity(UserResource userResource)
+        bool MatchesProviderAndExternalId(UserResource userResource, Identity x)
         {
-            return new OAuthIdentity(ProviderName, userResource.EmailAddress, userResource.ExternalId);
+            return x.IdentityProviderName == ProviderName && x.Claims.ContainsKey(IdentityCreator.ExternalIdClaimType) && x.Claims[IdentityCreator.ExternalIdClaimType].Value == userResource.ExternalId;
+        }
+
+        Identity NewIdentity(UserResource userResource)
+        {
+            return identityCreator.Create(
+                userResource.EmailAddress,
+                userResource.DisplayName,
+                userResource.ExternalId);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Octopus.Node.Extensibility.Authentication.Extensions;
+using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
@@ -7,6 +8,7 @@ using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+using Octopus.Server.Extensibility.Authentication.GoogleApps.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Web;
@@ -22,6 +24,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
             base.Load(builder);
 
             builder.RegisterType<GoogleAppsConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
+
+            builder.RegisterType<GoogleAppsIdentityCreator>().As<IGoogleAppsIdentityCreator>().SingleInstance();
 
             builder.RegisterType<GoogleAppsConfigurationStore>()
                 .As<IGoogleAppsConfigurationStore>()
@@ -53,6 +57,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 .As<IAuthenticationProviderWithGroupSupport>()
                 .As<IContributesCSS>()
                 .As<IContributesJavascript>()
+                .As<IUseAuthenticationIdentities>()
                 .AsSelf()
                 .InstancePerDependency();
         }

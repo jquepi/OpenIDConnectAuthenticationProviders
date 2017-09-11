@@ -1,6 +1,7 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration;
+using Octopus.Server.Extensibility.Authentication.DataCenterManager.Identities;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
@@ -10,7 +11,7 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Web
 {
-    public class DataCenterManagerUserAuthenticatedAction : UserAuthenticatedAction<IDataCenterManagerConfigurationStore, IDataCenterManagerAuthTokenHandler>
+    public class DataCenterManagerUserAuthenticatedAction : UserAuthenticatedAction<IDataCenterManagerConfigurationStore, IDataCenterManagerAuthTokenHandler, IDataCenterManagerIdentityCreator>
     {
         public DataCenterManagerUserAuthenticatedAction(
             ILog log,
@@ -21,8 +22,8 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Web
             IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep, 
-            IClock clock) :
+            ISleep sleep,
+            IDataCenterManagerIdentityCreator identityCreator) :
             base(
                 log,
                 authTokenHandler,
@@ -33,7 +34,7 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Web
                 authCookieCreator,
                 loginTracker,
                 sleep,
-                clock)
+                identityCreator)
         {
         }
 

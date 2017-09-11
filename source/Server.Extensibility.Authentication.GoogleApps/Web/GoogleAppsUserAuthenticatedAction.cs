@@ -2,6 +2,7 @@
 using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+using Octopus.Server.Extensibility.Authentication.GoogleApps.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
@@ -11,7 +12,7 @@ using Octopus.Time;
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
     public class GoogleAppsUserAuthenticatedAction 
-        : UserAuthenticatedAction<IGoogleAppsConfigurationStore, IGoogleAuthTokenHandler>
+        : UserAuthenticatedAction<IGoogleAppsConfigurationStore, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
     {
         public GoogleAppsUserAuthenticatedAction(
             ILog log,
@@ -23,8 +24,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
-            IClock clock) 
-            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep, clock)
+            IGoogleAppsIdentityCreator identityCreator) 
+            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep, identityCreator)
         {
         }
 
