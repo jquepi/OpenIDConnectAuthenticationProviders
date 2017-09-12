@@ -96,6 +96,8 @@ Task("__Pack")
         CreateDirectory(odNugetPackDir);
         CopyFileToDirectory(Path.Combine(assetDir, nuspecFile), odNugetPackDir);
 
+        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "/Microsoft.IdentityModel.Logging.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "/Microsoft.IdentityModel.Tokens.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "/System.IdentityModel.Tokens.Jwt.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "Octopus.Node.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin451 + "Octopus.Server.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
