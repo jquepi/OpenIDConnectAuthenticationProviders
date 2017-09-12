@@ -20,6 +20,7 @@ var publishDir = "./publish";
 var localPackagesDir = "../LocalPackages";
 var artifactsDir = "./artifacts";
 var assetDir = "./BuildAssets";
+var solutionToBuild = "./source/OpenIDConnectAuthenticationProvider.sln";
 
 var bin451 = "/bin/Release/net451/";
 var binNetStd = "/bin/Release/netstandard1.3/";
@@ -68,10 +69,14 @@ Task("__Clean")
 });
 
 Task("__Restore")
-    .Does(() => DotNetCoreRestore("source", new DotNetCoreRestoreSettings
-    {
-        ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
-    })
+    .Does(() => {
+		NuGetRestore(solutionToBuild);
+		
+		DotNetCoreRestore("source", new DotNetCoreRestoreSettings
+		{
+			ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+		});
+	}
 );
 
 Task("__Build")
