@@ -4,8 +4,8 @@ using Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configurati
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Authenticate;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web;
 using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
-using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
 {
@@ -15,7 +15,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web
             ILog log,
             IAzureADConfigurationStore configurationStore,
             IAuthenticationRedirectUrlBuilder redirectUrlBuilder,
-            IWebPortalConfigurationStore webPortalConfigurationStore) : base(log, configurationStore, redirectUrlBuilder, webPortalConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, redirectUrlBuilder, authenticationConfigurationStore)
         {
         }
 

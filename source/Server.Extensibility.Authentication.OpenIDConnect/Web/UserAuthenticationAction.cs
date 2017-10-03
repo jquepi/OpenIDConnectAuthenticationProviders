@@ -9,7 +9,6 @@ using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
-using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
@@ -23,7 +22,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
         readonly IApiActionModelBinder modelBinder;
-        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
+        readonly IAuthenticationConfigurationStore authenticationConfigurationStore;
 
         protected UserAuthenticationAction(
             ILog log,
@@ -32,12 +31,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             IAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionResponseCreator responseCreator,
             IApiActionModelBinder modelBinder,
-            IWebPortalConfigurationStore webPortalConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore)
         {
             this.log = log;
             ResponseCreator = responseCreator;
             this.modelBinder = modelBinder;
-            this.webPortalConfigurationStore = webPortalConfigurationStore;
+            this.authenticationConfigurationStore = authenticationConfigurationStore;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.urlBuilder = urlBuilder;
@@ -57,7 +56,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             if (string.IsNullOrWhiteSpace(state))
                 state = "/";
 
-            var whitelist = webPortalConfigurationStore.GetTrustedRedirectUrls();
+            var whitelist = authenticationConfigurationStore.GetTrustedRedirectUrls();
 
             if (!Requests.IsLocalUrl(state, whitelist))
             {

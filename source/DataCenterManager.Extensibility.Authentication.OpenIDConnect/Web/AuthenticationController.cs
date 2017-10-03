@@ -6,7 +6,6 @@ using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
-using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Web
 {
@@ -16,17 +15,17 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
         readonly ILog log;
         readonly TStore configurationStore;
         readonly IAuthenticationRedirectUrlBuilder redirectUrlBuilder;
-        readonly IWebPortalConfigurationStore webPortalConfigurationStore;
+        readonly IAuthenticationConfigurationStore authenticationConfigurationStore;
 
         protected AuthenticationController(ILog log,
             TStore configurationStore,
             IAuthenticationRedirectUrlBuilder redirectUrlBuilder,
-            IWebPortalConfigurationStore webPortalConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore)
         {
             this.log = log;
             this.configurationStore = configurationStore;
             this.redirectUrlBuilder = redirectUrlBuilder;
-            this.webPortalConfigurationStore = webPortalConfigurationStore;
+            this.authenticationConfigurationStore = authenticationConfigurationStore;
         }
 
         protected async Task<IActionResult> ProcessAuthenticate(LoginRedirectLinkRequestModel model)
@@ -41,7 +40,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.W
             if (string.IsNullOrWhiteSpace(state))
                 state = "/";
 
-            var whitelist = webPortalConfigurationStore.GetTrustedRedirectUrls();
+            var whitelist = authenticationConfigurationStore.GetTrustedRedirectUrls();
 
             if (!Requests.IsLocalUrl(state, whitelist))
             {

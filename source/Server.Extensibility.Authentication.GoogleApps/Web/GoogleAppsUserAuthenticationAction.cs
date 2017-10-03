@@ -1,6 +1,6 @@
 ﻿using Octopus.Diagnostics;
+using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
@@ -17,8 +17,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             IGoogleAppsAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionResponseCreator responseCreator,
             IApiActionModelBinder modelBinder,
-            IWebPortalConfigurationStore webPortalConfigurationStore) 
-                : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, modelBinder, webPortalConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore) 
+                : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, modelBinder, authenticationConfigurationStore)
         {
         }
     }
