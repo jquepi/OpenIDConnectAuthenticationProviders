@@ -8,7 +8,7 @@ using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand, IHandleLegacyWebAuthenticationModeConfigurationCommand
+    public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand
         where TStore : IOpenIDConnectConfigurationStore
     {
         protected readonly ILog Log;
@@ -37,13 +37,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
                 var listenPrefixes = webPortalConfigurationStore.Value.GetListenPrefixes();
 
-                if (isEnabled && webPortalConfigurationStore.Value.GetForceSSL() == false && listenPrefixes.ToLower().Contains("http://"))
+                if (isEnabled && webPortalConfigurationStore.Value.GetForceSSL() == false && listenPrefixes.Any(s => s.ToLower().Contains("http://")))
                     Log.Warn($"{ConfigurationSettingsName} user authentication API was called from an instance including listening prefixes that are not using https.");
 
-                if (isEnabled && !string.IsNullOrWhiteSpace(listenPrefixes))
+                if (isEnabled && listenPrefixes.Any())
                 {
                     Log.Info("Add the following to the Authorized redirect URIs for your app");
-                    var prefixes = listenPrefixes.Split(',', ';').Where(u => !string.IsNullOrWhiteSpace(u));
+                    var prefixes = listenPrefixes.Where(u => !string.IsNullOrWhiteSpace(u));
                     foreach (var prefix in prefixes)
                     {
                         Log.Info(prefix.TrimEnd('/') + "/api/users/authenticatedToken/" + ConfigurationStore.Value.ConfigurationSettingsName);
@@ -91,12 +91,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetAllowAutoUserCreation(isAllowed);
                 Log.Info($"{ConfigurationSettingsName} AllowAutoUserCreation set to: {isAllowed}");
             });
-        }
-
-        public void Handle(string webAuthenticationMode)
-        {
-            ConfigurationStore.Value.SetIsEnabled(false);
-            Log.Info($"Octopus {ConfigurationSettingsName} authentication IsEnabled set to false, based on webAuthenticationMode={webAuthenticationMode}");
         }
     }
 }

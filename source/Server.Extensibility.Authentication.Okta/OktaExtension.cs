@@ -35,7 +35,6 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
                 .InstancePerDependency();
             builder.RegisterType<OktaConfigureCommands>()
                 .As<IContributeToConfigureCommand>()
-                .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
                 .InstancePerDependency();
 
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();

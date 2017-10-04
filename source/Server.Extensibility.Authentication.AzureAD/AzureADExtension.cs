@@ -35,7 +35,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 .InstancePerDependency();
             builder.RegisterType<AzureADConfigureCommands>()
                 .As<IContributeToConfigureCommand>()
-                .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
                 .InstancePerDependency();
 
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();

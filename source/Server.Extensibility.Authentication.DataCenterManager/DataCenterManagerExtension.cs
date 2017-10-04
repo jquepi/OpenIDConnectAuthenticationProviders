@@ -34,7 +34,6 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager
                 .InstancePerDependency();
             builder.RegisterType<DataCenterManagerConfigureCommands>()
                 .As<IContributeToConfigureCommand>()
-                .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
                 .InstancePerDependency();
 
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();

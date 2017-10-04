@@ -33,7 +33,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
                 .InstancePerDependency();
             builder.RegisterType<GoogleAppsConfigureCommands>()
                 .As<IContributeToConfigureCommand>()
-                .As<IHandleLegacyWebAuthenticationModeConfigurationCommand>()
                 .InstancePerDependency();
 
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();
