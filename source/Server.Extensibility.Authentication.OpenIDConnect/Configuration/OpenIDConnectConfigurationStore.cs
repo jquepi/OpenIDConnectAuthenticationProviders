@@ -126,7 +126,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         public string RedirectUri => $"/api/users/authenticatedToken/{ConfigurationSettingsName}";
 
+        public string Id => ConfigurationSettingsName;
+
         public abstract string ConfigurationSetName { get; }
+
+        public virtual string Description => string.Empty;
+
+        public Type MetadataResourceType => typeof(TConfiguration);
+
         public virtual IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.IsEnabled", GetIsEnabled().ToString(), GetIsEnabled(), "Is Enabled");

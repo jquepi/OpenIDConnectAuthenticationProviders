@@ -74,15 +74,23 @@
     </Reference>
     <Reference Include="Octopus.Server.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0034\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
+      <HintPath>..\packages\Octopus.Node.Extensibility.3.0.0-enh-odcm0036\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Octopus.Server.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0036\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.3\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />

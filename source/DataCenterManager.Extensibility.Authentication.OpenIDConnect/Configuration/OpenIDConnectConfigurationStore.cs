@@ -131,7 +131,14 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
 
         public string RedirectUri => $"{OpenIdConnectConfigurationStore.AuthenticatedTokenBaseUri}/{ConfigurationSettingsName}";
 
+        public string Id => ConfigurationSettingsName;
+
         public abstract string ConfigurationSetName { get; }
+
+        public virtual string Description => string.Empty;
+
+        public Type MetadataResourceType => typeof(TConfiguration);
+
         public virtual IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.IsEnabled", GetIsEnabled().ToString(), GetIsEnabled(), "Is Enabled");

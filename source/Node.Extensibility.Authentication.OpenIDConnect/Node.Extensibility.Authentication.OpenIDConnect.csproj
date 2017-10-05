@@ -14,6 +14,8 @@
     <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
     <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0034" />
     <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="4.1.1-enh-odcm0055" />
+    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0036" />
+    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="4.1.1-enh-odcm0053" />
     <PackageReference Include="Octopus.Time" Version="1.0.9" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
