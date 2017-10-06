@@ -126,11 +126,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         public string RedirectUri => $"/api/users/authenticatedToken/{ConfigurationSettingsName}";
 
-        public string Id => ConfigurationSettingsName;
+        public string Id => SingletonId;
 
         public abstract string ConfigurationSetName { get; }
 
-        public virtual string Description => string.Empty;
+        public abstract string Description { get; }
 
         public Type MetadataResourceType => typeof(TConfiguration);
 

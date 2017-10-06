@@ -26,7 +26,9 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
         }
 
         public override string ConfigurationSetName => "Data Center Manager";
-        
+
+        public override string Description => "Data Center Manager authentication settings";
+
         public override IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             foreach (var configurationValue in base.GetConfigurationValues())

@@ -26,6 +26,9 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
         }
 
         public override string ConfigurationSetName => "Okta";
+
+        public override string Description => "Okta authentication settings";
+
         public override IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             foreach (var configurationValue in base.GetConfigurationValues())

@@ -26,6 +26,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
         }
 
         public override string ConfigurationSetName => "Azure AD";
+
+        public override string Description => "Azure active directory authentication settings";
+
         public override IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             foreach (var configurationValue in base.GetConfigurationValues())

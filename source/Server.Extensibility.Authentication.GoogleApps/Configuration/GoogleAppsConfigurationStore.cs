@@ -26,6 +26,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
         }
 
         public override string ConfigurationSetName => "GoogleApps";
+
+        public override string Description => "GoogleApps authentication settings";
+
         public override IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             foreach (var configurationValue in base.GetConfigurationValues())
