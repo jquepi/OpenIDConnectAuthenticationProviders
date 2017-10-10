@@ -4,6 +4,7 @@ using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
+using Octopus.Node.Extensibility.Extensions.Infrastructure;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 using Octopus.Node.Extensibility.HostServices.Web;
@@ -23,6 +24,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
         {
             base.Load(builder);
 
+            builder.RegisterType<GoogleAppsDatabaseInitializer>().As<IExecuteWhenDatabaseInitializes>().InstancePerDependency();
             builder.RegisterType<GoogleAppsConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
 
             builder.RegisterType<GoogleAppsIdentityCreator>().As<IGoogleAppsIdentityCreator>().SingleInstance();

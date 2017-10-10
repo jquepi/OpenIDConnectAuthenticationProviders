@@ -3,6 +3,7 @@ using Octopus.Node.Extensibility.Authentication.Extensions;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
+using Octopus.Node.Extensibility.Extensions.Infrastructure;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 using Octopus.Node.Extensibility.HostServices.Web;
@@ -23,6 +24,7 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager
         {
             base.Load(builder);
 
+            builder.RegisterType<DataCenterManagerDatabaseInitializer>().As<IExecuteWhenDatabaseInitializes>().InstancePerDependency();
             builder.RegisterType<DataCenterManagerPrincipalToUserResourceMapper>().As<IDataCenterManagerPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<DataCenterManagerConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
 

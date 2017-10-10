@@ -4,6 +4,7 @@ using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
+using Octopus.Node.Extensibility.Extensions.Infrastructure;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 using Octopus.Node.Extensibility.HostServices.Web;
@@ -24,6 +25,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
         {
             base.Load(builder);
 
+            builder.RegisterType<OktaDatabaseInitializer>().As<IExecuteWhenDatabaseInitializes>().InstancePerDependency();
             builder.RegisterType<OktaPrincipalToUserResourceMapper>().As<IOktaPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<OktaConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
 
