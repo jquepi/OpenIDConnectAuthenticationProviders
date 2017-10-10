@@ -15,7 +15,6 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
     public abstract class OpenIdConnectConfigurationStore<TConfiguration> : ExtensionConfigurationStore<TConfiguration, TConfiguration>, IOpenIDConnectConfigurationStore, IHasConfigurationSettings
         where TConfiguration : OpenIDConnectConfiguration, IId, new()
     {
-        protected abstract string SingletonId { get; }
         public abstract string ConfigurationSettingsName { get; }
 
         protected readonly IConfigurationStore ConfigurationStore;

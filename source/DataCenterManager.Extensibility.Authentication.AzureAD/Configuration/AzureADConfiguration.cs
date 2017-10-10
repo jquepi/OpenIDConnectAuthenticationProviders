@@ -8,7 +8,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configu
 
         public AzureADConfiguration() : base("AzureAD", "Octopus Deploy")
         {
-            Id = AzureADConfigurationStore.Id;
+            Id = AzureADConfigurationStore.SingletonId;
             LoginLinkLabel = "Sign in with your Azure AD account";
             RoleClaimType = DefaultRoleClaimType;
         }

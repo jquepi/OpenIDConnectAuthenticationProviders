@@ -12,6 +12,6 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Web.api
         {
         }
 
-        protected override string ConfigurationId => AzureADConfigurationStore.Id;
+        protected override string ConfigurationId => AzureADConfigurationStore.SingletonId;
     }
 }
