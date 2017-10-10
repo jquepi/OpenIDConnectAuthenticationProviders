@@ -23,8 +23,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
             NameClaimType = DefaultNameClaimType;
         }
 
-        public bool IsEnabled { get; set; }
-
         public string Issuer { get; set; }
 
         public string ResponseType { get; set; }
