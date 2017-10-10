@@ -6,6 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
     {
         public GoogleAppsConfiguration() : base("GoogleApps", "Octopus Deploy")
         {
+            Id = GoogleAppsConfigurationStore.SingletonId;
             Issuer = "https://accounts.google.com";
             LoginLinkLabel = "Sign in with your Google Apps account";
         }

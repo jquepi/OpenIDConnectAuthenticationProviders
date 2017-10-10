@@ -7,7 +7,10 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
     public class AzureADConfigurationStore : OpenIdConnectConfigurationStore<AzureADConfiguration>, IAzureADConfigurationStore
     {
-        protected override string SingletonId => "authentication-aad";
+        public const string SingletonId = "authentication-aad";
+
+        public override string Id => SingletonId;
+
         public override string ConfigurationSettingsName => "AzureAD";
 
         public AzureADConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
@@ -16,13 +19,12 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 
         public string GetRoleClaimType()
         {
-            var doc = ConfigurationStore.Get<AzureADConfiguration>(SingletonId);
-            return doc?.RoleClaimType;
+            return GetProperty(doc => doc.RoleClaimType);
         }
 
         public void SetRoleClaimType(string roleClaimType)
         {
-            ConfigurationStore.CreateOrUpdate<AzureADConfiguration>(SingletonId, doc => doc.RoleClaimType = roleClaimType);
+            SetProperty(doc => doc.RoleClaimType = roleClaimType);
         }
 
         public override string ConfigurationSetName => "Azure AD";

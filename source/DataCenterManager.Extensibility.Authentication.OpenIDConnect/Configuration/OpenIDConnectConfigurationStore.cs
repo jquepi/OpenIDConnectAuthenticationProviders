@@ -25,6 +25,17 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
             ConfigurationStore = configurationStore;
         }
 
+        public object GetConfiguration()
+        {
+            return ConfigurationStore.Get<TConfiguration>(Id);
+        }
+
+        public void SetConfiguration(object config)
+        {
+            var configuration = config as TConfiguration;
+            ConfigurationStore.Update(configuration);
+        }
+
         public bool GetIsEnabled()
         {
             var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);

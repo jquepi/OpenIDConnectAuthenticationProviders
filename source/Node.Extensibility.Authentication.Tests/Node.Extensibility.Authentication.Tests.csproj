@@ -70,14 +70,10 @@
       <HintPath>..\packages\Octopus.Diagnostics.1.0.12\lib\netstandard1.0\Octopus.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="Octopus.Node.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Node.Extensibility.3.0.0-enh-odcm0034\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
+      <HintPath>..\packages\Octopus.Node.Extensibility.3.0.0-enh-odcm0046\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
     </Reference>
     <Reference Include="Octopus.Server.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0034\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
-      <HintPath>..\packages\Octopus.Node.Extensibility.3.0.0-enh-odcm0036\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
-    </Reference>
-    <Reference Include="Octopus.Server.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0036\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
+      <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0046\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

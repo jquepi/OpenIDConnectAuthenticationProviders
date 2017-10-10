@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="Octopus.DataCenterManager.Extensibility" Version="3.0.0-enh-odcm0034" />
-    <PackageReference Include="Octopus.DataCenterManager.Extensibility" Version="3.0.0-enh-odcm0036" />
+    <PackageReference Include="Octopus.DataCenterManager.Extensibility" Version="3.0.0-enh-odcm0046" />
   </ItemGroup>
 
   <ItemGroup>

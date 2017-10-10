@@ -7,7 +7,10 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
 {
     public class DataCenterManagerConfigurationStore : OpenIdConnectConfigurationStore<DataCenterManagerConfiguration>, IDataCenterManagerConfigurationStore
     {
-        protected override string SingletonId => "authentication-dcm";
+        public const string SingletonId = "authentication-dcm";
+
+        public override string Id => SingletonId;
+
         public override string ConfigurationSettingsName => "DataCenterManager";
 
         public DataCenterManagerConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
@@ -16,13 +19,12 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
 
         public string GetRoleClaimType()
         {
-            var doc = ConfigurationStore.Get<DataCenterManagerConfiguration>(SingletonId);
-            return doc?.RoleClaimType;
+            return GetProperty(doc => doc.RoleClaimType);
         }
 
         public void SetRoleClaimType(string roleClaimType)
         {
-            ConfigurationStore.CreateOrUpdate<DataCenterManagerConfiguration>(SingletonId, doc => doc.RoleClaimType = roleClaimType);
+            SetProperty(doc => doc.RoleClaimType = roleClaimType);
         }
 
         public override string ConfigurationSetName => "Data Center Manager";

@@ -7,7 +7,10 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
     public class OktaConfigurationStore : OpenIdConnectConfigurationStore<OktaConfiguration>, IOktaConfigurationStore
     {
-        protected override string SingletonId => "authentication-od";
+        public const string SingletonId = "authentication-od";
+
+        public override string Id => SingletonId;
+
         public override string ConfigurationSettingsName => "Okta";
 
         public OktaConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
@@ -16,13 +19,12 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 
         public string GetRoleClaimType()
         {
-            var doc = ConfigurationStore.Get<OktaConfiguration>(SingletonId);
-            return doc?.RoleClaimType;
+            return GetProperty(doc => doc.RoleClaimType);
         }
 
         public void SetRoleClaimType(string roleClaimType)
         {
-            ConfigurationStore.CreateOrUpdate<OktaConfiguration>(SingletonId, doc => doc.RoleClaimType = roleClaimType);
+            SetProperty(doc => doc.RoleClaimType = roleClaimType);
         }
 
         public override string ConfigurationSetName => "Okta";
