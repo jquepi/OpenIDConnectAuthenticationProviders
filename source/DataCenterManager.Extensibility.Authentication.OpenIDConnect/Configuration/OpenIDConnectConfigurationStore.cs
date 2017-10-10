@@ -12,7 +12,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
         public const string AuthenticatedTokenBaseUri = "/users/authenticatedToken";
     }
 
-    public abstract class OpenIdConnectConfigurationStore<TConfiguration> : IOpenIDConnectConfigurationStore, IHasConfigurationSettings
+    public abstract class OpenIdConnectConfigurationStore<TConfiguration> : ExtensionConfigurationStore<TConfiguration, TConfiguration>, IOpenIDConnectConfigurationStore, IHasConfigurationSettings
         where TConfiguration : OpenIDConnectConfiguration, IId, new()
     {
         protected abstract string SingletonId { get; }
@@ -20,37 +20,24 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
 
         protected readonly IConfigurationStore ConfigurationStore;
 
-        protected OpenIdConnectConfigurationStore(IConfigurationStore configurationStore)
+        protected OpenIdConnectConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
         {
             ConfigurationStore = configurationStore;
         }
 
-        public object GetConfiguration()
+        protected override TConfiguration MapToResource(TConfiguration doc)
         {
-            return ConfigurationStore.Get<TConfiguration>(Id);
+            return doc;
         }
 
-        public void SetConfiguration(object config)
+        protected override TConfiguration MapFromResource(TConfiguration resource)
         {
-            var configuration = config as TConfiguration;
-            ConfigurationStore.Update(configuration);
-        }
-
-        public bool GetIsEnabled()
-        {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.IsEnabled ?? false;
-        }
-
-        public void SetIsEnabled(bool isEnabled)
-        {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.IsEnabled = isEnabled);
+            return resource;
         }
 
         public string GetIssuer()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.Issuer;
+            return GetProperty(doc => doc.Issuer);
         }
 
         public void SetIssuer(string issuer)
@@ -60,97 +47,86 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
                 throw new ArgumentException($"The {ConfigurationSettingsName} issuer must be an absolute URI and not a GUID (please refer to the Octopus auth-provider's documentation for details)");
             if (!Uri.IsWellFormedUriString(issuer, UriKind.Absolute))
                 throw new ArgumentException($"The {ConfigurationSettingsName} issuer must be an absolute URI (please refer to the Octopus auth-provider's documentation for details)");
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.Issuer = issuer);
+            SetProperty(doc => doc.Issuer = issuer);
         }
 
         public string GetResponseType()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.ResponseType;
+            return GetProperty(doc => doc.ResponseType);
         }
 
         public void SetResponseType(string responseType)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.ResponseType = responseType);
+            SetProperty(doc => doc.ResponseType = responseType);
         }
 
         public string GetResponseMode()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.ResponseMode;
+            return GetProperty(doc => doc.ResponseMode);
         }
 
         public void SetResponseMode(string responseMode)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.ResponseMode = responseMode);
+            SetProperty(doc => doc.ResponseMode = responseMode);
         }
 
         public string GetClientId()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.ClientId;
+            return GetProperty(doc => doc.ClientId);
         }
 
         public void SetClientId(string clientId)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.ClientId = clientId);
+            SetProperty(doc => doc.ClientId = clientId);
         }
 
         public string GetScope()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.Scope;
+            return GetProperty(doc => doc.Scope);
         }
 
         public void SetScope(string scope)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.Scope = scope);
+            SetProperty(doc => doc.Scope = scope);
         }
 
         public string GetNameClaimType()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.NameClaimType;
+            return GetProperty(doc => doc.NameClaimType);
         }
 
         public void SetNameClaimType(string nameClaimType)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.NameClaimType = nameClaimType);
+            SetProperty(doc => doc.NameClaimType = nameClaimType);
         }
 
         public string GetLoginLinkLabel()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.LoginLinkLabel;
+            return GetProperty(doc => doc.LoginLinkLabel);
         }
 
         public void SetLoginLinkLabel(string loginLinkLabel)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.LoginLinkLabel = loginLinkLabel);
+            SetProperty(doc => doc.LoginLinkLabel = loginLinkLabel);
         }
 
         public bool GetAllowAutoUserCreation()
         {
-            var doc = ConfigurationStore.Get<TConfiguration>(SingletonId);
-            return doc?.AllowAutoUserCreation.GetValueOrDefault(true) ?? true;
+            return GetProperty(doc => doc.AllowAutoUserCreation.GetValueOrDefault(true));
         }
 
         public void SetAllowAutoUserCreation(bool allowAutoUserCreation)
         {
-            ConfigurationStore.CreateOrUpdate<TConfiguration>(SingletonId, doc => doc.AllowAutoUserCreation = allowAutoUserCreation);
+            SetProperty(doc => doc.AllowAutoUserCreation = allowAutoUserCreation);
         }
 
         public string RedirectUri => $"{OpenIdConnectConfigurationStore.AuthenticatedTokenBaseUri}/{ConfigurationSettingsName}";
 
-        public string Id => ConfigurationSettingsName;
+        public override string Id => ConfigurationSettingsName;
 
-        public abstract string ConfigurationSetName { get; }
+        public override string Description => string.Empty;
 
-        public virtual string Description => string.Empty;
-
-        public Type MetadataResourceType => typeof(TConfiguration);
-
-        public virtual IEnumerable<ConfigurationValue> GetConfigurationValues()
+        public override IEnumerable<ConfigurationValue> GetConfigurationValues()
         {
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.IsEnabled", GetIsEnabled().ToString(), GetIsEnabled(), "Is Enabled");
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.Issuer", GetIssuer(), GetIsEnabled(), "Issuer");
