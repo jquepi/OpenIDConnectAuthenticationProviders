@@ -11,6 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
         where TConfiguration : OpenIDConnectConfiguration, IId, new()
     {
         protected abstract string SingletonId { get; }
+
         public abstract string ConfigurationSettingsName { get; }
 
         protected readonly IConfigurationStore ConfigurationStore;
@@ -18,6 +19,17 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
         protected OpenIdConnectConfigurationStore(IConfigurationStore configurationStore)
         {
             ConfigurationStore = configurationStore;
+        }
+
+        public object GetConfiguration()
+        {
+            return ConfigurationStore.Get<TConfiguration>(SingletonId);
+        }
+
+        public void SetConfiguration(object config)
+        {
+            var configuration = config as TConfiguration;
+            ConfigurationStore.Update(configuration);
         }
 
         public bool GetIsEnabled()
