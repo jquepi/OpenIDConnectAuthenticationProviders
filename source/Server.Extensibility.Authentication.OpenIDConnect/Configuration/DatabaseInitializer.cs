@@ -20,7 +20,15 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
         {
             var doc = configurationStore.Get<TConfiguration>(SingletonId);
             if (doc != null)
+            {
+                // TODO: to cover a dev team edge case during 4.0 Alpha. Can be removed before final release
+                if (doc.ConfigurationSchemaVersion != "1.0")
+                {
+                    doc.ConfigurationSchemaVersion = "1.0";
+                    configurationStore.Update(doc);
+                }
                 return;
+            }
 
             configurationStore.Create(new TConfiguration());
         }

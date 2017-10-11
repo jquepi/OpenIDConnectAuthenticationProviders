@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
     {
         public static string DefaultRoleClaimType = "roles";
 
-        public OktaConfiguration() : base("Okta", "Octopus Deploy")
+        public OktaConfiguration() : base("Okta", "Octopus Deploy", "1.0")
         {
             Id = OktaConfigurationStore.SingletonId;
             LoginLinkLabel = "Sign in with your Okta account";

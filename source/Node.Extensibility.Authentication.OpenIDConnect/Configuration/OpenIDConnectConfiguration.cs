@@ -14,7 +14,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         {
         }
 
-        protected OpenIDConnectConfiguration(string name, string author) : base(name, author)
+        protected OpenIDConnectConfiguration(string name, string author, string configurationSchemaVersion) : base(name, author, configurationSchemaVersion)
         {
             ResponseType = DefaultResponseType;
             ResponseMode = DefaultResponseMode;

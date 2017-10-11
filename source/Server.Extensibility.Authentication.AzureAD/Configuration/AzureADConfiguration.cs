@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
     {
         public static string DefaultRoleClaimType = "roles";
 
-        public AzureADConfiguration() : base("AzureAD", "Octopus Deploy")
+        public AzureADConfiguration() : base("AzureAD", "Octopus Deploy", "1.0")
         {
             Id = AzureADConfigurationStore.SingletonId;
             LoginLinkLabel = "Sign in with your Azure AD account";

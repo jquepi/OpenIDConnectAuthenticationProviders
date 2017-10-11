@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
     {
         public static string DefaultRoleClaimType = "roles";
 
-        public DataCenterManagerConfiguration() : base("DataCenterManager", "Octopus Deploy")
+        public DataCenterManagerConfiguration() : base("DataCenterManager", "Octopus Deploy", "1.0")
         {
             Id = DataCenterManagerConfigurationStore.SingletonId;
             LoginLinkLabel = "Sign in with your Data Center Manager account";
