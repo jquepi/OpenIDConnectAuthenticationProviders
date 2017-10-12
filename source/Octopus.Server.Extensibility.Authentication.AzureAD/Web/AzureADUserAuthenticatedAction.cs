@@ -22,7 +22,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
-            IAzureADIdentityCreator identityCreator) :
+            IAzureADIdentityCreator identityCreator,
+            IClock clock) :
             base(
                 log,
                 authTokenHandler,
@@ -33,7 +34,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
                 authCookieCreator,
                 loginTracker,
                 sleep,
-                identityCreator)
+                identityCreator,
+                clock)
         {
         }
 

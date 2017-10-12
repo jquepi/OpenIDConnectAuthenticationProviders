@@ -34,21 +34,23 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         readonly IInvalidLoginTracker loginTracker;
         readonly ISleep sleep;
         readonly TIdentityCreator identityCreator;
+        readonly IClock clock;
 
         protected readonly TStore ConfigurationStore;
         protected readonly IApiActionResponseCreator ResponseCreator;
 
         protected UserAuthenticatedAction(
-            ILog log,
-            TAuthTokenHandler authTokenHandler,
-            IPrincipalToUserResourceMapper principalToUserResourceMapper,
-            IUpdateableUserStore userStore,
-            TStore configurationStore,
+            ILog log, 
+            TAuthTokenHandler authTokenHandler, 
+            IPrincipalToUserResourceMapper principalToUserResourceMapper, 
+            IUpdateableUserStore userStore, 
+            TStore configurationStore, 
             IApiActionResponseCreator responseCreator, 
-            IAuthCookieCreator authCookieCreator,
-            IInvalidLoginTracker loginTracker,
-            ISleep sleep,
-            TIdentityCreator identityCreator)
+            IAuthCookieCreator authCookieCreator, 
+            IInvalidLoginTracker loginTracker, 
+            ISleep sleep, 
+            TIdentityCreator identityCreator, 
+            IClock clock)
         {
             this.log = log;
             this.authTokenHandler = authTokenHandler;
@@ -60,6 +62,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.loginTracker = loginTracker;
             this.sleep = sleep;
             this.identityCreator = identityCreator;
+            this.clock = clock;
         }
 
         protected abstract string ProviderName { get; }
@@ -191,6 +194,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             if (user != null)
             {
+                userStore.SetSecurityGroupIds(ProviderName, user.Id, groups, clock.GetUtcTime());
+
                 var identity = user.Identities.FirstOrDefault(x => MatchesProviderAndExternalId(userResource, x));
                 if (identity != null)
                 {
