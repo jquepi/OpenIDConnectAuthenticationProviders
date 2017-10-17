@@ -23,7 +23,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
-            IOktaIdentityCreator identityCreator) :
+            IOktaIdentityCreator identityCreator,
+            IClock clock) :
             base(
                 log,
                 authTokenHandler,
@@ -34,7 +35,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 authCookieCreator,
                 loginTracker,
                 sleep,
-                identityCreator)
+                identityCreator, 
+                clock)
         {
         }
 

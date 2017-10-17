@@ -23,7 +23,8 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Web
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
-            IDataCenterManagerIdentityCreator identityCreator) :
+            IDataCenterManagerIdentityCreator identityCreator,
+            IClock clock) :
             base(
                 log,
                 authTokenHandler,
@@ -34,7 +35,8 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Web
                 authCookieCreator,
                 loginTracker,
                 sleep,
-                identityCreator)
+                identityCreator,
+                clock)
         {
         }
 

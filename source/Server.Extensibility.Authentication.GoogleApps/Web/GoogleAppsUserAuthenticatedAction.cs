@@ -24,8 +24,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
-            IGoogleAppsIdentityCreator identityCreator) 
-            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep, identityCreator)
+            IGoogleAppsIdentityCreator identityCreator,
+            IClock clock) 
+            : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, responseCreator, authCookieCreator, loginTracker, sleep, identityCreator, clock)
         {
         }
 
