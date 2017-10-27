@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
@@ -13,7 +14,9 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 
         public override string ConfigurationSettingsName => "Okta";
 
-        public OktaConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
+        public OktaConfigurationStore(
+            IConfigurationStore configurationStore,
+            IResourceMappingFactory factory) : base(configurationStore, factory)
         {
         }
 
@@ -38,6 +41,12 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
                 yield return configurationValue;
             }
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != OktaConfiguration.DefaultRoleClaimType, "Role Claim Type");
+        }
+
+        public override IResourceMapping GetMapping()
+        {
+            return ResourceMappingFactory
+                .Create<OktaConfigurationResource, OktaConfiguration>();
         }
     }
 }

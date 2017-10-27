@@ -2,6 +2,7 @@
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.HostServices.Mapping;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration
 {
@@ -13,7 +14,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configu
 
         public override string ConfigurationSettingsName => "AzureAD";
 
-        public AzureADConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
+        public AzureADConfigurationStore(
+            IConfigurationStore configurationStore,
+            IResourceMappingFactory factory) : base(configurationStore, factory)
         {
         }
 
@@ -35,6 +38,12 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configu
                 yield return configurationValue;
             }
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != AzureADConfiguration.DefaultRoleClaimType, "Role Claim Type");
+        }
+
+        public override IResourceMapping GetMapping()
+        {
+            return ResourceMappingFactory
+                .Create<AzureADConfigurationResource, AzureADConfiguration>();
         }
     }
 }

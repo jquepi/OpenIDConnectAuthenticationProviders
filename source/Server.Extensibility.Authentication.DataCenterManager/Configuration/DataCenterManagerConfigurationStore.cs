@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration
@@ -13,7 +14,9 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
 
         public override string ConfigurationSettingsName => "DataCenterManager";
 
-        public DataCenterManagerConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
+        public DataCenterManagerConfigurationStore(
+            IConfigurationStore configurationStore,
+            IResourceMappingFactory factory) : base(configurationStore, factory)
         {
         }
 
@@ -38,6 +41,12 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
                 yield return configurationValue;
             }
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != DataCenterManagerConfiguration.DefaultRoleClaimType, "Role Claim Type");
+        }
+
+        public override IResourceMapping GetMapping()
+        {
+            return ResourceMappingFactory
+                .Create<DataCenterManagerConfigurationResource, DataCenterManagerConfiguration>();
         }
     }
 }

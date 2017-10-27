@@ -4,6 +4,7 @@ using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Node.Extensibility.HostServices.Mapping;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration
 {
@@ -19,7 +20,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
 
         protected readonly IConfigurationStore ConfigurationStore;
 
-        protected OpenIdConnectConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
+        protected OpenIdConnectConfigurationStore(
+            IConfigurationStore configurationStore,
+            IResourceMappingFactory factory) : base(configurationStore, factory)
         {
             ConfigurationStore = configurationStore;
         }

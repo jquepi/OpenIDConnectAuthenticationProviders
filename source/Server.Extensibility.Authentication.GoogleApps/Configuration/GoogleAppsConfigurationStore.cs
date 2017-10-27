@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
@@ -12,7 +13,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
         public override string Id => SingletonId;
         public override string ConfigurationSettingsName => "GoogleApps";
 
-        public GoogleAppsConfigurationStore(IConfigurationStore configurationStore) : base(configurationStore)
+        public GoogleAppsConfigurationStore(
+            IConfigurationStore configurationStore,
+            IResourceMappingFactory factory) : base(configurationStore, factory)
         {
         }
 
@@ -38,6 +41,12 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
             }
 
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.HostedDomain", GetHostedDomain(), GetIsEnabled(), "Hosted Domain");
+        }
+
+        public override IResourceMapping GetMapping()
+        {
+            return ResourceMappingFactory
+                .Create<GoogleAppsConfigurationResource, GoogleAppsConfiguration>();
         }
     }
 }
