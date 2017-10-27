@@ -6,7 +6,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaConfigurationStore : OpenIdConnectConfigurationStore<OktaConfiguration>, IOktaConfigurationStore
+    public class OktaConfigurationStore : OpenIdConnectConfigurationStore<OktaConfiguration, OktaConfigurationResource>, IOktaConfigurationStore
     {
         public const string SingletonId = "authentication-od";
 
@@ -41,12 +41,6 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
                 yield return configurationValue;
             }
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != OktaConfiguration.DefaultRoleClaimType, "Role Claim Type");
-        }
-
-        public override IResourceMapping GetMapping()
-        {
-            return ResourceMappingFactory
-                .Create<OktaConfigurationResource, OktaConfiguration>();
         }
     }
 }

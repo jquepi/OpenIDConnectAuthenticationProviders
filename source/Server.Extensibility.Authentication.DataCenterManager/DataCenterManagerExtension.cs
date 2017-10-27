@@ -6,6 +6,7 @@ using Octopus.Node.Extensibility.Extensions;
 using Octopus.Node.Extensibility.Extensions.Infrastructure;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Node.Extensibility.Extensions.Mappings;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration;
 using Octopus.Server.Extensibility.Authentication.DataCenterManager.Identities;
@@ -33,6 +34,7 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager
             builder.RegisterType<DataCenterManagerConfigurationStore>()
                 .As<IDataCenterManagerConfigurationStore>()
                 .As<IHasConfigurationSettings>()
+                .As<IContributeMappings>()
                 .InstancePerDependency();
             builder.RegisterType<DataCenterManagerConfigureCommands>()
                 .As<IContributeToConfigureCommand>()

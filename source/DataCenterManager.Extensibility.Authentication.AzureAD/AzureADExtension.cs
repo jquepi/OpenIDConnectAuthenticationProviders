@@ -15,6 +15,7 @@ using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Extensions;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Node.Extensibility.Extensions.Mappings;
 using Octopus.Node.Extensibility.HostServices.Web;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD
@@ -34,6 +35,7 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD
             builder.RegisterType<AzureADConfigurationStore>()
                 .As<IAzureADConfigurationStore>()
                 .As<IHasConfigurationSettings>()
+                .As<IContributeMappings>()
                 .InstancePerDependency();
 
             builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();

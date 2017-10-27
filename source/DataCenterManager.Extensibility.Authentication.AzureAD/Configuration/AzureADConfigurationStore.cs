@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Octopus.Data.Storage.Configuration;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.HostServices.Mapping;
 
 namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configuration
 {
-    public class AzureADConfigurationStore : OpenIdConnectConfigurationStore<AzureADConfiguration>, IAzureADConfigurationStore
+    public class AzureADConfigurationStore : OpenIdConnectConfigurationStore<AzureADConfiguration, AzureADConfigurationResource>, IAzureADConfigurationStore
     {
         public const string SingletonId = "authentication-aad";
 
@@ -38,12 +38,6 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.AzureAD.Configu
                 yield return configurationValue;
             }
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != AzureADConfiguration.DefaultRoleClaimType, "Role Claim Type");
-        }
-
-        public override IResourceMapping GetMapping()
-        {
-            return ResourceMappingFactory
-                .Create<AzureADConfigurationResource, AzureADConfiguration>();
         }
     }
 }

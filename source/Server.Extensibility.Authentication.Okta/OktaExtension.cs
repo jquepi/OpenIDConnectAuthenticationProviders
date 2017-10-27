@@ -7,6 +7,7 @@ using Octopus.Node.Extensibility.Extensions;
 using Octopus.Node.Extensibility.Extensions.Infrastructure;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Node.Extensibility.Extensions.Mappings;
 using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
@@ -34,6 +35,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
             builder.RegisterType<OktaConfigurationStore>()
                 .As<IOktaConfigurationStore>()
                 .As<IHasConfigurationSettings>()
+                .As<IContributeMappings>()
                 .InstancePerDependency();
             builder.RegisterType<OktaConfigureCommands>()
                 .As<IContributeToConfigureCommand>()

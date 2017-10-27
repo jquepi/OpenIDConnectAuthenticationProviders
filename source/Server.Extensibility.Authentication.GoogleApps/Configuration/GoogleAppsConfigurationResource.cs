@@ -1,12 +1,11 @@
-﻿using Octopus.Data.Model;
-using Octopus.Data.Resources;
+﻿using System.ComponentModel;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    public class GoogleAppsConfigurationResource : IResource
+    public class GoogleAppsConfigurationResource : OpenIDConnectConfigurationResource
     {
-        public string Id { get; set; }
-
-        public LinkCollection Links { get; set; }
+        [DisplayName("Hosted Domain")]
+        public string HostedDomain { get; set; }
     }
 }

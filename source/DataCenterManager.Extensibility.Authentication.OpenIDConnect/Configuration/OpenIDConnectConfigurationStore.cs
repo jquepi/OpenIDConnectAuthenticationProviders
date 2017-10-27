@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
@@ -13,8 +12,9 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
         public const string AuthenticatedTokenBaseUri = "/users/authenticatedToken";
     }
 
-    public abstract class OpenIdConnectConfigurationStore<TConfiguration> : ExtensionConfigurationStore<TConfiguration, TConfiguration>, IOpenIDConnectConfigurationStore, IHasConfigurationSettings
-        where TConfiguration : OpenIDConnectConfiguration, IId, new()
+    public abstract class OpenIdConnectConfigurationStore<TConfiguration, TResource> : ExtensionConfigurationStore<TConfiguration, TResource>, IOpenIDConnectConfigurationStore
+        where TConfiguration : OpenIDConnectConfiguration, new()
+        where TResource : OpenIDConnectConfigurationResource
     {
         public abstract string ConfigurationSettingsName { get; }
 
@@ -25,16 +25,6 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
             IResourceMappingFactory factory) : base(configurationStore, factory)
         {
             ConfigurationStore = configurationStore;
-        }
-
-        protected override TConfiguration MapToResource(TConfiguration doc)
-        {
-            return doc;
-        }
-
-        protected override TConfiguration MapFromResource(TConfiguration resource)
-        {
-            return resource;
         }
 
         public string GetIssuer()
@@ -140,6 +130,11 @@ namespace Octopus.DataCenterManager.Extensibility.Authentication.OpenIDConnect.C
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.NameClaimType", GetNameClaimType(), GetIsEnabled() && GetNameClaimType() != OpenIDConnectConfiguration.DefaultNameClaimType, "Name Claim Type");
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.LoginLinkLabel", GetLoginLinkLabel(), false);
             yield return new ConfigurationValue($"DataCenterManager.{ConfigurationSettingsName}.AllowAutoUserCreation", GetAllowAutoUserCreation().ToString(), GetIsEnabled(), "Allow auto user creation");
+        }
+
+        public override IResourceMapping GetMapping()
+        {
+            return ResourceMappingFactory.Create<TResource, TConfiguration>();
         }
     }
 }

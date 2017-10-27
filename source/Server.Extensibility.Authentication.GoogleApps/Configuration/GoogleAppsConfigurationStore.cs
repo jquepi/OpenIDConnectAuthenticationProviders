@@ -6,7 +6,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    public class GoogleAppsConfigurationStore : OpenIdConnectConfigurationStore<GoogleAppsConfiguration>, IGoogleAppsConfigurationStore
+    public class GoogleAppsConfigurationStore : OpenIdConnectConfigurationStore<GoogleAppsConfiguration, GoogleAppsConfigurationResource>, IGoogleAppsConfigurationStore
     {
         public const string SingletonId = "authentication-googleapps";
 
@@ -41,12 +41,6 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
             }
 
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.HostedDomain", GetHostedDomain(), GetIsEnabled(), "Hosted Domain");
-        }
-
-        public override IResourceMapping GetMapping()
-        {
-            return ResourceMappingFactory
-                .Create<GoogleAppsConfigurationResource, GoogleAppsConfiguration>();
         }
     }
 }

@@ -8,8 +8,9 @@ using Octopus.Node.Extensibility.HostServices.Mapping;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public abstract class OpenIdConnectConfigurationStore<TConfiguration> : ExtensionConfigurationStore<TConfiguration, TConfiguration>, IOpenIDConnectConfigurationStore
+    public abstract class OpenIdConnectConfigurationStore<TConfiguration, TResource> : ExtensionConfigurationStore<TConfiguration, TResource>, IOpenIDConnectConfigurationStore
         where TConfiguration : OpenIDConnectConfiguration, IId, new()
+        where TResource : OpenIDConnectConfigurationResource
     {
         public abstract string ConfigurationSettingsName { get; }
 
@@ -17,16 +18,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             IConfigurationStore configurationStore, 
             IResourceMappingFactory factory) : base(configurationStore, factory)
         {
-        }
-
-        protected override TConfiguration MapToResource(TConfiguration doc)
-        {
-            return doc;
-        }
-
-        protected override TConfiguration MapFromResource(TConfiguration resource)
-        {
-            return resource;
         }
 
         public string GetIssuer()
@@ -128,6 +119,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.NameClaimType", GetNameClaimType(), GetIsEnabled() && GetNameClaimType() != OpenIDConnectConfiguration.DefaultNameClaimType, "Name Claim Type");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.LoginLinkLabel", GetLoginLinkLabel(), false);
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.AllowAutoUserCreation", GetAllowAutoUserCreation().ToString(), GetIsEnabled(), "Allow auto user creation");
+        }
+
+        public override IResourceMapping GetMapping()
+        {
+            return ResourceMappingFactory.Create<TResource, TConfiguration>();
         }
     }
 }

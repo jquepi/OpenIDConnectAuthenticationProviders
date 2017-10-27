@@ -6,7 +6,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration
 {
-    public class DataCenterManagerConfigurationStore : OpenIdConnectConfigurationStore<DataCenterManagerConfiguration>, IDataCenterManagerConfigurationStore
+    public class DataCenterManagerConfigurationStore : OpenIdConnectConfigurationStore<DataCenterManagerConfiguration, DataCenterManagerConfigurationResource>, IDataCenterManagerConfigurationStore
     {
         public const string SingletonId = "authentication-dcm";
 
@@ -43,10 +43,5 @@ namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configur
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != DataCenterManagerConfiguration.DefaultRoleClaimType, "Role Claim Type");
         }
 
-        public override IResourceMapping GetMapping()
-        {
-            return ResourceMappingFactory
-                .Create<DataCenterManagerConfigurationResource, DataCenterManagerConfiguration>();
-        }
     }
 }

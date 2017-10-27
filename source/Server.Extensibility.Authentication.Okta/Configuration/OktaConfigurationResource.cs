@@ -1,12 +1,12 @@
-﻿using Octopus.Data.Model;
-using Octopus.Data.Resources;
+﻿using System.ComponentModel;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaConfigurationResource : IResource
+    public class OktaConfigurationResource : OpenIDConnectConfigurationResource
     {
-        public string Id { get; }
-
-        public LinkCollection Links { get; set; }
+        [DisplayName("Role Claim Type")]
+        [Description("The type of the role claim")]
+        public string RoleClaimType { get; set; }
     }
 }

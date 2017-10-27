@@ -1,12 +1,12 @@
-﻿using Octopus.Data.Model;
-using Octopus.Data.Resources;
+﻿using System.ComponentModel;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.DataCenterManager.Configuration
 {
-    public class DataCenterManagerConfigurationResource : IResource
+    public class DataCenterManagerConfigurationResource : OpenIDConnectConfigurationResource
     {
-        public string Id { get; }
-
-        public LinkCollection Links { get; set; }
+        [DisplayName("Role Claim Type")]
+        [Description("The type of the role claim")]
+        public string RoleClaimType { get; set; }
     }
 }
