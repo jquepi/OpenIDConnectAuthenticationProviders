@@ -29,7 +29,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
             SetProperty(doc => doc.HostedDomain = hostedDomain);
         }
 
-        public override string ConfigurationSetName => "GoogleApps";
+        public override string ConfigurationSetName => "Google Apps";
 
         public override string Description => "GoogleApps authentication settings";
 
