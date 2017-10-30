@@ -121,9 +121,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.AllowAutoUserCreation", GetAllowAutoUserCreation().ToString(), GetIsEnabled(), "Allow auto user creation");
         }
 
-        public override IResourceMapping GetMapping()
+        public override IEnumerable<IResourceMapping> GetMappings()
         {
-            return ResourceMappingFactory.Create<TResource, TConfiguration>();
+            return new[] { ResourceMappingFactory.Create<TResource, TConfiguration>() };
         }
     }
 }

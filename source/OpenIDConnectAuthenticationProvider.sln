@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{953D2520-3518-4A89-A335-72547D5B8EAD}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,13 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Extensibility.Authen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Node.Extensibility.Authentication.OpenIDConnect", "Node.Extensibility.Authentication.OpenIDConnect\Node.Extensibility.Authentication.OpenIDConnect.csproj", "{1AA4BB73-2FBD-45AD-B98A-FB5641B79587}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCenterManager.Extensibility.Authentication.OpenIDConnect", "DataCenterManager.Extensibility.Authentication.OpenIDConnect\DataCenterManager.Extensibility.Authentication.OpenIDConnect.csproj", "{2AB5C6FA-F614-4B26-B43B-1BD8BEE15B6A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCenterManager.Extensibility.Authentication.AzureAD", "DataCenterManager.Extensibility.Authentication.AzureAD\DataCenterManager.Extensibility.Authentication.AzureAD.csproj", "{F6B886DD-D3B4-4055-8493-E0B5AC050385}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Extensibility.Authentication.DataCenterManager", "Server.Extensibility.Authentication.DataCenterManager\Server.Extensibility.Authentication.DataCenterManager.csproj", "{A08953E9-A9FF-44A3-86ED-D1483560D0A8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.Okta", "Server.Extensibility.Authentication.Okta\Server.Extensibility.Authentication.Okta.csproj", "{3C7C3079-DF0E-484F-8556-10B18127450B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Extensibility.Authentication.Okta", "Server.Extensibility.Authentication.Okta\Server.Extensibility.Authentication.Okta.csproj", "{3C7C3079-DF0E-484F-8556-10B18127450B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C354DA8E-D532-4DAE-8D61-E4F50A0139C8}"
 EndProject
@@ -51,18 +45,6 @@ Global
 		{1AA4BB73-2FBD-45AD-B98A-FB5641B79587}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AA4BB73-2FBD-45AD-B98A-FB5641B79587}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AA4BB73-2FBD-45AD-B98A-FB5641B79587}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AB5C6FA-F614-4B26-B43B-1BD8BEE15B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AB5C6FA-F614-4B26-B43B-1BD8BEE15B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AB5C6FA-F614-4B26-B43B-1BD8BEE15B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AB5C6FA-F614-4B26-B43B-1BD8BEE15B6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6B886DD-D3B4-4055-8493-E0B5AC050385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6B886DD-D3B4-4055-8493-E0B5AC050385}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6B886DD-D3B4-4055-8493-E0B5AC050385}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6B886DD-D3B4-4055-8493-E0B5AC050385}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A08953E9-A9FF-44A3-86ED-D1483560D0A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A08953E9-A9FF-44A3-86ED-D1483560D0A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A08953E9-A9FF-44A3-86ED-D1483560D0A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A08953E9-A9FF-44A3-86ED-D1483560D0A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C7C3079-DF0E-484F-8556-10B18127450B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C7C3079-DF0E-484F-8556-10B18127450B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C7C3079-DF0E-484F-8556-10B18127450B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,5 +59,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{00680371-A6E1-435F-9966-2450C2723E91} = {C354DA8E-D532-4DAE-8D61-E4F50A0139C8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EC7C479-5684-490E-B66E-D85F4F015923}
 	EndGlobalSection
 EndGlobal

@@ -35,9 +35,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetIsEnabled(isEnabled);
                 Log.Info($"{ConfigurationSettingsName} IsEnabled set to: {isEnabled}");
 
-                var listenPrefixes = webPortalConfigurationStore.Value.GetListenPrefixes();
+                var currentNodeWebPortalConfiguration = webPortalConfigurationStore.Value.GetCurrentNodeWebPortalConfiguration();
 
-                if (isEnabled && webPortalConfigurationStore.Value.GetForceSSL() == false && listenPrefixes.Any(s => s.ToLower().Contains("http://")))
+                var listenPrefixes = currentNodeWebPortalConfiguration.ListenPrefixes;
+
+                if (isEnabled && currentNodeWebPortalConfiguration.ForceSSL == false && listenPrefixes.Any(s => s.ToLower().Contains("http://")))
                     Log.Warn($"{ConfigurationSettingsName} user authentication API was called from an instance including listening prefixes that are not using https.");
 
                 if (isEnabled && listenPrefixes.Any())

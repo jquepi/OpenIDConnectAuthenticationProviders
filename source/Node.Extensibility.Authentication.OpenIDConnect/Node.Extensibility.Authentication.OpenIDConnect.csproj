@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0073" />
-    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="4.1.1-enh-odcm0056" />
+    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0086" />
+    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="4.2.1-enh-odcm0057" />
     <PackageReference Include="Octopus.Time" Version="1.0.9" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />

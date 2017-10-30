@@ -70,13 +70,17 @@
       <HintPath>..\packages\Octopus.Diagnostics.1.0.12\lib\netstandard1.0\Octopus.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="Octopus.Node.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Node.Extensibility.3.0.0-enh-odcm0068\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
+      <HintPath>..\packages\Octopus.Node.Extensibility.3.0.0-enh-odcm0086\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
     </Reference>
     <Reference Include="Octopus.Server.Extensibility, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0068\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
+      <HintPath>..\packages\Octopus.Server.Extensibility.3.0.0-enh-odcm0086\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
