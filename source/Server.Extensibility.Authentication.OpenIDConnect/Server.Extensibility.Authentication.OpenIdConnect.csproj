@@ -13,9 +13,9 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Nancy" Version="1.2.0" />
     <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0086" />
+    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0-enh-odcm0087" />
     <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="4.2.1-enh-odcm0057" />
-    <PackageReference Include="Octopus.Server.Extensibility" Version="3.0.0-enh-odcm0086" />
+    <PackageReference Include="Octopus.Server.Extensibility" Version="3.0.0-enh-odcm0087" />
     <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="4.2.1-enh-odcm0057" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
