@@ -16,17 +16,12 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 
         protected OpenIDConnectConfiguration(string name, string author, string configurationSchemaVersion) : base(name, author, configurationSchemaVersion)
         {
-            ResponseType = DefaultResponseType;
-            ResponseMode = DefaultResponseMode;
             Scope = DefaultScope;
 
             NameClaimType = DefaultNameClaimType;
         }
 
         public string Issuer { get; set; }
-
-        public string ResponseType { get; set; }
-        public string ResponseMode { get; set; }
 
         public string ClientId { get; set; }
 

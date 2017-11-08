@@ -57,16 +57,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetIssuer(v);
                 Log.Info($"{ConfigurationSettingsName} Issuer set to: {v}");
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ResponseType=", $"Set the {ConfigurationSettingsName} ResponseType.", v =>
-            {
-                ConfigurationStore.Value.SetResponseType(v);
-                Log.Info($"{ConfigurationSettingsName} ResponseType set to: {v}");
-            });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ResponseMode=", $"Set the {ConfigurationSettingsName} ResponseMode.", v =>
-            {
-                ConfigurationStore.Value.SetResponseMode(v);
-                Log.Info($"{ConfigurationSettingsName} ResponseMode set to: {v}");
-            });
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientId=", $"Set the {ConfigurationSettingsName} ClientId.", v =>
             {
                 ConfigurationStore.Value.SetClientId(v);

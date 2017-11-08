@@ -10,14 +10,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         [Writeable]
         public string Issuer { get; set; }
 
-        [DisplayName("Response Type")]
-        [Writeable]
-        public string ResponseType { get; set; }
-
-        [DisplayName("Response Mode")]
-        [Writeable]
-        public string ResponseMode { get; set; }
-
         [DisplayName("Client ID")]
         [Writeable]
         public string ClientId { get; set; }

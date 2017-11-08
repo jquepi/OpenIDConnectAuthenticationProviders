@@ -24,8 +24,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer
             var issuerEndpoint = issuerConfiguration.AuthorizationEndpoint;
             var clientId = ConfigurationStore.GetClientId();
             var scope = ConfigurationStore.GetScope();
-            var responseType = ConfigurationStore.GetResponseType();
-            var responseMode = ConfigurationStore.GetResponseMode();
+            var responseType = OpenIDConnectConfiguration.DefaultResponseType;
+            var responseMode = OpenIDConnectConfiguration.DefaultResponseMode;
             var redirectUri = requestDirectoryPath.Trim('/') + ConfigurationStore.RedirectUri;
 
             var urlPathEncode = urlEncoder.UrlEncode(state);

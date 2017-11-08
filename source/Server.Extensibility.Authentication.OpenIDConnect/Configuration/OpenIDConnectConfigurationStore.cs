@@ -35,26 +35,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             SetProperty(doc => doc.Issuer = issuer);
         }
 
-        public string GetResponseType()
-        {
-            return GetProperty(doc => doc.ResponseType);
-        }
-
-        public void SetResponseType(string responseType)
-        {
-            SetProperty(doc => doc.ResponseType = responseType);
-        }
-
-        public string GetResponseMode()
-        {
-            return GetProperty(doc => doc.ResponseMode);
-        }
-
-        public void SetResponseMode(string responseMode)
-        {
-            SetProperty(doc => doc.ResponseMode = responseMode);
-        }
-
         public string GetClientId()
         {
             return GetProperty(doc => doc.ClientId);
@@ -102,8 +82,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.IsEnabled", GetIsEnabled().ToString(), GetIsEnabled(), "Is Enabled");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.Issuer", GetIssuer(), GetIsEnabled(), "Issuer");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.ClientId", GetClientId(), GetIsEnabled(), "ClientId", true);
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.ResponseType", GetResponseType(), GetIsEnabled() && GetResponseType() != OpenIDConnectConfiguration.DefaultResponseType, "Response Type");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.ResponseMode", GetResponseMode(), GetIsEnabled() && GetResponseMode() != OpenIDConnectConfiguration.DefaultResponseMode, "Response Mode");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.Scope", GetScope(), GetIsEnabled() && GetScope() != OpenIDConnectConfiguration.DefaultScope, "Scope");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RedirectUri", RedirectUri, GetIsEnabled(), "RedirectUri");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.NameClaimType", GetNameClaimType(), GetIsEnabled() && GetNameClaimType() != OpenIDConnectConfiguration.DefaultNameClaimType, "Name Claim Type");
