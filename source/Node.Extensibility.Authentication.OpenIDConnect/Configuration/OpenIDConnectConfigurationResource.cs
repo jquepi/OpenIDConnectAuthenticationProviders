@@ -29,10 +29,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         [Writeable]
         public string NameClaimType { get; set; }
 
-        [DisplayName("Login Link Label")]
-        [Writeable]
-        public string LoginLinkLabel { get; set; }
-
         [DisplayName("Allow Auto User Creation")]
         [Writeable]
         public bool? AllowAutoUserCreation { get; set; }

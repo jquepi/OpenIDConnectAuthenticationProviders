@@ -85,16 +85,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             SetProperty(doc => doc.NameClaimType = nameClaimType);
         }
 
-        public string GetLoginLinkLabel()
-        {
-            return GetProperty(doc => doc.LoginLinkLabel);
-        }
-
-        public void SetLoginLinkLabel(string loginLinkLabel)
-        {
-            SetProperty(doc => doc.LoginLinkLabel = loginLinkLabel);
-        }
-
         public bool GetAllowAutoUserCreation()
         {
             return GetProperty(doc => doc.AllowAutoUserCreation.GetValueOrDefault(true));
@@ -117,7 +107,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.Scope", GetScope(), GetIsEnabled() && GetScope() != OpenIDConnectConfiguration.DefaultScope, "Scope");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RedirectUri", RedirectUri, GetIsEnabled(), "RedirectUri");
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.NameClaimType", GetNameClaimType(), GetIsEnabled() && GetNameClaimType() != OpenIDConnectConfiguration.DefaultNameClaimType, "Name Claim Type");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.LoginLinkLabel", GetLoginLinkLabel(), false);
             yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.AllowAutoUserCreation", GetAllowAutoUserCreation().ToString(), GetIsEnabled(), "Allow auto user creation");
         }
 

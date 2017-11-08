@@ -34,8 +34,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 
         public string NameClaimType { get; set; }
 
-        public string LoginLinkLabel { get; set; }
-
         public bool? AllowAutoUserCreation { get; set; }
 
         public void SetId(string id)

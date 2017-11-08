@@ -24,9 +24,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         string GetNameClaimType();
         void SetNameClaimType(string nameClaimType);
 
-        string GetLoginLinkLabel();
-        void SetLoginLinkLabel(string loginLinkLabel);
-
         string RedirectUri { get; }
 
         bool GetAllowAutoUserCreation();

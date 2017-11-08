@@ -82,11 +82,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                 ConfigurationStore.Value.SetNameClaimType(v);
                 Log.Info($"{ConfigurationSettingsName} NameClaimType set to: {v}");
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}LoginLinkLabel=", $"Set the {ConfigurationSettingsName} LoginLinkLabel.", v =>
-            {
-                ConfigurationStore.Value.SetLoginLinkLabel(v);
-                Log.Info($"{ConfigurationSettingsName} LoginLinkLabel set to: {v}");
-            });
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}AllowAutoUserCreation=", $"Set {ConfigurationSettingsName} AllowAutoUserCreation.", v =>
             {
                 var isAllowed = bool.Parse(v);
