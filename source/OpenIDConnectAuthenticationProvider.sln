@@ -25,6 +25,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Node.Extensibility.Authenti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Extensibility.Authentication.OpenIDConnect", "Client.Extensibility.Authentication.OpenIDConnect\Client.Extensibility.Authentication.OpenIDConnect.csproj", "{2B189A86-73DB-495F-B2B7-104672DB1580}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Extensibility.Authentication.AzureAD", "Client.Extensibility.Authentication.AzureAD\Client.Extensibility.Authentication.AzureAD.csproj", "{A0DD0DD3-B040-45D7-A4E3-C4601C63D8B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Extensibility.Authentication.GoogleApps", "Client.Extensibility.Authentication.GoogleApps\Client.Extensibility.Authentication.GoogleApps.csproj", "{30B0B7CB-8DF3-4DA0-9956-83CCCAD8694F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Extensibility.Authentication.Okta", "Client.Extensibility.Authentication.Okta\Client.Extensibility.Authentication.Okta.csproj", "{580B0996-346B-44F5-8411-C9F8EA04869D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +65,18 @@ Global
 		{2B189A86-73DB-495F-B2B7-104672DB1580}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B189A86-73DB-495F-B2B7-104672DB1580}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B189A86-73DB-495F-B2B7-104672DB1580}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0DD0DD3-B040-45D7-A4E3-C4601C63D8B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0DD0DD3-B040-45D7-A4E3-C4601C63D8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0DD0DD3-B040-45D7-A4E3-C4601C63D8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0DD0DD3-B040-45D7-A4E3-C4601C63D8B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30B0B7CB-8DF3-4DA0-9956-83CCCAD8694F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30B0B7CB-8DF3-4DA0-9956-83CCCAD8694F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30B0B7CB-8DF3-4DA0-9956-83CCCAD8694F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30B0B7CB-8DF3-4DA0-9956-83CCCAD8694F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{580B0996-346B-44F5-8411-C9F8EA04869D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{580B0996-346B-44F5-8411-C9F8EA04869D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{580B0996-346B-44F5-8411-C9F8EA04869D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{580B0996-346B-44F5-8411-C9F8EA04869D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
