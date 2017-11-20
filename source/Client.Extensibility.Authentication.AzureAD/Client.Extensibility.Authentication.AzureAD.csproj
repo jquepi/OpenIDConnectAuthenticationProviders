@@ -16,7 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Octopus.Client.Extensibility.Authentication.OpenIDConnect" Version="4.0.1-enh-clientconfig0006" />
+    <PackageReference Include="Octopus.Client.Extensibility" Version="3.0.1-enh-clientconfig0010" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client.Extensibility.Authentication.OpenIDConnect\Client.Extensibility.Authentication.OpenIDConnect.csproj" />
   </ItemGroup>
 
 </Project>

@@ -116,13 +116,13 @@ Task("__Pack")
             OutputDirectory = artifactsDir
         });
 
-        DotNetCorePack("source/Client.Extensibility.Authentication.OpenIDConnect", new DotNetCorePackSettings
-        {
-            Configuration = configuration,
-            OutputDirectory = artifactsDir,
-            NoBuild = true,
-            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
-        });
+        // DotNetCorePack("source/Client.Extensibility.Authentication.OpenIDConnect", new DotNetCorePackSettings
+        // {
+        //     Configuration = configuration,
+        //     OutputDirectory = artifactsDir,
+        //     NoBuild = true,
+        //     ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+        // });
 
         DotNetCorePack("source/Client.Extensibility.Authentication.AzureAD", new DotNetCorePackSettings
         {
@@ -159,10 +159,10 @@ Task("__Publish")
         ApiKey = EnvironmentVariable("MyGetApiKey")
     });
 
-    NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg", new NuGetPushSettings {
-        Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
-        ApiKey = EnvironmentVariable("MyGetApiKey")
-    });
+    // NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg", new NuGetPushSettings {
+    //     Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
+    //     ApiKey = EnvironmentVariable("MyGetApiKey")
+    // });
 
     NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.AzureAD.{nugetVersion}.nupkg", new NuGetPushSettings {
         Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
@@ -181,10 +181,10 @@ Task("__Publish")
 
     if (gitVersionInfo.PreReleaseLabel == "")
     {
-        NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg", new NuGetPushSettings {
-            Source = "https://www.nuget.org/api/v2/package",
-            ApiKey = EnvironmentVariable("NuGetApiKey")
-        });
+        // NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg", new NuGetPushSettings {
+        //     Source = "https://www.nuget.org/api/v2/package",
+        //     ApiKey = EnvironmentVariable("NuGetApiKey")
+        // });
 
         NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.AzureAD.{nugetVersion}.nupkg", new NuGetPushSettings {
             Source = "https://www.nuget.org/api/v2/package",
@@ -211,7 +211,7 @@ Task("__CopyToLocalPackages")
 {
     CreateDirectory(localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Server.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg"), localPackagesDir);
-    CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg"), localPackagesDir);
+    // CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.AzureAD.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.GoogleApps.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.Okta.{nugetVersion}.nupkg"), localPackagesDir);
