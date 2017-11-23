@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Nancy" Version="1.2.0" />
     <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.0" />
+    <PackageReference Include="Octopus.Node.Extensibility" Version="3.0.1-enh-clientconfig0008" />
     <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="5.0.0" />
     <PackageReference Include="Octopus.Server.Extensibility" Version="3.0.0" />
     <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="5.0.0" />
@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <Target Name="AfterBuildNet451" AfterTargets="Build">
-    <Exec Command="xcopy $(OutputPath)*.IdentityModel.Tokens*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D&#xD;&#xA;xcopy $(OutputPath)*OpenIDConnect.* C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
+    <Exec Command="xcopy $(OutputPath)*.IdentityModel.Tokens*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
+    <Exec Command="xcopy $(OutputPath)*OpenIDConnect.* C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
   </Target>
   </Project>
