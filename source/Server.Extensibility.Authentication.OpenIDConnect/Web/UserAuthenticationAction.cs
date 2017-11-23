@@ -73,9 +73,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
                 var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, state);
 
-                return ResponseCreator.AsOctopusJson(response, new LoginRedirectLinkResponseModel { ExternalAuthenticationUrl = url })
+                return ResponseCreator.AsOctopusJson(response, new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
                     .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
                     .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
+            }
+            catch (ArgumentException ex)
+            {
+                log.Error(ex);
+                return ResponseCreator.BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
