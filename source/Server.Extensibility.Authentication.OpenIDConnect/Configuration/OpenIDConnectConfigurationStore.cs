@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
@@ -8,9 +7,8 @@ using Octopus.Node.Extensibility.HostServices.Mapping;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public abstract class OpenIdConnectConfigurationStore<TConfiguration, TResource> : ExtensionConfigurationStore<TConfiguration, TResource>, IOpenIDConnectConfigurationStore
+    public abstract class OpenIdConnectConfigurationStore<TConfiguration> : ExtensionConfigurationStore<TConfiguration>, IOpenIDConnectConfigurationStore<TConfiguration>
         where TConfiguration : OpenIDConnectConfiguration, IId, new()
-        where TResource : OpenIDConnectConfigurationResource
     {
         public abstract string ConfigurationSettingsName { get; }
 
@@ -76,21 +74,5 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
         }
 
         public string RedirectUri => $"/api/users/authenticatedToken/{ConfigurationSettingsName}";
-
-        public override IEnumerable<ConfigurationValue> GetConfigurationValues()
-        {
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.IsEnabled", GetIsEnabled().ToString(), GetIsEnabled(), "Is Enabled");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.Issuer", GetIssuer(), GetIsEnabled(), "Issuer");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.ClientId", GetClientId(), GetIsEnabled(), "ClientId", true);
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.Scope", GetScope(), GetIsEnabled() && GetScope() != OpenIDConnectConfiguration.DefaultScope, "Scope");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RedirectUri", RedirectUri, GetIsEnabled(), "RedirectUri");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.NameClaimType", GetNameClaimType(), GetIsEnabled() && GetNameClaimType() != OpenIDConnectConfiguration.DefaultNameClaimType, "Name Claim Type");
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.AllowAutoUserCreation", GetAllowAutoUserCreation().ToString(), GetIsEnabled(), "Allow auto user creation");
-        }
-
-        public override IEnumerable<IResourceMapping> GetMappings()
-        {
-            return new[] { ResourceMappingFactory.Create<TResource, TConfiguration>() };
-        }
     }
 }

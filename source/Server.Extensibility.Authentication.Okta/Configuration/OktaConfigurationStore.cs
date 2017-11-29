@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using Octopus.Data.Storage.Configuration;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+﻿using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaConfigurationStore : OpenIdConnectConfigurationStore<OktaConfiguration, OktaConfigurationResource>, IOktaConfigurationStore
+    public class OktaConfigurationStore : OpenIdConnectConfigurationStore<OktaConfiguration>, IOktaConfigurationStore
     {
         public const string SingletonId = "authentication-od";
 
@@ -28,19 +26,6 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
         public void SetRoleClaimType(string roleClaimType)
         {
             SetProperty(doc => doc.RoleClaimType = roleClaimType);
-        }
-
-        public override string ConfigurationSetName => "Okta";
-
-        public override string Description => "Okta authentication settings";
-
-        public override IEnumerable<ConfigurationValue> GetConfigurationValues()
-        {
-            foreach (var configurationValue in base.GetConfigurationValues())
-            {
-                yield return configurationValue;
-            }
-            yield return new ConfigurationValue($"Octopus.{ConfigurationSettingsName}.RoleClaimType", GetRoleClaimType(), GetIsEnabled() && GetRoleClaimType() != OktaConfiguration.DefaultRoleClaimType, "Role Claim Type");
         }
     }
 }

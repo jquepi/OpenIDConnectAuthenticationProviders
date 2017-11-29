@@ -32,7 +32,11 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 
             builder.RegisterType<GoogleAppsConfigurationStore>()
                 .As<IGoogleAppsConfigurationStore>()
+                .InstancePerDependency();
+            builder.RegisterType<GoogleAppsConfigurationSettings>()
+                .As<IGoogleAppsConfigurationSettings>()
                 .As<IHasConfigurationSettings>()
+                .As<IHasConfigurationSettingsResource>()
                 .As<IContributeMappings>()
                 .InstancePerDependency();
             builder.RegisterType<GoogleAppsConfigureCommands>()

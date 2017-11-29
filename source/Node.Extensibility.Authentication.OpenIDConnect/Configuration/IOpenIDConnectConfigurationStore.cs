@@ -1,7 +1,13 @@
-﻿using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+﻿using Nevermore.Contracts;
+using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
+    public interface IOpenIDConnectConfigurationStore<TConfiguration> : IExtensionConfigurationStore<TConfiguration>, IOpenIDConnectConfigurationStore
+        where TConfiguration : OpenIDConnectConfiguration, IId, new()
+    {
+    }
+
     public interface IOpenIDConnectConfigurationStore : IExtensionConfigurationStore
     {
         string ConfigurationSettingsName { get; }

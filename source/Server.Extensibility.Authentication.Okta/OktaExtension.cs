@@ -34,7 +34,11 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             builder.RegisterType<OktaConfigurationStore>()
                 .As<IOktaConfigurationStore>()
+                .InstancePerDependency();
+            builder.RegisterType<OktaConfigurationSettings>()
+                .As<IOktaConfigurationSettings>()
                 .As<IHasConfigurationSettings>()
+                .As<IHasConfigurationSettingsResource>()
                 .As<IContributeMappings>()
                 .InstancePerDependency();
             builder.RegisterType<OktaConfigureCommands>()

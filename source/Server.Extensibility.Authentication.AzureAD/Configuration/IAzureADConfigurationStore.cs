@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public interface IAzureADConfigurationStore : IOpenIDConnectConfigurationStore
+    public interface IAzureADConfigurationStore : IOpenIDConnectConfigurationStore<AzureADConfiguration>
     {
         string GetRoleClaimType();
         void SetRoleClaimType(string roleClaimType);

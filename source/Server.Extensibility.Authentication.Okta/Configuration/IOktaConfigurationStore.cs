@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public interface IOktaConfigurationStore : IOpenIDConnectConfigurationStore
+    public interface IOktaConfigurationStore : IOpenIDConnectConfigurationStore<OktaConfiguration>
     {
         string GetRoleClaimType();
         void SetRoleClaimType(string roleClaimType);

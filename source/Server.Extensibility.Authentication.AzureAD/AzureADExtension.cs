@@ -34,7 +34,11 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
 
             builder.RegisterType<AzureADConfigurationStore>()
                 .As<IAzureADConfigurationStore>()
+                .InstancePerDependency();
+            builder.RegisterType<AzureADConfigurationSettings>()
+                .As<IAzureADConfigurationSettings>()
                 .As<IHasConfigurationSettings>()
+                .As<IHasConfigurationSettingsResource>()
                 .As<IContributeMappings>()
                 .InstancePerDependency();
             builder.RegisterType<AzureADConfigureCommands>()
