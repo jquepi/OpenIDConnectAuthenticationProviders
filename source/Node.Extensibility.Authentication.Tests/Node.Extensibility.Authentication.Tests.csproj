@@ -63,8 +63,8 @@
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Octopus.Data, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octopus.Data.4.0.0\lib\netstandard1.0\Octopus.Data.dll</HintPath>
+    <Reference Include="Octopus.Data, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Data.3.0.0\lib\netstandard1.0\Octopus.Data.dll</HintPath>
     </Reference>
     <Reference Include="Octopus.Diagnostics, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octopus.Diagnostics.1.0.12\lib\netstandard1.0\Octopus.Diagnostics.dll</HintPath>
