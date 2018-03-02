@@ -54,7 +54,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             // These are important as Singletons because they cache X509 certificates for performance
             builder.RegisterType<DefaultKeyJsonParser>().As<IKeyJsonParser>().SingleInstance();
-            builder.RegisterType<OktaKeyRetriever>().As<IKeyRetriever>().SingleInstance();
+            builder.RegisterType<OktaKeyRetriever>().As<IOktaKeyRetriever>().SingleInstance();
 
             builder.RegisterType<OktaStaticContentFolders>().As<IContributesStaticContentFolders>().InstancePerDependency();
 
