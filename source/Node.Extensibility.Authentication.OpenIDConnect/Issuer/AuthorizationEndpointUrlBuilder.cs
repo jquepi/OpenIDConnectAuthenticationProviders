@@ -16,6 +16,9 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer
             this.urlEncoder = urlEncoder;
         }
 
+        protected virtual string ResponseType => OpenIDConnectConfiguration.DefaultResponseType;
+        protected virtual string ResponseMode => OpenIDConnectConfiguration.DefaultResponseMode;
+
         public virtual string Build(string requestDirectoryPath, IssuerConfiguration issuerConfiguration, string nonce, string state)
         {
             if (issuerConfiguration == null)
@@ -24,8 +27,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer
             var issuerEndpoint = issuerConfiguration.AuthorizationEndpoint;
             var clientId = ConfigurationStore.GetClientId();
             var scope = ConfigurationStore.GetScope();
-            var responseType = OpenIDConnectConfiguration.DefaultResponseType;
-            var responseMode = OpenIDConnectConfiguration.DefaultResponseMode;
+            var responseType = ResponseType;
+            var responseMode = ResponseMode;
             var redirectUri = requestDirectoryPath.Trim('/') + ConfigurationStore.RedirectUri;
 
             var urlPathEncode = urlEncoder.UrlEncode(state);

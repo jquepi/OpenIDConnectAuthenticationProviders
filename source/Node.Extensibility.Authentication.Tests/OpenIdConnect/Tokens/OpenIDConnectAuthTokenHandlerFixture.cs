@@ -76,11 +76,11 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.error);
-            Assert.IsNotNull(result.principal);
+            Assert.IsNullOrEmpty(result.Error);
+            Assert.IsNotNull(result.Principal);
             Assert.AreEqual("/state/", state);
 
-            AssertClaims(result.principal);
+            AssertClaims(result.Principal);
 
             configurationStore.Received().GetIssuer();
             configurationStore.Received().GetClientId();
@@ -124,11 +124,11 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.error);
-            Assert.IsNotNull(result.principal);
+            Assert.IsNullOrEmpty(result.Error);
+            Assert.IsNotNull(result.Principal);
             Assert.AreEqual("/state/", state);
 
-            AssertClaims(result.principal);
+            AssertClaims(result.Principal);
 
             configurationStore.Received().GetIssuer();
             configurationStore.Received().GetClientId();

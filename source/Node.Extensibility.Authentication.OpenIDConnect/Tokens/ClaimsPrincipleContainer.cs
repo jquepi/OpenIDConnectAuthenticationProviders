@@ -6,14 +6,20 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
     {
         public ClaimsPrincipleContainer(string error)
         {
-            this.error = error;
+            this.Error = error;
         }
-        public ClaimsPrincipleContainer(ClaimsPrincipal principal)
+        public ClaimsPrincipleContainer(ClaimsPrincipal principal, string[] externalRoleIds)
         {
-            this.principal = principal;
+            this.Principal = principal;
+            ExternalRoleIds = externalRoleIds;
         }
 
-        public string error { get; private set; }
-        public ClaimsPrincipal principal { get; private set; }
+        public string Error { get; private set; }
+        public ClaimsPrincipal Principal { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the external Role/Group Ids
+        /// </summary>
+        public string[] ExternalRoleIds { get; private set; }
     }
 }

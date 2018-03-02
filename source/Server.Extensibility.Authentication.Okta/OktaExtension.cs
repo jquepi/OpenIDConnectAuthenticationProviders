@@ -34,6 +34,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             builder.RegisterType<OktaConfigurationStore>()
                 .As<IOktaConfigurationStore>()
+                .As<IOktaConfigurationStore>()
                 .InstancePerDependency();
             builder.RegisterType<OktaConfigurationSettings>()
                 .As<IOktaConfigurationSettings>()
