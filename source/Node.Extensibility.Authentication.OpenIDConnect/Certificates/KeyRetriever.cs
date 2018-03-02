@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 
@@ -17,16 +18,19 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
         where TKeyParser : IKeyJsonParser
     {
         readonly TKeyParser keyParser;
+        readonly ILog log;
         readonly object funcLock = new object();
         Task<IDictionary<string, AsymmetricSecurityKey>> certRetrieveTask;
 
         protected readonly TStore ConfigurationStore;
 
         protected KeyRetriever(TStore configurationStore,
-            TKeyParser keyParser)
+            TKeyParser keyParser, 
+            ILog log)
         {
             ConfigurationStore = configurationStore;
             this.keyParser = keyParser;
+            this.log = log;
         }
 
         public Task<IDictionary<string, AsymmetricSecurityKey>> GetKeysAsync(IssuerConfiguration issuerConfiguration, bool forceReload=false)
@@ -51,6 +55,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
             using (var client = new HttpClient())
             {
                 var downloadUri = GetDownloadUri(issuerConfiguration);
+
+                log.InfoFormat("Retrieving token signing keys from {0}", downloadUri);
 
                 var response = await client.GetAsync((string) downloadUri);
                 var content = await response.Content.ReadAsStringAsync();
