@@ -132,7 +132,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
             {
                 // Step 4b: Try to get or create a the Octopus User this external identity represents
-                var userResult = GetOrCreateUser(authenticationCandidate, principalContainer.ExternalRoleIds, cts.Token);
+                var userResult = GetOrCreateUser(authenticationCandidate, principalContainer.ExternalGroupIds, cts.Token);
                 if (userResult.Succeeded)
                 {
                     loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);

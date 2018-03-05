@@ -8,10 +8,10 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
         {
             this.Error = error;
         }
-        public ClaimsPrincipleContainer(ClaimsPrincipal principal, string[] externalRoleIds)
+        public ClaimsPrincipleContainer(ClaimsPrincipal principal, string[] externalGroupIds)
         {
             this.Principal = principal;
-            ExternalRoleIds = externalRoleIds;
+            ExternalGroupIds = externalGroupIds;
         }
 
         public string Error { get; private set; }
@@ -20,6 +20,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
         /// <summary>
         /// Gets or sets the external Role/Group Ids
         /// </summary>
-        public string[] ExternalRoleIds { get; private set; }
+        public string[] ExternalGroupIds { get; private set; }
     }
 }

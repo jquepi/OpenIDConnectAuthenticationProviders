@@ -22,15 +22,17 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
                 validationParameters.RoleClaimType = ConfigurationStore.GetRoleClaimType();
         }
 
-        protected override string[] GetProviderRoleIds(ClaimsPrincipal principal)
+        protected override string[] GetProviderGroupIds(ClaimsPrincipal principal)
         {
             var roleClaimType = ConfigurationStore.GetRoleClaimType();
 
             if (string.IsNullOrWhiteSpace(roleClaimType))
                 return new string[0];
 
+            // the groups Ids consist of external Role and Group identifiers. We always load ClaimTypes.Role claims
+            // as external identifiers, and then also based on a custom claim specified by the provider.
             var groups = principal.FindAll(ClaimTypes.Role)
-                .Union(principal.FindAll(roleClaimType))
+                .Concat(principal.FindAll(roleClaimType))
                 .Select(c => c.Value).ToArray();
 
             return groups;
