@@ -91,13 +91,14 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             {
                 try
                 {
+                    Log.InfoFormat("Unable to locate signature key, attempting reload. Currently cached kids are {0}", string.Join(", ", keys.Keys));
                     keys = await keyRetriever.GetKeysAsync(issuerConfig, true);
                     principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
                 }
                 catch (SecurityTokenInvalidSignatureException)
                 {
                     // we still didn't find the right key. Log the kids we have
-                    Log.WarnFormat("Unable to locate signature key. Currently cached kids are {0}", string.Join(", ", keys.Keys));
+                    Log.WarnFormat("Unable to locate signature key. Cached kids are {0}", string.Join(", ", keys.Keys));
                     throw;
                 }
             }
