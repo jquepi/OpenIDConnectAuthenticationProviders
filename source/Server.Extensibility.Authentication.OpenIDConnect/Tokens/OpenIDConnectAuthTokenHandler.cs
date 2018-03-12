@@ -12,15 +12,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         where TStore : IOpenIDConnectConfigurationStore
         where TRetriever : IKeyRetriever
     {
-        readonly ILog log;
 
         protected OpenIDConnectAuthTokenHandler(
             ILog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
-            TRetriever keyRetriever) : base(configurationStore, identityProviderConfigDiscoverer, keyRetriever)
+            TRetriever keyRetriever) : base(configurationStore, identityProviderConfigDiscoverer, keyRetriever, log)
         {
-            this.log = log;
         }
 
         public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out string state)
@@ -29,7 +27,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             if (requestForm.ContainsKey("error"))
             {
                 var errorDescription = requestForm["error_description"] as string;
-                log.Error($"Failed to authenticate user: {errorDescription}");
+                Log.Error($"Failed to authenticate user: {errorDescription}");
                 return Task.FromResult(new ClaimsPrincipleContainer(errorDescription));
             }
 
