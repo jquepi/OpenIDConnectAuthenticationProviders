@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using Octopus.Diagnostics;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 {
@@ -14,15 +15,18 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
     {
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever keyRetriever;
+        protected readonly ILog Log;
         protected readonly TStore ConfigurationStore;
 
         protected AuthTokenHandler(TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
-            TRetriever keyRetriever)
+            TRetriever keyRetriever,
+            ILog log)
         {
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.keyRetriever = keyRetriever;
+            Log = log;
         }
 
         protected async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
@@ -42,7 +46,16 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 ValidateIssuer = true,
                 ValidIssuer = issuerConfig.Issuer,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) => !keys.ContainsKey(identifier) ? null : new[] { keys[identifier] }
+                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                {
+                    if (!keys.ContainsKey(identifier))
+                    {
+                        Log.InfoFormat("No signing key found for kid {0}", identifier);
+                        return null;
+                    } 
+                    else 
+                        return new[] {keys[identifier]};
+                }
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
@@ -76,8 +89,18 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             // So reflush the key cache, reload the keys, and try once more.
             if (signatureError)
             {
-                keys = await keyRetriever.GetKeysAsync(issuerConfig, true);
-                principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+                try
+                {
+                    Log.InfoFormat("Unable to locate signature key, attempting reload. Currently cached kids are {0}", string.Join(", ", keys.Keys));
+                    keys = await keyRetriever.GetKeysAsync(issuerConfig, true);
+                    principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+                }
+                catch (SecurityTokenInvalidSignatureException)
+                {
+                    // we still didn't find the right key. Log the kids we have
+                    Log.WarnFormat("Unable to locate signature key. Cached kids are {0}", string.Join(", ", keys.Keys));
+                    throw;
+                }
             }
 
             var error = string.Empty;
