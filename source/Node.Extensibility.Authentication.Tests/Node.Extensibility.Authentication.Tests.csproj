@@ -107,7 +107,10 @@
     </Compile>
     <Compile Include="Helpers\RS256AlgorithmRsaOnly.cs" />
     <Compile Include="OpenIdConnect\Tokens\CustomOpenIDConnectAuthTokenHandler.cs" />
+    <Compile Include="OpenIdConnect\Tokens\CustomOpenIDConnectWithRoleAuthTokenHandler.cs" />
     <Compile Include="OpenIdConnect\Tokens\OpenIDConnectAuthTokenHandlerFixture.cs" />
+    <Compile Include="OpenIdConnect\Tokens\OpenIDConnectWithRolesAuthTokenHandlerFixture.cs" />
+    <Compile Include="OpenIdConnect\Tokens\OpenIDFixtureBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
