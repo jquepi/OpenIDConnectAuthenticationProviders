@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public class AzureADConfigurationStore : OpenIdConnectConfigurationStore<AzureADConfiguration>, IAzureADConfigurationStore
+    public class AzureADConfigurationStore : OpenIdConnectConfigurationWithRoleStore<AzureADConfiguration>, IAzureADConfigurationStore
     {
         public const string SingletonId = "authentication-aad";
 
@@ -16,16 +16,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
             IConfigurationStore configurationStore,
             IResourceMappingFactory factory) : base(configurationStore, factory)
         {
-        }
-
-        public string GetRoleClaimType()
-        {
-            return GetProperty(doc => doc.RoleClaimType);
-        }
-
-        public void SetRoleClaimType(string roleClaimType)
-        {
-            SetProperty(doc => doc.RoleClaimType = roleClaimType);
         }
     }
 }

@@ -2,16 +2,15 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaConfiguration : OpenIDConnectConfiguration
+    public class OktaConfiguration : OpenIDConnectConfigurationWithRole
     {
-        public static string DefaultRoleClaimType = "roles";
+        public static string DefaultRoleClaimType = "groups";
 
         public OktaConfiguration() : base("Okta", "Octopus Deploy", "1.0")
         {
             Id = OktaConfigurationStore.SingletonId;
             RoleClaimType = DefaultRoleClaimType;
+            Scope = DefaultScope + "%20groups";
         }
-
-        public string RoleClaimType { get; set; }
     }
 }

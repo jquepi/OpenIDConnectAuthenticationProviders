@@ -13,5 +13,4 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
             
         }
     }
-
 }

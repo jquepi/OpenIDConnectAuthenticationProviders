@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Nancy;
@@ -74,10 +73,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
             string stateFromRequest;
             var principalContainer = await authTokenHandler.GetPrincipalAsync(((DynamicDictionary)context.Request.Form).ToDictionary(), out stateFromRequest);
-            var principal = principalContainer.principal;
-            if (principal == null || !string.IsNullOrEmpty(principalContainer.error))
+            var principal = principalContainer.Principal;
+            if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
             {
-                return BadRequest($"The response from the external identity provider contained an error: {principalContainer.error}");
+                return BadRequest($"The response from the external identity provider contained an error: {principalContainer.Error}");
             }
             
             // Step 2: Validate the state object we passed wasn't tampered with
@@ -133,7 +132,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
             {
                 // Step 4b: Try to get or create a the Octopus User this external identity represents
-                var userResult = GetOrCreateUser(authenticationCandidate, principal, cts.Token);
+                var userResult = GetOrCreateUser(authenticationCandidate, principalContainer.ExternalGroupIds, cts.Token);
                 if (userResult.Succeeded)
                 {
                     loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
@@ -186,10 +185,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
 
-        UserCreateResult GetOrCreateUser(UserResource userResource, ClaimsPrincipal principal, CancellationToken cancellationToken)
+        UserCreateResult GetOrCreateUser(UserResource userResource, string[] groups, CancellationToken cancellationToken)
         {
-            var groups = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
-
             var identityToMatch = NewIdentity(userResource);
 
             var user = userStore.GetByIdentity(identityToMatch);

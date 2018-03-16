@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaConfigurationStore : OpenIdConnectConfigurationStore<OktaConfiguration>, IOktaConfigurationStore
+    public class OktaConfigurationStore : OpenIdConnectConfigurationWithRoleStore<OktaConfiguration>, IOktaConfigurationStore
     {
         public const string SingletonId = "authentication-od";
 
@@ -16,16 +16,6 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
             IConfigurationStore configurationStore,
             IResourceMappingFactory factory) : base(configurationStore, factory)
         {
-        }
-
-        public string GetRoleClaimType()
-        {
-            return GetProperty(doc => doc.RoleClaimType);
-        }
-
-        public void SetRoleClaimType(string roleClaimType)
-        {
-            SetProperty(doc => doc.RoleClaimType = roleClaimType);
         }
     }
 }
