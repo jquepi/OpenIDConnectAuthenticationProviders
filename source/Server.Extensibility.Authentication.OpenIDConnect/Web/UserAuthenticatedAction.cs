@@ -181,8 +181,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         Response RedirectResponse(IResponseFormatter response, string uri)
         {
             return response.AsRedirect(uri)
-                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
-                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
+                .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
+                .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
         }
 
         UserCreateResult GetOrCreateUser(UserResource userResource, string[] groups, CancellationToken cancellationToken)
