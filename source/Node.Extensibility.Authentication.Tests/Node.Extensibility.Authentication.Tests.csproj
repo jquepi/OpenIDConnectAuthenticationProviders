@@ -72,6 +72,9 @@
     <Reference Include="Octopus.Node.Extensibility, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octopus.Node.Extensibility.4.0.0\lib\netstandard1.2\Octopus.Node.Extensibility.dll</HintPath>
     </Reference>
+    <Reference Include="Octopus.Node.Extensibility.Authentication, Version=6.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octopus.Node.Extensibility.Authentication.6.0.1-enh-cookiesecure0004\lib\netstandard1.2\Octopus.Node.Extensibility.Authentication.dll</HintPath>
+    </Reference>
     <Reference Include="Octopus.Server.Extensibility, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Octopus.Server.Extensibility.4.0.0\lib\net451\Octopus.Server.Extensibility.dll</HintPath>
     </Reference>

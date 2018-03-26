@@ -1,6 +1,6 @@
 var providerName = "Google Apps";
 
-function googleAuthProvider(octopusClient, provider, redirectAfterLoginToLink, onError) {
+function googleAuthProvider(octopusClient, provider, loginState, onError) {
 
     this.linkHtml = '<a><div class="googleapps-button"><img src="' + octopusClient.resolve("~/images/google_signin_buttons/icon-google.svg") + '" /><div>Sign in with Google</div></div></a>';
 
@@ -14,7 +14,7 @@ function googleAuthProvider(octopusClient, provider, redirectAfterLoginToLink, o
         };
         var postData = {
             ApiAbsUrl: octopusClient.resolve("~/"),
-            RedirectAfterLoginTo: redirectAfterLoginToLink
+            State: loginState
         };
 
         octopusClient.post(authLink, postData)
