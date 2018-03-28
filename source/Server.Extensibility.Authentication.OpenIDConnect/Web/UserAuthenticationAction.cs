@@ -80,6 +80,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateData), true, false, DateTime.UtcNow.AddMinutes(20)))
                     .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
             }
+            catch (JsonSerializationException je)
+            {
+                log.Error(je, "Invalid state passed to server when initiating login");
+                return ResponseCreator.BadRequest(je.Message);
+            }
             catch (ArgumentException ex)
             {
                 log.Error(ex);
