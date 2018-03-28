@@ -26,7 +26,9 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
         protected const string KeyId = "88a8e79fba13856b4159f96e9c9ea6d5";
         protected const string Nonce = "";
 
-        protected Request CreateRequest(string token, string redirectAfterLoginTo = "/state/", bool usingSecureConnection = false)
+        protected const string DefaultRedirect = "/infrastructure/machines/machines-1";
+
+        protected Request CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
         {
             var request = new Request("POST", DefaultIssuer);
             request.Form["access_token"] = null;

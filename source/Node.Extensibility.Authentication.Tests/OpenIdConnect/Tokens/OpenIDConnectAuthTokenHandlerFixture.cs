@@ -64,7 +64,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
             Assert.IsNotNull(result);
             Assert.IsNullOrEmpty(result.Error);
             Assert.IsNotNull(result.Principal);
-            Assert.AreEqual("/state/", state.RedirectAfterLoginTo);
+            Assert.AreEqual(DefaultRedirect, state.RedirectAfterLoginTo);
 
             AssertClaims(result.Principal);
 
@@ -112,7 +112,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
             Assert.IsNotNull(result);
             Assert.IsNullOrEmpty(result.Error);
             Assert.IsNotNull(result.Principal);
-            Assert.AreEqual("/state/", state.RedirectAfterLoginTo);
+            Assert.AreEqual(DefaultRedirect, state.RedirectAfterLoginTo);
 
             AssertClaims(result.Principal);
 
