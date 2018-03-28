@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
 using Nancy.Helpers;
+using Newtonsoft.Json;
 using Octopus.Data.Model.User;
 using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
@@ -13,6 +14,7 @@ using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
+using Octopus.Node.Extensibility.Authentication.Resources;
 using Octopus.Node.Extensibility.Authentication.Resources.Identities;
 using Octopus.Node.Extensibility.Authentication.Storage.User;
 using Octopus.Server.Extensibility.Authentication.HostServices;
@@ -71,7 +73,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
-            string stateFromRequest;
+            LoginState stateFromRequest;
             var principalContainer = await authTokenHandler.GetPrincipalAsync(((DynamicDictionary)context.Request.Form).ToDictionary(), out stateFromRequest);
             var principal = principalContainer.Principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
@@ -89,7 +91,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
             }
 
-            var stateFromRequestHash = State.Protect(stateFromRequest);
+            var stateFromRequestHash = State.Protect(JsonConvert.SerializeObject(stateFromRequest));
             if (stateFromRequestHash != expectedStateHash)
             {
                 return BadRequest($"User login failed: Tampered State. {stateDescription} In this case the state object looks like it has been tampered with. The state object is '{stateFromRequest}'. The SHA256 hash of the state was expected to be '{expectedStateHash}' but was '{stateFromRequestHash}'.");
@@ -138,7 +140,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
 
                     var authCookies = authCookieCreator.CreateAuthCookies(context.Request,
-                        userResult.User.IdentificationToken, SessionExpiry.TwentyDays);
+                        userResult.User.IdentificationToken, SessionExpiry.TwentyDays, stateFromRequest.UsingSecureConnection);
 
                     if (!userResult.User.IsActive)
                     {
@@ -152,7 +154,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                             $"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
                     }
 
-                    return RedirectResponse(response, stateFromRequest)
+                    return RedirectResponse(response, stateFromRequest.RedirectAfterLoginTo)
                         .WithCookies(authCookies)
                         .WithHeader("Expires",
                             DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
@@ -181,8 +183,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         Response RedirectResponse(IResponseFormatter response, string uri)
         {
             return response.AsRedirect(uri)
-                .WithCookie(new NancyCookie("s", Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
-                .WithCookie(new NancyCookie("n", Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
+                .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue))
+                .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString(), true, false, DateTime.MinValue));
         }
 
         UserCreateResult GetOrCreateUser(UserResource userResource, string[] groups, CancellationToken cancellationToken)

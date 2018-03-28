@@ -7,8 +7,11 @@ using JWT;
 using JWT.Serializers;
 using Microsoft.IdentityModel.Tokens;
 using Nancy;
+using Nancy.Helpers;
+using Newtonsoft.Json;
 using Node.Extensibility.Authentication.Tests.Helpers;
 using NUnit.Framework;
+using Octopus.Node.Extensibility.Authentication.Resources;
 
 namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 {
@@ -23,12 +26,15 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
         protected const string KeyId = "88a8e79fba13856b4159f96e9c9ea6d5";
         protected const string Nonce = "";
 
-        protected Request CreateRequest(string token)
+        protected const string DefaultRedirect = "/infrastructure/machines/machines-1";
+
+        protected Request CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
         {
             var request = new Request("POST", DefaultIssuer);
             request.Form["access_token"] = null;
             request.Form["id_token"] = token;
-            request.Form["state"] = "/state/";
+            var stateData = JsonConvert.SerializeObject(new LoginState {RedirectAfterLoginTo = redirectAfterLoginTo, UsingSecureConnection = usingSecureConnection});
+            request.Form["state"] = stateData;
             return request;
         }
 

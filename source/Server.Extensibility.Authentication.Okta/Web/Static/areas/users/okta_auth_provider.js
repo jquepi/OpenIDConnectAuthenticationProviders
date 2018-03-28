@@ -1,6 +1,6 @@
 var providerName = "Okta";
 
-function azureADAuthProvider(octopusClient, provider, redirectAfterLoginToLink, onError) {
+function azureADAuthProvider(octopusClient, provider, loginState, onError) {
 
     this.linkHtml = '<a><div class="okta-button"><img src="' + octopusClient.resolve("~/images/okta/aura_solid_blue.png") + '" /><div>Sign in with Okta</div></div></a>';
 
@@ -13,7 +13,7 @@ function azureADAuthProvider(octopusClient, provider, redirectAfterLoginToLink, 
         };
         var postData = {
             ApiAbsUrl: octopusClient.resolve("~/"),
-            RedirectAfterLoginTo: redirectAfterLoginToLink
+            State: loginState
         };
 
         octopusClient.post(authUri, postData)

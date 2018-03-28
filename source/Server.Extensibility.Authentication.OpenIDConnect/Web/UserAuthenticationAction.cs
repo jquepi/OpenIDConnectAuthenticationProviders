@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Nancy;
 using Nancy.Cookies;
+using Newtonsoft.Json;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
@@ -52,15 +53,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
             var model = modelBinder.Bind<LoginRedirectLinkRequestModel>(context);
 
-            var state = model.RedirectAfterLoginTo;
-            if (string.IsNullOrWhiteSpace(state))
-                state = "/";
+            var state = model.State;
+            var redirectTo = state.RedirectAfterLoginTo;
+            if (string.IsNullOrWhiteSpace(redirectTo))
+                redirectTo = "/";
 
             var whitelist = authenticationConfigurationStore.GetTrustedRedirectUrls();
 
-            if (!Requests.IsLocalUrl(state, whitelist))
+            if (!Requests.IsLocalUrl(redirectTo, whitelist))
             {
-                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", state);
+                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", redirectTo);
                 return ResponseCreator.BadRequest("Request not allowed, due to potential Open Redirection attack");
             }
 
@@ -71,10 +73,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 var issuer = ConfigurationStore.GetIssuer();
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
-                var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, state);
+                var stateData = JsonConvert.SerializeObject(state);
+                var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, stateData);
 
                 return ResponseCreator.AsOctopusJson(response, new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
-                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(state), true, false, DateTime.UtcNow.AddMinutes(20)))
+                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateData), true, false, DateTime.UtcNow.AddMinutes(20)))
                     .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
             }
             catch (ArgumentException ex)

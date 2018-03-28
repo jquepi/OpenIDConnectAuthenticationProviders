@@ -1,32 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net451</TargetFramework>
     <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIDConnect</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIDConnect</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.OpenIDConnect</Description>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Nancy" Version="1.2.0" />
     <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
     <PackageReference Include="Octopus.Node.Extensibility" Version="4.0.0" />
-    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="5.0.0" />
+    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="7.0.0" />
     <PackageReference Include="Octopus.Server.Extensibility" Version="4.0.0" />
-    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="5.0.0" />
+    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="7.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Node.Extensibility.Authentication.OpenIDConnect\Node.Extensibility.Authentication.OpenIDConnect.csproj" />
   </ItemGroup>
-
   <Target Name="AfterBuildNet451" AfterTargets="Build">
     <Exec Command="xcopy $(OutputPath)*.IdentityModel.Tokens*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
     <Exec Command="xcopy $(OutputPath)*OpenIDConnect.* C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
   </Target>
-  </Project>
+</Project>

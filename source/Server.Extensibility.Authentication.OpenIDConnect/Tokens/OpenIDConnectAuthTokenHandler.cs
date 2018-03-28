@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Node.Extensibility.Authentication.Resources;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {
@@ -12,7 +14,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         where TStore : IOpenIDConnectConfigurationStore
         where TRetriever : IKeyRetriever
     {
-
         protected OpenIDConnectAuthTokenHandler(
             ILog log,
             TStore configurationStore,
@@ -21,7 +22,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         {
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out string state)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out LoginState state)
         {
             state = null;
             if (requestForm.ContainsKey("error"))
@@ -43,7 +44,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
                 idToken = requestForm["id_token"] as string;
             }
 
-            state = requestForm["state"] as string;
+            try
+            {
+                var stateData = requestForm["state"] as string;
+                state = JsonConvert.DeserializeObject<LoginState>(stateData);
+            }
+            catch (JsonSerializationException je)
+            {
+                Log.Error(je, "Invalid state returned to server during login");
+                throw;
+            }
 
             return GetPrincipalFromToken(accessToken, idToken);
         }

@@ -8,6 +8,7 @@ using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Node.Extensibility.Authentication.Resources;
 
 namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 {
@@ -56,14 +57,14 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            string state;
+            LoginState state;
             var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNullOrEmpty(result.Error);
             Assert.IsNotNull(result.Principal);
-            Assert.AreEqual("/state/", state);
+            Assert.AreEqual(DefaultRedirect, state.RedirectAfterLoginTo);
 
             AssertClaims(result.Principal);
 
@@ -104,14 +105,14 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            string state;
+            LoginState state;
             var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNullOrEmpty(result.Error);
             Assert.IsNotNull(result.Principal);
-            Assert.AreEqual("/state/", state);
+            Assert.AreEqual(DefaultRedirect, state.RedirectAfterLoginTo);
 
             AssertClaims(result.Principal);
 
@@ -149,7 +150,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .ReturnsForAnyArgs(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(staleKey));
 
             // Act
-            string state;
+            LoginState state;
             var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
 
             // Expect Exception Thrown
@@ -179,7 +180,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            string state;
+            LoginState state;
             var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
 
             // Expect Exception Thrown
