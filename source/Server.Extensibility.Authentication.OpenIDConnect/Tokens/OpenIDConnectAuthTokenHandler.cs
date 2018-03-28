@@ -44,8 +44,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
                 idToken = requestForm["id_token"] as string;
             }
 
-            var stateData = requestForm["state"] as string;
-            state = JsonConvert.DeserializeObject<LoginState>(stateData);
+            try
+            {
+                var stateData = requestForm["state"] as string;
+                state = JsonConvert.DeserializeObject<LoginState>(stateData);
+            }
+            catch (JsonSerializationException je)
+            {
+                Log.Error(je, "Invalid state returned to server during login");
+                throw;
+            }
 
             return GetPrincipalFromToken(accessToken, idToken);
         }
