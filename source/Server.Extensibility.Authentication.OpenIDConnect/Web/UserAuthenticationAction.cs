@@ -10,6 +10,7 @@ using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Infrastructure;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web;
+using Octopus.Node.Extensibility.Authentication.Resources;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 {
