@@ -19,7 +19,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer
         protected virtual string ResponseType => OpenIDConnectConfiguration.DefaultResponseType;
         protected virtual string ResponseMode => OpenIDConnectConfiguration.DefaultResponseMode;
 
-        public virtual string Build(string requestDirectoryPath, IssuerConfiguration issuerConfiguration, string nonce, string state)
+        public virtual string Build(string requestDirectoryPath, IssuerConfiguration issuerConfiguration, string nonce, string state = null)
         {
             if (issuerConfiguration == null)
                 throw new ArgumentException("issuerConfiguration is required", nameof(issuerConfiguration));
@@ -31,9 +31,12 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer
             var responseMode = ResponseMode;
             var redirectUri = requestDirectoryPath.Trim('/') + ConfigurationStore.RedirectUri;
 
-            var urlPathEncode = urlEncoder.UrlEncode(state);
-
-            var url = $"{issuerEndpoint}?client_id={clientId}&scope={scope}&response_type={responseType}&response_mode={responseMode}&nonce={nonce}&redirect_uri={redirectUri}&state={urlPathEncode}";
+            var url = $"{issuerEndpoint}?client_id={clientId}&scope={scope}&response_type={responseType}&response_mode={responseMode}&nonce={nonce}&redirect_uri={redirectUri}";
+            
+            if (!string.IsNullOrWhiteSpace(state))
+            {
+                url += $"&state={urlEncoder.UrlEncode(state)}";
+            }
 
             return url;
         }
