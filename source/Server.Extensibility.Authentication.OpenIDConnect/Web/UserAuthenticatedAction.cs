@@ -73,8 +73,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
         {
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
-            LoginState stateFromRequest;
-            var principalContainer = await authTokenHandler.GetPrincipalAsync(((DynamicDictionary)context.Request.Form).ToDictionary(), out stateFromRequest);
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(((DynamicDictionary)context.Request.Form).ToDictionary(), out var stateStringFromRequest);
             var principal = principalContainer.Principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
             {
@@ -91,11 +90,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 return BadRequest($"User login failed: Missing State Hash Cookie. {stateDescription} In this case the Cookie containing the SHA256 hash of the state object is missing from the request.");
             }
 
-            var stateFromRequestHash = State.Protect(JsonConvert.SerializeObject(stateFromRequest));
+            var stateFromRequestHash = State.Protect(stateStringFromRequest);
             if (stateFromRequestHash != expectedStateHash)
             {
-                return BadRequest($"User login failed: Tampered State. {stateDescription} In this case the state object looks like it has been tampered with. The state object is '{stateFromRequest}'. The SHA256 hash of the state was expected to be '{expectedStateHash}' but was '{stateFromRequestHash}'.");
+                return BadRequest($"User login failed: Tampered State. {stateDescription} In this case the state object looks like it has been tampered with. The state object is '{stateStringFromRequest}'. The SHA256 hash of the state was expected to be '{expectedStateHash}' but was '{stateFromRequestHash}'.");
             }
+
+            var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest);
 
             // Step 3: Validate the nonce is as we expected to prevent replay attacks
             const string nonceDescription = "As a security precaution to prevent replay attacks, Octopus ensures the nonce returned in the claims from the external identity provider matches what it expected.";

@@ -22,9 +22,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         {
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out LoginState state)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out string stateString)
         {
-            state = null;
+            stateString = null;
+            
             if (requestForm.ContainsKey("error"))
             {
                 var errorDescription = requestForm["error_description"] as string;
@@ -44,16 +45,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
                 idToken = requestForm["id_token"] as string;
             }
 
-            try
-            {
-                var stateData = requestForm["state"] as string;
-                state = JsonConvert.DeserializeObject<LoginState>(stateData);
-            }
-            catch (JsonSerializationException je)
-            {
-                Log.Error(je, "Invalid state returned to server during login");
-                throw;
-            }
+            stateString = requestForm["state"] as string;
 
             return GetPrincipalFromToken(accessToken, idToken);
         }
