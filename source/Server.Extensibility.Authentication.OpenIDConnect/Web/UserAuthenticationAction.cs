@@ -52,33 +52,36 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             }
 
             var model = modelBinder.Bind<LoginRedirectLinkRequestModel>(context);
-
-            var state = model.State;
-            var redirectTo = state.RedirectAfterLoginTo;
-            if (string.IsNullOrWhiteSpace(redirectTo))
-                redirectTo = "/";
-
+            
+            // If the login state object was passed use it, otherwise fall back to a safe default:
+            //   1. Redirecting to the root of the local web site
+            //   2. Setting the Cookie.Secure flag according to the current request
+            var state = model.State ?? new LoginState{RedirectAfterLoginTo = "/", UsingSecureConnection = context.Request.Url.IsSecure};
+            
+            // Prevent Open Redirection attacks by ensuring the redirect after successful login is somewhere we trust (local origin or a trusted remote origin)
             var whitelist = authenticationConfigurationStore.GetTrustedRedirectUrls();
-
-            if (!Requests.IsLocalUrl(redirectTo, whitelist))
+            if (!Requests.IsLocalUrl(state.RedirectAfterLoginTo, whitelist))
             {
-                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", redirectTo);
+                log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", state.RedirectAfterLoginTo);
                 return ResponseCreator.BadRequest("Request not allowed, due to potential Open Redirection attack");
             }
 
-            var nonce = Nonce.GenerateUrlSafeNonce();
-
+            // Finally, provide the client with the information it requires to initiate the redirect to the external identity provider
             try
             {
                 var issuer = ConfigurationStore.GetIssuer();
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
-                var stateData = JsonConvert.SerializeObject(state);
-                var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, stateData);
+                // Use a non-deterministic nonce to prevent replay attacks
+                var nonce = Nonce.GenerateUrlSafeNonce();
+                
+                var stateString = JsonConvert.SerializeObject(state);
+                var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, stateString);
 
+                // These cookies are used to validate the data returned from the external identity provider - this prevents tampering
                 return ResponseCreator.AsOctopusJson(response, new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
-                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateData), true, false, DateTime.UtcNow.AddMinutes(20)))
-                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce), true, false, DateTime.UtcNow.AddMinutes(20)));
+                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString), httpOnly: true, secure: state.UsingSecureConnection, expires: DateTime.UtcNow.AddMinutes(20)))
+                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce), httpOnly: true, secure: state.UsingSecureConnection, expires: DateTime.UtcNow.AddMinutes(20)));
             }
             catch (ArgumentException ex)
             {
