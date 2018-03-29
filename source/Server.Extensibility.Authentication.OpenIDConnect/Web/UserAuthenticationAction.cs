@@ -49,7 +49,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             if (ConfigurationStore.GetIsEnabled() == false)
             {
                 log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called while the provider was disabled.");
-                return ResponseCreator.BadRequest(new string[] { "This authentication provider is disabled." });
+                return ResponseCreator.BadRequest("This authentication provider is disabled.");
             }
 
             var model = modelBinder.Bind<LoginRedirectLinkRequestModel>(context);
@@ -92,7 +92,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             catch (Exception ex)
             {
                 log.Error(ex);
-                return ResponseCreator.BadRequest($"{state}?error=Login failed. Please see the Octopus Server logs for more details.");
+                return ResponseCreator.BadRequest("Login failed. Please see the Octopus Server logs for more details.");
             }
         }
     }
