@@ -59,8 +59,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
@@ -92,8 +91,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
@@ -125,8 +123,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
@@ -158,8 +155,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);

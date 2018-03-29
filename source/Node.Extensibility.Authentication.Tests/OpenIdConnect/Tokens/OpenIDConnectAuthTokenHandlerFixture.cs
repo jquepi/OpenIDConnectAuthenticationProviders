@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Nancy;
+using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 using Octopus.Diagnostics;
@@ -57,8 +58,8 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var state = JsonConvert.DeserializeObject<LoginState>(stateString);
 
             // Assert
             Assert.IsNotNull(result);
@@ -105,8 +106,8 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var state = JsonConvert.DeserializeObject<LoginState>(stateString);
 
             // Assert
             Assert.IsNotNull(result);
@@ -150,8 +151,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .ReturnsForAnyArgs(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(staleKey));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
 
             // Expect Exception Thrown
 
@@ -180,8 +180,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            LoginState state;
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out state);
+            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
 
             // Expect Exception Thrown
 
