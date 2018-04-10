@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
-using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
     public class AzureADConfigurationSettings : OpenIdConnectConfigurationSettings<AzureADConfiguration, AzureADConfigurationResource, IAzureADConfigurationStore>, IAzureADConfigurationSettings
     {
-        public AzureADConfigurationSettings(IAzureADConfigurationStore configurationDocumentStore, IResourceMappingFactory factory) : base(configurationDocumentStore, factory)
+        public AzureADConfigurationSettings(IAzureADConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
         {
         }
 

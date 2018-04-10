@@ -3,7 +3,6 @@ using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
-using Octopus.Node.Extensibility.HostServices.Mapping;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
 {
@@ -13,8 +12,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
         public abstract string ConfigurationSettingsName { get; }
 
         protected OpenIdConnectConfigurationStore(
-            IConfigurationStore configurationStore, 
-            IResourceMappingFactory factory) : base(configurationStore, factory)
+            IConfigurationStore configurationStore) : base(configurationStore)
         {
         }
 
