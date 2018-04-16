@@ -1,5 +1,4 @@
 ﻿using Octopus.Data.Storage.Configuration;
-using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
@@ -13,8 +12,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
         public override string ConfigurationSettingsName => "Okta";
 
         public OktaConfigurationStore(
-            IConfigurationStore configurationStore,
-            IResourceMappingFactory factory) : base(configurationStore, factory)
+            IConfigurationStore configurationStore) : base(configurationStore)
         {
         }
     }

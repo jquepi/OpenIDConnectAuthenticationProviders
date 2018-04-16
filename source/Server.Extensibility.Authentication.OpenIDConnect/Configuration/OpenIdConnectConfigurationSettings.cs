@@ -10,7 +10,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
         where TResource : ExtensionConfigurationResource
         where TDocumentStore : IOpenIDConnectConfigurationStore<TConfiguration>
     {
-        protected OpenIdConnectConfigurationSettings(TDocumentStore configurationDocumentStore, IResourceMappingFactory factory) : base(configurationDocumentStore, factory)
+        protected OpenIdConnectConfigurationSettings(TDocumentStore configurationDocumentStore) : base(configurationDocumentStore)
         {
         }
 
@@ -30,9 +30,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
             yield return new ConfigurationValue($"Octopus.{configurationSettingsName}.AllowAutoUserCreation", ConfigurationDocumentStore.GetAllowAutoUserCreation().ToString(), isEnabled, "Allow auto user creation");
         }
 
-        public override IEnumerable<IResourceMapping> GetMappings()
+        public override void BuildMappings(IResourceMappingsBuilder builder)
         {
-            return new[] { ResourceMappingFactory.Create<TResource, TConfiguration>() };
+            builder.Map<TResource, TConfiguration>();
         }
     }
 }

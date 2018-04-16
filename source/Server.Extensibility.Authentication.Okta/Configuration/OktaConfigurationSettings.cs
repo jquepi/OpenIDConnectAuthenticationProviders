@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
-using Octopus.Node.Extensibility.HostServices.Mapping;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
     public class OktaConfigurationSettings : OpenIdConnectConfigurationSettings<OktaConfiguration, OktaConfigurationResource, IOktaConfigurationStore>, IOktaConfigurationSettings
     {
-        public OktaConfigurationSettings(IOktaConfigurationStore configurationDocumentStore, IResourceMappingFactory factory) : base(configurationDocumentStore, factory)
+        public OktaConfigurationSettings(IOktaConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
         {
         }
 
