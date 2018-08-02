@@ -63,7 +63,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         public bool GetAllowAutoUserCreation()
         {
-            return GetProperty(doc => doc.AllowAutoUserCreation.GetValueOrDefault(true));
+            return GetProperty(doc => doc.AllowAutoUserCreation);
         }
 
         public void SetAllowAutoUserCreation(bool allowAutoUserCreation)
