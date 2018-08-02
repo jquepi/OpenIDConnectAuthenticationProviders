@@ -12,6 +12,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 
         protected OpenIDConnectConfiguration()
         {
+            AllowAutoUserCreation = true;
         }
 
         protected OpenIDConnectConfiguration(string name, string author, string configurationSchemaVersion) : base(name, author, configurationSchemaVersion)
@@ -19,6 +20,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
             Scope = DefaultScope;
 
             NameClaimType = DefaultNameClaimType;
+
+            AllowAutoUserCreation = true;
         }
 
         public string Issuer { get; set; }
@@ -29,7 +32,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 
         public string NameClaimType { get; set; }
 
-        public bool? AllowAutoUserCreation { get; set; }
+        public bool AllowAutoUserCreation { get; set; }
 
         public void SetId(string id)
         {
