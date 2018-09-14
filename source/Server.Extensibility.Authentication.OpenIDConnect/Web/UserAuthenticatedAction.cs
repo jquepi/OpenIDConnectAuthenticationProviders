@@ -140,8 +140,14 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 {
                     loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.UserHostAddress);
 
-                    var authCookies = authCookieCreator.CreateAuthCookies(context.Request,
-                        userResult.User.IdentificationToken, SessionExpiry.TwentyDays, stateFromRequest.UsingSecureConnection);
+                    var authCookies = authCookieCreator.CreateAuthCookies(userResult.User.IdentificationToken, SessionExpiry.TwentyDays, context.Request.Url.IsSecure, stateFromRequest.UsingSecureConnection);
+                    var cookies = authCookies.Select(cookieOption => new NancyCookie(cookieOption.Name, cookieOption.Value,
+                        cookieOption.HttpOnly, cookieOption.Secure)
+                    {
+                        Domain = cookieOption.Domain,
+                        Path = cookieOption.Path,
+                        Expires = cookieOption.Expires?.DateTime
+                    }).ToArray();
 
                     if (!userResult.User.IsActive)
                     {
@@ -156,7 +162,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     }
 
                     return RedirectResponse(response, stateFromRequest.RedirectAfterLoginTo)
-                        .WithCookies(authCookies)
+                        .WithCookies(cookies)
                         .WithHeader("Expires",
                             DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo));
                 }
