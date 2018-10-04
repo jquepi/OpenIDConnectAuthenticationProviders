@@ -1,5 +1,6 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
+using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Identities;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
@@ -19,24 +20,24 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             IAzureADPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
             IAzureADConfigurationStore configurationStore,
-            IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep, 
             IAzureADIdentityCreator identityCreator,
-            IClock clock) :
+            IClock clock, 
+            IUrlEncoder encoder) :
             base(
                 log,
                 authTokenHandler,
                 principalToUserResourceMapper,
                 userStore,
                 configurationStore,
-                responseCreator,
                 authCookieCreator,
                 loginTracker,
                 sleep,
                 identityCreator,
-                clock)
+                clock,
+                encoder)
         {
         }
 

@@ -15,7 +15,6 @@ using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.Okta.Web;
 using Octopus.Server.Extensibility.Authentication.Okta.Identities;
-using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta
 {
@@ -44,8 +43,6 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
             builder.RegisterType<OktaConfigureCommands>()
                 .As<IContributeToConfigureCommand>()
                 .InstancePerDependency();
-
-            builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();
 
             builder.RegisterType<OktaAuthorizationEndpointUrlBuilder>().As<IOktaAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<OktaAuthTokenHandler>().As<IOktaAuthTokenHandler>().InstancePerDependency();

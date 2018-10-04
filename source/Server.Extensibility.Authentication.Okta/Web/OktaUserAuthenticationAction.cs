@@ -15,9 +15,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             IOktaConfigurationStore configurationStore, 
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IOktaAuthorizationEndpointUrlBuilder urlBuilder,
-            IApiActionResponseCreator responseCreator,
             IApiActionModelBinder modelBinder,
-            IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, modelBinder, authenticationConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)
         {
         }
     }

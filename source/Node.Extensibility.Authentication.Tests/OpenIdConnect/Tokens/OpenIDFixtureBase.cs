@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using JWT;
 using JWT.Serializers;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
-using Nancy;
-using Nancy.Helpers;
 using Newtonsoft.Json;
 using Node.Extensibility.Authentication.Tests.Helpers;
 using NUnit.Framework;
 using Octopus.Node.Extensibility.Authentication.Resources;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 {
@@ -28,10 +29,10 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 
         protected const string DefaultRedirect = "/infrastructure/machines/machines-1";
 
-        protected Request CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
+        protected OctoRequest CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
         {
-            var request = new Request("POST", DefaultIssuer);
-            request.Form["access_token"] = null;
+            var request = new OctoRequest("https", true, DefaultIssuer, String.Empty, string.Empty, "http", Stream.Null, null, null, new Dictionary<string, StringValues>(), null);
+            //request.Form["access_token"] = null;
             request.Form["id_token"] = token;
             var stateData = JsonConvert.SerializeObject(new LoginState {RedirectAfterLoginTo = redirectAfterLoginTo, UsingSecureConnection = usingSecureConnection});
             request.Form["state"] = stateData;

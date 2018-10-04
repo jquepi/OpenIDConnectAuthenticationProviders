@@ -15,7 +15,6 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Issuer;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Web;
-using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {
@@ -45,8 +44,6 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
                 .As<IContributeToConfigureCommand>()
                 .InstancePerDependency();
 
-            builder.RegisterType<UrlEncoder>().As<IUrlEncoder>().InstancePerDependency();
-            
             builder.RegisterType<AzureADAuthorizationEndpointUrlBuilder>().As<IAzureADAuthorizationEndpointUrlBuilder>().InstancePerDependency();
             builder.RegisterType<AzureADAuthTokenHandler>().As<IAzureADAuthTokenHandler>().InstancePerDependency();
 

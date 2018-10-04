@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net451</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
     <RootNamespace>Octopus.Server.Extensibility.Authentication.Okta</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.Okta</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.Okta</Description>
@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
-    <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
     <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
   </ItemGroup>
 

@@ -16,8 +16,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD
             Func<WhenEnabledAsyncActionInvoker<AzureADUserAuthenticationAction, IAzureADConfigurationStore>> authenticateUserActionFactory,
             Func<WhenEnabledAsyncActionInvoker<AzureADUserAuthenticatedAction, IAzureADConfigurationStore>> userAuthenticatedActionFactory) : base(configurationStore, authenticationProvider)
         {
-            Post[authenticationProvider.AuthenticateUri, true] = async (_, token) => await authenticateUserActionFactory().ExecuteAsync(Context, Response);
-            Post[configurationStore.RedirectUri, true] = async (_, token) => await userAuthenticatedActionFactory().ExecuteAsync(Context, Response);
+            Add("POST", authenticationProvider.AuthenticateUri, authenticateUserActionFactory().ExecuteAsync);
+            Add("POST", configurationStore.RedirectUri, userAuthenticatedActionFactory().ExecuteAsync);
         }
     }
 }

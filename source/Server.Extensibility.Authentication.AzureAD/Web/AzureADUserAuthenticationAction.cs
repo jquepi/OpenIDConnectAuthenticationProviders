@@ -15,9 +15,8 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             IAzureADConfigurationStore configurationStore, 
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAzureADAuthorizationEndpointUrlBuilder urlBuilder,
-            IApiActionResponseCreator responseCreator,
             IApiActionModelBinder modelBinder,
-            IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, modelBinder, authenticationConfigurationStore)
+            IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)
         {
         }
     }

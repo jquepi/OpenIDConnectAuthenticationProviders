@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens;
-using Octopus.Node.Extensibility.Authentication.Resources;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
 {
@@ -22,13 +20,13 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
         {
         }
 
-        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, object> requestForm, out string stateString)
+        public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, string> requestForm, out string stateString)
         {
             stateString = null;
             
             if (requestForm.ContainsKey("error"))
             {
-                var errorDescription = requestForm["error_description"] as string;
+                var errorDescription = requestForm["error_description"];
                 Log.Error($"Failed to authenticate user: {errorDescription}");
                 return Task.FromResult(new ClaimsPrincipleContainer(errorDescription));
             }
@@ -36,16 +34,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
             string accessToken = null;
             if (requestForm.ContainsKey("access_token"))
             {
-                accessToken = requestForm["access_token"] as string;
+                accessToken = requestForm["access_token"];
             }
             
             string idToken = null;
             if (requestForm.ContainsKey("id_token"))
             {
-                idToken = requestForm["id_token"] as string;
+                idToken = requestForm["id_token"];
             }
 
-            stateString = requestForm["state"] as string;
+            stateString = requestForm["state"];
 
             return GetPrincipalFromToken(accessToken, idToken);
         }

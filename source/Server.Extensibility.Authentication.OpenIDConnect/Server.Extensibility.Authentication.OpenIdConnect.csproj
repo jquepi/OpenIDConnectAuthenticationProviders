@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFramework>netstandard1.6</TargetFramework>
     <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIDConnect</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIDConnect</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.OpenIDConnect</Description>
@@ -9,12 +9,10 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
-    <PackageReference Include="Nancy" Version="1.2.0" />
-    <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="5.0.0" />
-    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.0.0" />
-    <PackageReference Include="Octopus.Server.Extensibility" Version="5.0.0" />
-    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="8.0.0" />
+    <PackageReference Include="Octopus.Node.Extensibility" Version="5.0.4-removing-nancy0010" />
+    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.0.1-more-nancy-work0002" />
+    <PackageReference Include="Octopus.Server.Extensibility" Version="5.0.4-removing-nancy0010" />
+    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="8.0.1-more-nancy-work0002" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
   </ItemGroup>

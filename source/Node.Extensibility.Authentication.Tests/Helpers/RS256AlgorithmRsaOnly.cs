@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using JWT;
+using JWT.Algorithms;
 
 namespace Node.Extensibility.Authentication.Tests.Helpers
 {
@@ -12,6 +13,7 @@ namespace Node.Extensibility.Authentication.Tests.Helpers
         }
 
         public string Name => JwtHashAlgorithm.RS256.ToString();
+        public bool IsAsymmetric { get; }
 
         public byte[] Sign(byte[] key, byte[] bytesToSign)
         {

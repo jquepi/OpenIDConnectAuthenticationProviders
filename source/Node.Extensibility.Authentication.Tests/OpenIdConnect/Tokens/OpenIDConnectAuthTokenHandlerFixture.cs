@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
-using Nancy;
 using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
@@ -38,7 +39,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
         }
 
         [Test]
-        public async void ShouldReturnPrincipalWhenValidTokenReceived()
+        public async Task ShouldReturnPrincipalWhenValidTokenReceived()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyPublic;
@@ -58,12 +59,12 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var result = await target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString);
             var state = JsonConvert.DeserializeObject<LoginState>(stateString);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.Error);
+            Assert.That(result.Error, Is.Null.Or.Empty);
             Assert.IsNotNull(result.Principal);
             Assert.AreEqual(DefaultRedirect, state.RedirectAfterLoginTo);
 
@@ -77,7 +78,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 
 
         [Test]
-        public async void ShouldRetryWhenInvalidKeyDetected()
+        public async Task ShouldRetryWhenInvalidKeyDetected()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyStale;
@@ -106,12 +107,12 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var result = await target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString);
             var state = JsonConvert.DeserializeObject<LoginState>(stateString);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.Error);
+            Assert.That(result.Error, Is.Null.Or.Empty);
             Assert.IsNotNull(result.Principal);
             Assert.AreEqual(DefaultRedirect, state.RedirectAfterLoginTo);
 
@@ -126,8 +127,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 
 
         [Test]
-        [ExpectedException(typeof(SecurityTokenInvalidSignatureException))]
-        public async void ShouldThrowWhenInvalidKeyDetectedTwice()
+        public void ShouldThrowWhenInvalidKeyDetectedTwice()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyStale;
@@ -151,16 +151,16 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .ReturnsForAnyArgs(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(staleKey));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            Assert.ThrowsAsync<SecurityTokenInvalidSignatureException>(() => target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString));
 
             // Expect Exception Thrown
 
         }
 
         [Test]
-        [TestCase("https://someotherdomain.com", DefaultClientId, Description = "Invalid Issuer", ExpectedException = typeof(SecurityTokenInvalidIssuerException))]
-        [TestCase(DefaultIssuer, "Another Client", Description = "Invalid ClientId", ExpectedException = typeof(SecurityTokenInvalidAudienceException))]
-        public async void ShouldThrowWhenInvalidTokenDetected(string issuer, string clientId)
+        [TestCase("https://someotherdomain.com", DefaultClientId, typeof(SecurityTokenInvalidIssuerException), Description = "Invalid Issuer")]
+        [TestCase(DefaultIssuer, "Another Client", typeof(SecurityTokenInvalidAudienceException), Description = "Invalid ClientId")]
+        public void ShouldThrowWhenInvalidTokenDetected(string issuer, string clientId, Type expectedException)
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyPublic;
@@ -180,7 +180,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            Assert.ThrowsAsync(expectedException, () => target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString));
 
             // Expect Exception Thrown
 

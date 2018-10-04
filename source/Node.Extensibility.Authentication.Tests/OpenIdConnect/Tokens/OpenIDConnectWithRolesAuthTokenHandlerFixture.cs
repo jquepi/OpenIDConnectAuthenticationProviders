@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
-using Nancy;
 using NSubstitute;
 using NUnit.Framework;
 using Octopus.Diagnostics;
@@ -38,7 +37,7 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
         }
 
         [Test]
-        public async void ShouldReturnRolesFromToken()
+        public async Task ShouldReturnRolesFromToken()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyPublic;
@@ -59,18 +58,17 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var result = await target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.Error);
+            Assert.That(result.Error, Is.Null.Or.Empty);
             Assert.IsNotNull(result.ExternalGroupIds);
-
-            Assert.IsNotNullOrEmpty(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTesters"));
+            Assert.That(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTesters"), Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
-        public async void ShouldReturnGroupsFromToken()
+        public async Task ShouldReturnGroupsFromToken()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyPublic;
@@ -91,18 +89,17 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var result = await target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.Error);
+            Assert.That(result.Error, Is.Null.Or.Empty);
             Assert.IsNotNull(result.ExternalGroupIds);
-
-            Assert.IsNotNullOrEmpty(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTesters"));
+            Assert.That(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTesters"), Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
-        public async void ShouldReturnNoRolesWhenOnlyGroupsAreInToken()
+        public async Task ShouldReturnNoRolesWhenOnlyGroupsAreInToken()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyPublic;
@@ -123,18 +120,19 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var result = await target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.Error);
+            Assert.That(result.Error, Is.Null.Or.Empty);
+
             Assert.IsNotNull(result.ExternalGroupIds);
 
             Assert.IsEmpty(result.ExternalGroupIds);
         }
 
         [Test]
-        public async void ShouldReturnRolesAndGroupsWhenBothAreInToken()
+        public async Task ShouldReturnRolesAndGroupsWhenBothAreInToken()
         {
             // Arrange
             RsaSecurityKey rsaSecurityKeyPublic;
@@ -155,15 +153,14 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
                 .Returns(Task.FromResult<IDictionary<string, AsymmetricSecurityKey>>(key));
 
             // Act
-            var result = await target.GetPrincipalAsync(((DynamicDictionary)request.Form).ToDictionary(), out var stateString);
+            var result = await target.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateString);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsNullOrEmpty(result.Error);
+            Assert.That(result.Error, Is.Null.Or.Empty);
             Assert.IsNotNull(result.ExternalGroupIds);
-
-            Assert.IsNotNullOrEmpty(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTestersRole"));
-            Assert.IsNotNullOrEmpty(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTestersGroup"));
+            Assert.That(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTestersRole"), Is.Not.Null.And.Not.Empty);
+            Assert.That(result.ExternalGroupIds.SingleOrDefault(x => x == "octoTestersGroup"), Is.Not.Null.And.Not.Empty);
         }
     }
 }

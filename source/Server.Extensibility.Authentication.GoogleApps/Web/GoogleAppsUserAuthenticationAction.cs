@@ -15,10 +15,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             IGoogleAppsConfigurationStore configurationStore, 
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IGoogleAppsAuthorizationEndpointUrlBuilder urlBuilder,
-            IApiActionResponseCreator responseCreator,
             IApiActionModelBinder modelBinder,
             IAuthenticationConfigurationStore authenticationConfigurationStore) 
-                : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, responseCreator, modelBinder, authenticationConfigurationStore)
+                : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)
         {
         }
     }

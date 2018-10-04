@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
@@ -8,7 +9,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
         public IEnumerable<StaticContentEmbeddedResourcesFolder> GetStaticContentFolders()
         {
             var type = typeof(OktaStaticContentFolders);
-            var assembly = type.Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             return new[] { new StaticContentEmbeddedResourcesFolder("", assembly, type.Namespace + ".Static") };
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Node.Extensibility.Authentication.HostServices;
+using Octopus.Node.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
@@ -19,24 +20,23 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             IOktaPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
             IOktaConfigurationStore configurationStore,
-            IApiActionResponseCreator responseCreator,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
             IOktaIdentityCreator identityCreator,
-            IClock clock) :
+            IClock clock, IUrlEncoder encoder) :
             base(
                 log,
                 authTokenHandler,
                 principalToUserResourceMapper,
                 userStore,
                 configurationStore,
-                responseCreator,
                 authCookieCreator,
                 loginTracker,
                 sleep,
                 identityCreator, 
-                clock)
+                clock, 
+                encoder)
         {
         }
 

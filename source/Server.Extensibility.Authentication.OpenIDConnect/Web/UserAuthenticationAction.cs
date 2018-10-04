@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Nancy;
-using Nancy.Cookies;
 using Newtonsoft.Json;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Diagnostics;
@@ -22,7 +20,6 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         readonly IAuthorizationEndpointUrlBuilder urlBuilder;
 
         protected readonly TStore ConfigurationStore;
-        protected readonly IApiActionResponseCreator ResponseCreator;
         readonly IApiActionModelBinder modelBinder;
         readonly IAuthenticationConfigurationStore authenticationConfigurationStore;
 
@@ -31,12 +28,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
             IAuthorizationEndpointUrlBuilder urlBuilder,
-            IApiActionResponseCreator responseCreator,
             IApiActionModelBinder modelBinder,
             IAuthenticationConfigurationStore authenticationConfigurationStore)
         {
             this.log = log;
-            ResponseCreator = responseCreator;
             this.modelBinder = modelBinder;
             this.authenticationConfigurationStore = authenticationConfigurationStore;
             ConfigurationStore = configurationStore;
@@ -44,27 +39,29 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
             this.urlBuilder = urlBuilder;
         }
 
-        public async Task<Response> ExecuteAsync(NancyContext context, IResponseFormatter response)
+        public async Task ExecuteAsync(OctoContext context)
         {
             if (ConfigurationStore.GetIsEnabled() == false)
             {
                 log.Warn($"{ConfigurationStore.ConfigurationSettingsName} user authentication API was called while the provider was disabled.");
-                return ResponseCreator.BadRequest("This authentication provider is disabled.");
+                context.Response.BadRequest("This authentication provider is disabled.");
+                return;
             }
 
-            var model = modelBinder.Bind<LoginRedirectLinkRequestModel>(context);
+            var model = modelBinder.Bind<LoginRedirectLinkRequestModel>();
             
             // If the login state object was passed use it, otherwise fall back to a safe default:
             //   1. Redirecting to the root of the local web site
             //   2. Setting the Cookie.Secure flag according to the current request
-            var state = model.State ?? new LoginState{RedirectAfterLoginTo = "/", UsingSecureConnection = context.Request.Url.IsSecure};
+            var state = model.State ?? new LoginState{RedirectAfterLoginTo = "/", UsingSecureConnection = context.Request.IsHttps};
             
             // Prevent Open Redirection attacks by ensuring the redirect after successful login is somewhere we trust (local origin or a trusted remote origin)
             var whitelist = authenticationConfigurationStore.GetTrustedRedirectUrls();
             if (!Requests.IsLocalUrl(state.RedirectAfterLoginTo, whitelist))
             {
                 log.WarnFormat("Prevented potential Open Redirection attack on an authentication request, to the non-local url {0}", state.RedirectAfterLoginTo);
-                return ResponseCreator.BadRequest("Request not allowed, due to potential Open Redirection attack");
+                context.Response.BadRequest("Request not allowed, due to potential Open Redirection attack");
+                return;
             }
 
             // Finally, provide the client with the information it requires to initiate the redirect to the external identity provider
@@ -80,19 +77,19 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                 var url = urlBuilder.Build(model.ApiAbsUrl, issuerConfig, nonce, stateString);
 
                 // These cookies are used to validate the data returned from the external identity provider - this prevents tampering
-                return ResponseCreator.AsOctopusJson(response, new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
-                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusStateCookieName, State.Protect(stateString), httpOnly: true, secure: state.UsingSecureConnection, expires: DateTime.UtcNow.AddMinutes(20)))
-                    .WithCookie(new NancyCookie(UserAuthConstants.OctopusNonceCookieName, Nonce.Protect(nonce), httpOnly: true, secure: state.UsingSecureConnection, expires: DateTime.UtcNow.AddMinutes(20)));
+                context.Response.AsOctopusJson(new LoginRedirectLinkResponseModel {ExternalAuthenticationUrl = url})
+                    .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusStateCookieName, Value = State.Protect(stateString), HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTime.UtcNow.AddMinutes(20)})
+                    .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusNonceCookieName, Value = Nonce.Protect(nonce), HttpOnly = true, Secure = state.UsingSecureConnection, Expires = DateTime.UtcNow.AddMinutes(20)});
             }
             catch (ArgumentException ex)
             {
                 log.Error(ex);
-                return ResponseCreator.BadRequest(ex.Message);
+                context.Response.BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
                 log.Error(ex);
-                return ResponseCreator.BadRequest("Login failed. Please see the Octopus Server logs for more details.");
+                context.Response.BadRequest("Login failed. Please see the Octopus Server logs for more details.");
             }
         }
     }

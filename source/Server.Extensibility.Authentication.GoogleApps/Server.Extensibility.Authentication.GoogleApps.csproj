@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net451</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
     <RootNamespace>Octopus.Server.Extensibility.Authentication.GoogleApps</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.GoogleApps</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.GoogleApps</Description>
@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
-    <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
