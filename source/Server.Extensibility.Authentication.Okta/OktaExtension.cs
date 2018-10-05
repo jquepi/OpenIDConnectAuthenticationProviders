@@ -52,6 +52,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta
 
             builder.RegisterType<OktaHomeLinksContributor>().As<IHomeLinksContributor>().InstancePerDependency();
 
+            builder.RegisterType<OktaLoginParametersHandler>().As<ICanHandleLoginParameters>().InstancePerDependency();
+
             // These are important as Singletons because they cache X509 certificates for performance
             builder.RegisterType<DefaultKeyJsonParser>().As<IKeyJsonParser>().SingleInstance();
             builder.RegisterType<OktaKeyRetriever>().As<IOktaKeyRetriever>().SingleInstance();
