@@ -2,20 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net451;netstandard1.6</TargetFrameworks>
     <RootNamespace>Octopus.Server.Extensibility.Authentication.Okta</RootNamespace>
     <AssemblyName>Octopus.Server.Extensibility.Authentication.Okta</AssemblyName>
     <Description>Octopus Deploy: Extensibility.Authentication.Okta</Description>
-    <PostBuildEvent>xcopy "$(TargetDir)Octopus.Server.Extensibility.Authentication.Okta.*" "C:\ProgramData\Octopus\CustomExtensions" /S /Y /I /D</PostBuildEvent>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net451|AnyCPU'">
-    <OutputPath>bin\Debug\net451\</OutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Configuration\Class1.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.0" />
