@@ -18,6 +18,9 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 
         public Maybe<LoginInitiatedResult> WasExternalLoginInitiated(string encodedQueryString)
         {
+            if (!configurationStore.GetIsEnabled())
+                return Maybe<LoginInitiatedResult>.None;
+
             var parser = new EncodedQueryStringParser();
             var parameters = parser.Parse(encodedQueryString);
 
@@ -29,7 +32,6 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 return new LoginInitiatedResult(OktaAuthenticationProvider.ProviderName).AsSome();
 
             return Maybe<LoginInitiatedResult>.None;
-
         }
     }
 }
