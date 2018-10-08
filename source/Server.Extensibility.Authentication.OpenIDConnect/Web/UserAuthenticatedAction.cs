@@ -169,8 +169,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
 
                     context.Response.Redirect(stateFromRequest.RedirectAfterLoginTo)
                         .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo))
-                        .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusStateCookieName, Value = Guid.NewGuid().ToString(), HttpOnly = true, Secure = false, Expires = DateTime.MinValue})
-                        .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusNonceCookieName, Value = Guid.NewGuid().ToString(), HttpOnly = true, Secure = false, Expires = DateTime.MinValue});
+                        .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusStateCookieName, Value = Guid.NewGuid().ToString(), HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue})
+                        .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusNonceCookieName, Value = Guid.NewGuid().ToString(), HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue});
+                    return;
                 }
 
 
