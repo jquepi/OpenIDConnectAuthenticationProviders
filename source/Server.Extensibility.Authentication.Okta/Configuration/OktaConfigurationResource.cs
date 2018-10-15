@@ -4,6 +4,7 @@ using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
+    [Description("Sign in to your Octopus Server with Okta. [Learn more](https://g.octopushq.com/AuthOkta).")]
     public class OktaConfigurationResource : OpenIDConnectConfigurationResource
     {
         [DisplayName("Role Claim Type")]

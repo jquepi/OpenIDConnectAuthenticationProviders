@@ -4,6 +4,7 @@ using Octopus.Client.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Client.Extensibility.Authentication.Okta.Configuration
 {
+    [Description("Sign in to your Octopus Server with Okta. [Learn more](https://g.octopushq.com/AuthOkta).")]
     public class OktaConfigurationResource : OpenIDConnectConfigurationResource
     {
         public OktaConfigurationResource()

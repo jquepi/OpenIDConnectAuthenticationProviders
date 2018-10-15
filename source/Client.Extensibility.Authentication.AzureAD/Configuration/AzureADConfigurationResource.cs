@@ -4,6 +4,7 @@ using Octopus.Client.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Client.Extensibility.Authentication.AzureAD.Configuration
 {
+    [Description("Sign in to your Octopus Server with Azure Active Directory. [Learn more](https://g.octopushq.com/AuthAzureAD).")]
     public class AzureADConfigurationResource : OpenIDConnectConfigurationResource
     {
         public AzureADConfigurationResource()
