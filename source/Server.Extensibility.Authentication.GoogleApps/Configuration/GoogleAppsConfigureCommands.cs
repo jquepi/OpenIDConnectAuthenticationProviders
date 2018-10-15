@@ -25,7 +25,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
             {
                 yield return option;
             }
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}HostedDomain=", $"Set the {ConfigurationSettingsName} HostedDomain.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}HostedDomain=", $"Tell Octopus which Google Apps domain to trust.", v =>
             {
                 ConfigurationStore.Value.SetHostedDomain(v);
                 Log.Info($"{ConfigurationSettingsName} HostedDomain set to: {v}");

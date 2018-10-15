@@ -12,7 +12,7 @@ namespace Octopus.Client.Extensibility.Authentication.Okta.Configuration
         }
 
         [DisplayName("Role Claim Type")]
-        [Description("The type of the role claim")]
+        [Description("Tell Octopus how to find the roles in the security token from Okta")]
         [Writeable]
         public string RoleClaimType { get; set; }
     }

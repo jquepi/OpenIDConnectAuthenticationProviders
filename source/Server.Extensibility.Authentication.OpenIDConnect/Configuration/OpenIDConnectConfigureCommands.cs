@@ -52,27 +52,27 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                     }
                 }
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Issuer=", $"Set the {ConfigurationSettingsName} Issuer, used for authentication.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Issuer=", $"Follow our documentation to find the Issuer for {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetIssuer(v);
                 Log.Info($"{ConfigurationSettingsName} Issuer set to: {v}");
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientId=", $"Set the {ConfigurationSettingsName} ClientId.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientId=", $"Follow our documentation to find the Client ID for {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetClientId(v);
                 Log.Info($"{ConfigurationSettingsName} ClientId set to: {v}");
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Scope=", $"Set the {ConfigurationSettingsName} Scope.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Scope=", $"Only change this if you need to change the OpenID Connect scope requested by Octopus for {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetScope(v);
                 Log.Info($"{ConfigurationSettingsName} Scope set to: {v}");
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}NameClaimType=", $"Set the {ConfigurationSettingsName} NameClaimType.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}NameClaimType=", $"Only change this if you want to use a different security token claim for the name from {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetNameClaimType(v);
                 Log.Info($"{ConfigurationSettingsName} NameClaimType set to: {v}");
             });
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}AllowAutoUserCreation=", $"Set {ConfigurationSettingsName} AllowAutoUserCreation.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}AllowAutoUserCreation=", $"Tell Octopus to automatically create a user account when a person signs in with {ConfigurationSettingsName}.", v =>
             {
                 var isAllowed = bool.Parse(v);
                 ConfigurationStore.Value.SetAllowAutoUserCreation(isAllowed);

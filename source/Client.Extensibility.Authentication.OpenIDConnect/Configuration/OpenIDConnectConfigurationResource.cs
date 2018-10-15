@@ -6,22 +6,26 @@ namespace Octopus.Client.Extensibility.Authentication.OpenIDConnect.Configuratio
 {
     public class OpenIDConnectConfigurationResource : ExtensionConfigurationResource
     {
-        [Description("Set the issuer, used for authentication")]
+        [Description("Follow our documentation to find the Issuer for your identity provider")]
         [Writeable]
         public string Issuer { get; set; }
 
         [DisplayName("Client ID")]
+        [Description("Follow our documentation to find the Client ID for your identity provider")]
         [Writeable]
         public string ClientId { get; set; }
 
         [Writeable]
+        [Description("Only change this if you need to change the OpenID Connect scope requested by Octopus")]
         public string Scope { get; set; }
 
         [DisplayName("Name Claim Type")]
+        [Description("Only change this if you want to use a different security token claim for the name")]
         [Writeable]
         public string NameClaimType { get; set; }
 
         [DisplayName("Allow Auto User Creation")]
+        [Description("Tell Octopus to automatically create a user account when a person signs in with this identity provider")]
         [Writeable]
         public bool? AllowAutoUserCreation { get; set; }
     }

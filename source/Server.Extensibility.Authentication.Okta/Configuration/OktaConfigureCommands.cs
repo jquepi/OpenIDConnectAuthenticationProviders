@@ -25,7 +25,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
             {
                 yield return option;
             }
-            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}RoleClaimType=", "Set the RoleClaimType.", v =>
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}RoleClaimType=", "Tell Octopus how to find the roles in the security token from Okta.", v =>
             {
                 ConfigurationStore.Value.SetRoleClaimType(v);
                 Log.Info($"{ConfigurationSettingsName} RoleClaimType set to: {v}");

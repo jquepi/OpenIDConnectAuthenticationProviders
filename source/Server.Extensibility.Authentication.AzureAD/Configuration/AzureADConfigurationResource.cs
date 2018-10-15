@@ -7,7 +7,7 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
     public class AzureADConfigurationResource : OpenIDConnectConfigurationResource
     {
         [DisplayName("Role Claim Type")]
-        [Description("The type of the role claim")]
+        [Description("Tell Octopus how to find the roles in the security token from Azure Active Directory")]
         [Writeable]
         public string RoleClaimType { get; set; }
     }
