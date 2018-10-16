@@ -25,7 +25,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         public string NameClaimType { get; set; }
 
         [DisplayName("Allow Auto User Creation")]
-        [Description("Tell Octopus to automatically create a user account when a person signs in with this identity provider")]
+        [Description("Tell Octopus to automatically create a user account when a person signs in for the first time with this identity provider")]
         [Writeable]
         public bool? AllowAutoUserCreation { get; set; }
     }
