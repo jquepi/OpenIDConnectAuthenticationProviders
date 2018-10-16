@@ -4,6 +4,7 @@ using Octopus.Client.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Client.Extensibility.Authentication.Okta.Configuration
 {
+    [Description("Sign in to your Octopus Server with Okta. [Learn more](https://g.octopushq.com/AuthOkta).")]
     public class OktaConfigurationResource : OpenIDConnectConfigurationResource
     {
         public OktaConfigurationResource()
@@ -12,7 +13,7 @@ namespace Octopus.Client.Extensibility.Authentication.Okta.Configuration
         }
 
         [DisplayName("Role Claim Type")]
-        [Description("The type of the role claim")]
+        [Description("Tell Octopus how to find the roles in the security token from Okta")]
         [Writeable]
         public string RoleClaimType { get; set; }
     }
