@@ -1,4 +1,4 @@
-﻿using Octopus.Node.Extensibility.Authentication.Resources;
+﻿using Octopus.Server.Extensibility.Authentication.Resources;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Web
 {

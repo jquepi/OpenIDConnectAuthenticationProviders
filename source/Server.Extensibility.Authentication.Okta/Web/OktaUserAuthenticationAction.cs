@@ -1,6 +1,6 @@
 ﻿using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.HostServices;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;

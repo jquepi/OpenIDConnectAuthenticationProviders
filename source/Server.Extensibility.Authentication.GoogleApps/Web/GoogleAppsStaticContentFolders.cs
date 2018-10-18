@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {

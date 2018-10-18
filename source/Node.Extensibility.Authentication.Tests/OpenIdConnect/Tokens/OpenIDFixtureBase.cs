@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Node.Extensibility.Authentication.Tests.Helpers;
 using NUnit.Framework;
-using Octopus.Node.Extensibility.Authentication.Resources;
+using Octopus.Server.Extensibility.Authentication.Resources;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens

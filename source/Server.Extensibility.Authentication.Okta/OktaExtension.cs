@@ -1,20 +1,20 @@
 ﻿using Autofac;
-using Octopus.Node.Extensibility.Authentication.Extensions;
-using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Node.Extensibility.Extensions;
-using Octopus.Node.Extensibility.Extensions.Infrastructure;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
-using Octopus.Node.Extensibility.Extensions.Mappings;
-using Octopus.Node.Extensibility.HostServices.Web;
+using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
+using Octopus.Server.Extensibility.Extensions.Infrastructure;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Server.Extensibility.Extensions.Mappings;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.Okta.Web;
 using Octopus.Server.Extensibility.Authentication.Okta.Identities;
+using Octopus.Server.Extensibility.Extensions;
+using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta
 {

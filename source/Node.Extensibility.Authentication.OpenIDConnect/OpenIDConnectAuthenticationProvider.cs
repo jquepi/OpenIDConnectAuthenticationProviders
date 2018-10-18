@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Octopus.Diagnostics;
-using Octopus.Node.Extensibility.Authentication.Extensions;
-using Octopus.Node.Extensibility.Authentication.Extensions.Identities;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Node.Extensibility.Authentication.Resources;
-using Octopus.Node.Extensibility.Authentication.Resources.Identities;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Web.Content;
+using Octopus.Server.Extensibility.Authentication.Extensions;
+using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
+using Octopus.Server.Extensibility.Authentication.Resources;
+using Octopus.Server.Extensibility.Authentication.Resources.Identities;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect
 {

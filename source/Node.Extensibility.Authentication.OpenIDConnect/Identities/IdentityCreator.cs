@@ -1,5 +1,5 @@
 using Octopus.Data.Model.User;
-using Octopus.Node.Extensibility.Authentication.Resources.Identities;
+using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Identities
 {

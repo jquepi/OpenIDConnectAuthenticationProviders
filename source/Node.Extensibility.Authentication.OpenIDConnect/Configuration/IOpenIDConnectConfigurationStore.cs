@@ -1,5 +1,5 @@
 ﻿using Nevermore.Contracts;
-using Octopus.Node.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {

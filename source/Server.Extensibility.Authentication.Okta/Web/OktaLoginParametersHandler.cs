@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Octopus.CoreUtilities;
-using Octopus.Node.Extensibility.Authentication.Extensions;
-using Octopus.Node.Extensibility.Authentication.Web;
+using Octopus.Server.Extensibility.Authentication.Extensions;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
+using Octopus.Server.Extensibility.Authentication.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
