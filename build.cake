@@ -155,23 +155,23 @@ Task("__Publish")
     .Does(() =>
 {
     NuGetPush($"{artifactsDir}/Octopus.Server.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg", new NuGetPushSettings {
-        Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
-        ApiKey = EnvironmentVariable("MyGetApiKey")
+        Source = "https://f.feedz.io/octopus-deploy/dependencies/nuget",
+        ApiKey = EnvironmentVariable("FeedzIoApiKey")
     });
 
     NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.AzureAD.{nugetVersion}.nupkg", new NuGetPushSettings {
-        Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
-        ApiKey = EnvironmentVariable("MyGetApiKey")
+        Source = "https://f.feedz.io/octopus-deploy/dependencies/nuget",
+        ApiKey = EnvironmentVariable("FeedzIoApiKey")
     });
 
     NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.GoogleApps.{nugetVersion}.nupkg", new NuGetPushSettings {
-        Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
-        ApiKey = EnvironmentVariable("MyGetApiKey")
+        Source = "https://f.feedz.io/octopus-deploy/dependencies/nuget",
+        ApiKey = EnvironmentVariable("FeedzIoApiKey")
     });
 
     NuGetPush($"{artifactsDir}/Octopus.Client.Extensibility.Authentication.Okta.{nugetVersion}.nupkg", new NuGetPushSettings {
-        Source = "https://octopus.myget.org/F/octopus-dependencies/api/v3/index.json",
-        ApiKey = EnvironmentVariable("MyGetApiKey")
+        Source = "https://f.feedz.io/octopus-deploy/dependencies/nuget",
+        ApiKey = EnvironmentVariable("FeedzIoApiKey")
     });
 
     if (gitVersionInfo.PreReleaseLabel == "")
