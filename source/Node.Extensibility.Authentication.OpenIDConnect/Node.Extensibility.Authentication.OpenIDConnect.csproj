@@ -12,8 +12,6 @@
     <PackageReference Include="Octopus.Diagnostics" Version="1.0.12" />
     <PackageReference Include="Octopus.Node.Extensibility" Version="5.0.4-removing-nancy0015" />
     <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.1.1-more-nancy-work0004" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="5.0.0" />
-    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.1.0" />
     <PackageReference Include="Octopus.Time" Version="1.1.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />

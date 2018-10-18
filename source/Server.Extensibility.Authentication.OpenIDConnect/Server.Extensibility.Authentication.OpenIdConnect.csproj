@@ -10,15 +10,11 @@
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Octopus.Node.Extensibility" Version="5.0.4-removing-nancy0015" />
-    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.1.1-more-nancy-work0004" />
     <PackageReference Include="Octopus.Server.Extensibility" Version="5.0.4-removing-nancy0015" />
+    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.1.1-more-nancy-work0004" />
     <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="8.1.1-more-nancy-work0004" />
     <PackageReference Include="Nancy" Version="1.2.0" />
     <PackageReference Include="Nancy.Serialization.JsonNet" Version="1.2.0" />
-    <PackageReference Include="Octopus.Node.Extensibility" Version="5.0.0" />
-    <PackageReference Include="Octopus.Node.Extensibility.Authentication" Version="8.1.0" />
-    <PackageReference Include="Octopus.Server.Extensibility" Version="5.0.0" />
-    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="8.1.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
   </ItemGroup>
