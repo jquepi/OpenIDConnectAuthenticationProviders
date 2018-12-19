@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
+﻿using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
