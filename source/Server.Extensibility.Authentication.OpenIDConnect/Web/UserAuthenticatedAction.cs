@@ -197,7 +197,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             var identityToMatch = NewIdentity(userResource);
 
-            var user = userStore.GetByIdentity(identityToMatch);
+            var user = userStore.GetByIdentity(identityToMatch).SingleOrDefault();
 
             if (user != null)
             {
