@@ -197,7 +197,10 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         {
             var identityToMatch = NewIdentity(userResource);
 
-            var user = userStore.GetByIdentity(identityToMatch);
+            var matchingUsers = userStore.GetByIdentity(identityToMatch);
+            if (matchingUsers.Count() > 1)
+                throw new Exception("There are multiple users with this identity. OpenID Connect identity providers do not support users with duplicate email addresses. Please remove any duplicate users, or make the email addresses unique.");
+            var user = matchingUsers.SingleOrDefault();
 
             if (user != null)
             {
