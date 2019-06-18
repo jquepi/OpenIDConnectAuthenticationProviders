@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using JWT;
 using JWT.Serializers;
-using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Node.Extensibility.Authentication.Tests.Helpers;
@@ -31,11 +30,11 @@ namespace Node.Extensibility.Authentication.Tests.OpenIdConnect.Tokens
 
         protected OctoRequest CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
         {
-            var request = new OctoRequest("https", true, DefaultIssuer, String.Empty, string.Empty, "http", Stream.Null, null, null, new Dictionary<string, StringValues>(), null);
+            var request = new OctoRequest("https", true, DefaultIssuer, String.Empty, string.Empty, "http", Stream.Null, null, null, new Dictionary<string, IEnumerable<string>>(), null);
             //request.Form["access_token"] = null;
-            request.Form["id_token"] = token;
+            request.Form["id_token"] = new [] { token };
             var stateData = JsonConvert.SerializeObject(new LoginState {RedirectAfterLoginTo = redirectAfterLoginTo, UsingSecureConnection = usingSecureConnection});
-            request.Form["state"] = stateData;
+            request.Form["state"] = new [] { stateData };
             return request;
         }
 

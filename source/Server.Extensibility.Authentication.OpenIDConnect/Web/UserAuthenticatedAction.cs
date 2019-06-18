@@ -71,7 +71,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
         public async Task ExecuteAsync(OctoContext context)
         {
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
-            var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request.Form.ToDictionary(pair => pair.Key, pair => (string)pair.Value), out var stateStringFromRequest);
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(context.Request.Form.ToDictionary(pair => pair.Key, pair => pair.Value?.FirstOrDefault()), out var stateStringFromRequest);
             var principal = principalContainer.Principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
             {
@@ -167,7 +167,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
                     }
 
                     context.Response.Redirect(stateFromRequest.RedirectAfterLoginTo)
-                        .WithHeader("Expires", DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo))
+                        .WithHeader("Expires", new string[] { DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo) })
                         .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusStateCookieName, Value = Guid.NewGuid().ToString(), HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue})
                         .WithCookie(new OctoCookie {Name = UserAuthConstants.OctopusNonceCookieName, Value = Guid.NewGuid().ToString(), HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue});
                     return;
