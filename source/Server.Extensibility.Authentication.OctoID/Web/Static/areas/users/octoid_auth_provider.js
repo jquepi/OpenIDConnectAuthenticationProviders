@@ -1,8 +1,8 @@
-var providerName = "OctoID";
+var providerName = "Octopus ID";
 
 function octoIDAuthProvider(octopusClient, provider, loginState, onError) {
 
-    this.linkHtml = '<a><div class="octoID-button"><img src="' + octopusClient.resolve("~/resources/images/Octopus-96x96.png") + '" /><div>Sign in with your Octopus ID</div></div></a>';
+    this.linkHtml = '<a><div class="octoID-button"><img src="' + octopusClient.resolve("~/images/Octopus-96x96.png") + '" /><div>Sign in with your Octopus ID</div></div></a>';
 
     this.signIn = function () {
         console.log("Signing in using " + providerName + " provider");
@@ -28,4 +28,4 @@ function octoIDAuthProvider(octopusClient, provider, loginState, onError) {
 }
 
 console.log("Registering " + providerName + " auth provider");
-window.Octopus.registerExtension(providerName, "auth_provider", azureADAuthProvider);
+window.Octopus.registerExtension(providerName, "auth_provider", octoIDAuthProvider);

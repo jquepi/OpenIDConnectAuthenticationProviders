@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\octoid_auth_provider.js" />
+    <EmbeddedResource Include="Web\Static\images\Octopus-96x96.png" />
+    <EmbeddedResource Include="Web\Static\styles\octoid.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Server.Extensibility.Authentication.OpenIDConnect\Server.Extensibility.Authentication.OpenIDConnect.csproj" />
   </ItemGroup>
 

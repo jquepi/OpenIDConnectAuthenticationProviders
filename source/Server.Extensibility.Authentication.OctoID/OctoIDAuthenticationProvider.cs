@@ -15,7 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID
         }
 
         public override string IdentityProviderName => ProviderName;
-        public override string FilenamePrefix => "OctoID";
+        public override string FilenamePrefix => "octoid";
 
         protected override IEnumerable<string> ReasonsWhyConfigIsIncomplete()
         {

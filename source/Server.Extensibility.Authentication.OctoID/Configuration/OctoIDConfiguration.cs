@@ -9,6 +9,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
         public OctoIDConfiguration() : base("OctopusID", "Octopus Deploy", "1.0")
         {
             Id = OctoIDConfigurationStore.SingletonId;
+            Issuer = "https://account.octopus.com";
             UsernameClaimType = DefaultUsernameClaimType;
             Scope = DefaultScope;
         }
