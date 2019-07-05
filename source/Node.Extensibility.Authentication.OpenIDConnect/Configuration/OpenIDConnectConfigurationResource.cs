@@ -8,7 +8,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
     {
         [Description("Follow our documentation to find the Issuer for your identity provider")]
         [Writeable]
-        public string Issuer { get; set; }
+        public virtual string Issuer { get; set; }
 
         [DisplayName("Client ID")]
         [Description("Follow our documentation to find the Client ID for your identity provider")]
