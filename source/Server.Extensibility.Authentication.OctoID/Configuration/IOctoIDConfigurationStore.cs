@@ -2,9 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 {
-    public interface IOctoIDConfigurationStore : IOpenIDConnectConfigurationStore<OctoIDConfiguration>
+    public interface IOctoIDConfigurationStore : IOpenIDConnectWithClientSecretConfigurationStore<OctoIDConfiguration>
     {
-        string GetUsernameClaimType();
-        void SetUsernameClaimType(string usernameClaimType);
     }
 }

@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 {
-    public class OctoIDConfigurationStore : OpenIdConnectConfigurationStore<OctoIDConfiguration>, IOctoIDConfigurationStore
+    public class OctoIDConfigurationStore : OpenIDConnectWithClientSecretConfigurationStore<OctoIDConfiguration>, IOctoIDConfigurationStore
     {
         public const string SingletonId = "authentication-octoid";
 
@@ -15,15 +15,5 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
             IConfigurationStore configurationStore) : base(configurationStore)
         {
         }
-
-        public string GetUsernameClaimType()
-        {
-            return GetProperty(doc => doc.UsernameClaimType);
-        }
-
-        public void SetUsernameClaimType(string usernameClaimType)
-        {
-            SetProperty(doc => doc.UsernameClaimType = usernameClaimType);
-        }
-    }
+   }
 }

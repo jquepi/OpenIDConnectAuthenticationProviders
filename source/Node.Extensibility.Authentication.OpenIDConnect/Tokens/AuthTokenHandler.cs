@@ -1,8 +1,11 @@
-﻿using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
+﻿using System;
+using System.Collections.Generic;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Diagnostics;
@@ -36,7 +39,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             var issuer = ConfigurationStore.GetIssuer();
             var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
-            var keys = await keyRetriever.GetKeysAsync(issuerConfig);
+            var keys = !string.IsNullOrWhiteSpace(issuerConfig.JwksUri) ? await keyRetriever.GetKeysAsync(issuerConfig) : new Dictionary<string, AsymmetricSecurityKey>();
 
             var validationParameters = new TokenValidationParameters
             {
@@ -48,13 +51,27 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
                 {
-                    if (!keys.ContainsKey(identifier))
+                    if (string.IsNullOrWhiteSpace(identifier))
                     {
-                        Log.InfoFormat("No signing key found for kid {0}", identifier);
+                        if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
+                        {
+                            var hmac = new HMACSHA256(Convert.FromBase64String(clientSecretStore.GetClientSecret()));
+
+                            return new[] { new SymmetricSecurityKey(hmac.Key) };
+                        }
+
                         return null;
-                    } 
-                    else 
-                        return new[] {keys[identifier]};
+                    }
+                    else
+                    {
+                        if (!keys.ContainsKey(identifier))
+                        {
+                            Log.InfoFormat("No signing key found for kid {0}", identifier);
+                            return null;
+                        }
+                        else
+                            return new[] {keys[identifier]};
+                    }
                 }
             };
 
