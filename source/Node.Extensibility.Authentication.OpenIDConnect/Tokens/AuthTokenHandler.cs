@@ -6,6 +6,7 @@ using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Diagnostics;
@@ -48,32 +49,54 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 ValidAudience = issuer + "/resources",
                 ValidateIssuer = true,
                 ValidIssuer = issuerConfig.Issuer,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                ValidateIssuerSigningKey = true
+            };
+
+            if (string.IsNullOrWhiteSpace(issuerConfig.JwksUri))
+            {
+                if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
                 {
-                    if (string.IsNullOrWhiteSpace(identifier))
-                    {
-                        if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
+                    var clientSecret = clientSecretStore.GetClientSecret();
+                    var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(clientSecret));
+
+                    validationParameters.SignatureValidator =
+                        delegate (string token, TokenValidationParameters parameters)
                         {
-                            var hmac = new HMACSHA256(Convert.FromBase64String(clientSecretStore.GetClientSecret()));
+                            // we have to do this manually, because the JwtSecurityToken seems to modify the header
+                            // and the validation then fails
+                            var parts = token.Split('.');
+                            var encodedData = parts[0] + "." + parts[1];
+                            var byteArray = Encoding.UTF8.GetBytes(encodedData);
+                            var hashValue = hmac.ComputeHash(byteArray);
+                            var compiledSignature = Base64UrlEncoder.Encode(hashValue);
+                            
+                            //Validate the incoming jwt signature against the header and payload of the token
+                            if (compiledSignature != parts[2])
+                            {
+                                throw new Exception("Token signature validation failed.");
+                            }
 
-                            return new[] { new SymmetricSecurityKey(hmac.Key) };
-                        }
-
+                            return new JwtSecurityToken(token);
+                        };
+                }
+                else
+                {
+                    throw new InvalidOperationException("Identity provider is configured to use client secrets, but isn't configured to support that for this provider.");
+                }
+            }
+            else
+            {
+                validationParameters.IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                {
+                    if (!keys.ContainsKey(identifier))
+                    {
+                        Log.InfoFormat("No signing key found for kid {0}", identifier);
                         return null;
                     }
-                    else
-                    {
-                        if (!keys.ContainsKey(identifier))
-                        {
-                            Log.InfoFormat("No signing key found for kid {0}", identifier);
-                            return null;
-                        }
-                        else
-                            return new[] {keys[identifier]};
-                    }
-                }
-            };
+
+                    return new[] {keys[identifier]};
+                };
+            }
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
                 validationParameters.NameClaimType = ConfigurationStore.GetNameClaimType();
@@ -99,11 +122,18 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             }
             catch (SecurityTokenInvalidSignatureException)
             {
+                if (string.IsNullOrWhiteSpace(issuerConfig.JwksUri))
+                {
+                    Log.WarnFormat("Unable to verify authentication token using clientSecret");
+                    throw;
+                }
+                // we using x509 certs if there's a JwksUri, and they may have been cycled so signal the code below
+                // to reload the keys and retry
                 signatureError = true;
             }
 
-            // If we receive an invalid signature, it might be because the provider has recylced their keys.
-            // So reflush the key cache, reload the keys, and try once more.
+            // If we receive an invalid signature, it might be because the provider has cycled their keys.
+            // So flush the key cache, reload the keys, and try once more.
             if (signatureError)
             {
                 try
@@ -128,7 +158,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 
             return new ClaimsPrincipleContainer(error);
         }
-
+        
         protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
         { }
 
