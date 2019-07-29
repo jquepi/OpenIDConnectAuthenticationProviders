@@ -1,4 +1,4 @@
-var providerName = "Azure AD";
+(function (providerName) {
 
 function azureADAuthProvider(octopusClient, provider, loginState, onError) {
 
@@ -29,3 +29,5 @@ function azureADAuthProvider(octopusClient, provider, loginState, onError) {
 
 console.log("Registering " + providerName + " auth provider");
 window.Octopus.registerExtension(providerName, "auth_provider", azureADAuthProvider);
+
+})("Azure AD");

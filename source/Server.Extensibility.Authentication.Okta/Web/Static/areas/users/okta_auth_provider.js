@@ -1,4 +1,4 @@
-var providerName = "Okta";
+(function (providerName) {
 
 function oktaAuthProvider(octopusClient, provider, loginState, onError) {
 
@@ -29,3 +29,5 @@ function oktaAuthProvider(octopusClient, provider, loginState, onError) {
 
 console.log("Registering " + providerName + " auth provider");
 window.Octopus.registerExtension(providerName, "auth_provider", oktaAuthProvider);
+
+})("Okta");
