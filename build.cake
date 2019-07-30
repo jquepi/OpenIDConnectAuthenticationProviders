@@ -69,8 +69,7 @@ Task("__Clean")
 
 Task("__Restore")
     .Does(() => {
-		NuGetRestore(solutionToBuild);
-		
+	
 		DotNetCoreRestore("source", new DotNetCoreRestoreSettings
 		{
 			ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
