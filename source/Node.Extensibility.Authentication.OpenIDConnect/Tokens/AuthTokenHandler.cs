@@ -4,6 +4,7 @@ using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
         where TStore : IOpenIDConnectConfigurationStore
         where TRetriever : IKeyRetriever
     {
+        static string[] hmacAlgorithms = {SecurityAlgorithms.HmacSha256, SecurityAlgorithms.HmacSha384, SecurityAlgorithms.HmacSha512};
+        
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever keyRetriever;
         protected readonly ILog Log;
@@ -63,8 +66,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             SetIssuerSpecificTokenValidationParameters(validationParameters);
             
             var jwt = new JwtSecurityToken(idToken);
-
-            if (string.IsNullOrWhiteSpace(jwt.Header.Kid))
+            
+            if (hmacAlgorithms.Contains(jwt.Header.Alg))
             {
                 principal = ValidateUsingSharedSecret(validationParameters, tokenToValidate);
             }

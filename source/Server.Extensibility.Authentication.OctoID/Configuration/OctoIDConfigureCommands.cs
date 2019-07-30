@@ -25,6 +25,11 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
             {
                 yield return option;
             }
+            yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientSecret=", "Tell Octopus the shared secret to use for Octopus ID authentication requests.", v =>
+            {
+                ConfigurationStore.Value.SetClientSecret(v);
+                Log.Info($"{ConfigurationSettingsName} ClientSecret set");
+            });
         }
     }
 }

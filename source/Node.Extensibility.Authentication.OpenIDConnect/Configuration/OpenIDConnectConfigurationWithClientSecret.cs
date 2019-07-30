@@ -1,3 +1,5 @@
+using Octopus.Data.Model;
+
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
     public class OpenIDConnectConfigurationWithClientSecret : OpenIDConnectConfiguration
@@ -10,6 +12,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         {
         }
 
+        [Encrypted]
         public string ClientSecret { get; set; }
     }
 }
