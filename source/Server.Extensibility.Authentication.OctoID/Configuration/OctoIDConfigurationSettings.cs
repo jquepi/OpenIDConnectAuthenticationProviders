@@ -19,6 +19,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
             {
                 yield return configurationValue;
             }
+            yield return new ConfigurationValue<bool>($"Octopus.{ConfigurationDocumentStore.ConfigurationSettingsName}.HasClientSecret", !string.IsNullOrWhiteSpace(ConfigurationDocumentStore.GetClientSecret()), ConfigurationDocumentStore.GetIsEnabled(), "Client Secret has been set");
         }
     }
 }
