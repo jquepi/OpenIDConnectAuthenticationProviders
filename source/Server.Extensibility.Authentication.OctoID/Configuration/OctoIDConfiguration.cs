@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
     {
         public static string DefaultRoleClaimType = "roles";
 
-        public OctoIDConfiguration() : base("OctopusID", "Octopus Deploy", "1.0")
+        public OctoIDConfiguration() : base("Octopus ID", "Octopus Deploy", "1.0")
         {
             Id = OctoIDConfigurationStore.SingletonId;
             Issuer = "https://account.octopus.com";

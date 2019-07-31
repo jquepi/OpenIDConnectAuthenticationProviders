@@ -11,13 +11,13 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         public virtual string Issuer { get; set; }
 
         [DisplayName("Client ID")]
-        [Description("Octopus instances unique authentication id, as provided by ????")]
+        [Description("Octopus instances unique authentication id, as provided by your Octopus account")]
         [Writeable]
-        public string ClientId { get; set; }
+        public virtual string ClientId { get; set; }
 
         [DisplayName("Allow Auto User Creation")]
         [Description("Tell Octopus to automatically create a user account when a person signs in for the first time with this identity provider")]
         [Writeable]
-        public bool? AllowAutoUserCreation { get; set; }
+        public virtual bool? AllowAutoUserCreation { get; set; }
     }
 }

@@ -6,10 +6,9 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
     public class OpenIDConnectConfigurationWithClientSecretResource : OpenIDConnectConfigurationResource
     {
-        
         [DisplayName("Client Secret")]
         [Description("Shared secret for validating the authentication tokens")]
         [Writeable]
-        public SensitiveValue ClientSecret { get; set; }
+        public virtual SensitiveValue ClientSecret { get; set; }
     }
 }

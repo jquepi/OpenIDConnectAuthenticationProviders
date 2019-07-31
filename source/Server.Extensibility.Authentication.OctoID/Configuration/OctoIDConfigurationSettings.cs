@@ -15,11 +15,14 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 
         public override IEnumerable<IConfigurationValue> GetConfigurationValues()
         {
-            foreach (var configurationValue in base.GetConfigurationValues())
-            {
-                yield return configurationValue;
-            }
-            yield return new ConfigurationValue<bool>($"Octopus.{ConfigurationDocumentStore.ConfigurationSettingsName}.HasClientSecret", !string.IsNullOrWhiteSpace(ConfigurationDocumentStore.GetClientSecret()), ConfigurationDocumentStore.GetIsEnabled(), "Client Secret has been set");
+            var configurationSettingsName = ConfigurationDocumentStore.ConfigurationSettingsName;
+            var isEnabled = ConfigurationDocumentStore.GetIsEnabled();
+
+            yield return new ConfigurationValue<bool>($"Octopus.OctopusID.IsEnabled", isEnabled, isEnabled, "Is Enabled");
+            yield return new ConfigurationValue<string>($"Octopus.OctopusID.Issuer", ConfigurationDocumentStore.GetIssuer(), isEnabled, "Issuer");
+            yield return new ConfigurationValue<string>($"Octopus.OctopusID.ClientId", ConfigurationDocumentStore.GetClientId(), isEnabled, "ClientId", true);
+            yield return new ConfigurationValue<bool>($"Octopus.OctopusID.HasClientSecret", !string.IsNullOrWhiteSpace(ConfigurationDocumentStore.GetClientSecret()), ConfigurationDocumentStore.GetIsEnabled(), "Client Secret has been set");
+            yield return new ConfigurationValue<bool>($"Octopus.OctopusID.AllowAutoUserCreation", ConfigurationDocumentStore.GetAllowAutoUserCreation(), isEnabled, "Allow auto user creation");
         }
     }
 }

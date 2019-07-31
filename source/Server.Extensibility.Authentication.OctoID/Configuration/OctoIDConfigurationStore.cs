@@ -9,7 +9,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 
         public override string Id => SingletonId;
 
-        public override string ConfigurationSettingsName => "OctopusID";
+        public override string ConfigurationSettingsName => "Octopus ID";
 
         public OctoIDConfigurationStore(
             IConfigurationStore configurationStore) : base(configurationStore)
