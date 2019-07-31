@@ -25,13 +25,4 @@
       <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
-  <Target Name="AfterBuildNetStd" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Message Text="after build step for $(TargetFramework)" Importance="High" />
-    <Exec Command="xcopy $(OutputPath)*OpenIDConnect.dll C:\Octopus\DataCenterManager\CustomExtensions /S /Y /I /D" />
-  </Target>
-  <Target Name="AfterBuildNet451" AfterTargets="Build" Condition="'$(TargetFramework)' == 'net451'">
-    <Message Text="after build step for $(TargetFramework)" Importance="High" />
-    <Exec Command="xcopy $(OutputPath)*.IdentityModel.*.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
-    <Exec Command="xcopy $(OutputPath)*.OpenIDConnect.dll C:\ProgramData\Octopus\CustomExtensions /S /Y /I /D" />
-  </Target>
 </Project>

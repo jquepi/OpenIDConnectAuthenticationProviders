@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Octopus.Data.Resources;
 using Octopus.Data.Resources.Attributes;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
@@ -15,11 +14,6 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
         [Description("Octopus instances unique authentication id, as provided by ????")]
         [Writeable]
         public string ClientId { get; set; }
-
-        [DisplayName("Client Secret")]
-        [Description("Shared secret for validating the authentication tokens")]
-        [Writeable]
-        public SensitiveValue ClientSecret { get; set; }
 
         [DisplayName("Allow Auto User Creation")]
         [Description("Tell Octopus to automatically create a user account when a person signs in for the first time with this identity provider")]
