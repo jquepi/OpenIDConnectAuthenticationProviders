@@ -18,7 +18,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OctoID
 {
-    [OctopusPlugin("OctoID", "Octopus Deploy")]
+    [OctopusPlugin("Octopus ID", "Octopus Deploy")]
     public class OctoIDExtension : OpenIDConnectExtension, IOctopusExtension
     {
         public override void Load(ContainerBuilder builder)

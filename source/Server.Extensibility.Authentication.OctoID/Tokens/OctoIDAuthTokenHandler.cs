@@ -6,7 +6,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.OctoID.Tokens
 {
-    public class OctoIDAuthTokenHandler : OpenIDConnectAuthTokenHandler<IOctoIDConfigurationStore, IOctoIDKeyRetriever>, IOctoIDAuthTokenHandler
+    public class OctoIDAuthTokenHandler : OpenIDConnectAuthTokenWithRolesHandler<IOctoIDConfigurationStore, IOctoIDKeyRetriever>, IOctoIDAuthTokenHandler
     {
         public OctoIDAuthTokenHandler(ILog log, IOctoIDConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IOctoIDKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {

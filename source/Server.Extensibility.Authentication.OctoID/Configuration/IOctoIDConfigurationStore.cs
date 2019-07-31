@@ -2,7 +2,8 @@
 
 namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 {
-    public interface IOctoIDConfigurationStore : IOpenIDConnectWithClientSecretConfigurationStore<OctoIDConfiguration>
+    public interface IOctoIDConfigurationStore : IOpenIDConnectWithClientSecretConfigurationStore<OctoIDConfiguration>, 
+        IOpenIDConnectConfigurationWithRoleStore<OctoIDConfiguration>
     {
     }
 }

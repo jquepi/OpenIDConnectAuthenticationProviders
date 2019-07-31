@@ -9,11 +9,21 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 
         public override string Id => SingletonId;
 
-        public override string ConfigurationSettingsName => "OctoID";
+        public override string ConfigurationSettingsName => "OctopusID";
 
         public OctoIDConfigurationStore(
             IConfigurationStore configurationStore) : base(configurationStore)
         {
+        }
+
+        public string GetRoleClaimType()
+        {
+            return GetProperty(doc => doc.RoleClaimType);
+        }
+
+        public void SetRoleClaimType(string roleClaimType)
+        {
+            SetProperty(doc => doc.RoleClaimType = roleClaimType);
         }
    }
 }

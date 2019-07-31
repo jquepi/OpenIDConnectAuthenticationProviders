@@ -17,7 +17,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
         {
         }
 
-        protected override string ConfigurationSettingsName => "octoid";
+        protected override string ConfigurationSettingsName => "octoId";
 
         public override IEnumerable<ConfigureCommandOption> GetOptions()
         {
