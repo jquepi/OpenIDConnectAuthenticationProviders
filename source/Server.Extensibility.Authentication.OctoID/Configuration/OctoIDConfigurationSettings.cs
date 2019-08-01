@@ -20,8 +20,8 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 
             yield return new ConfigurationValue<bool>($"Octopus.OctopusID.IsEnabled", isEnabled, isEnabled, "Is Enabled");
             yield return new ConfigurationValue<string>($"Octopus.OctopusID.Issuer", ConfigurationDocumentStore.GetIssuer(), isEnabled, "Issuer");
-            yield return new ConfigurationValue<string>($"Octopus.OctopusID.ClientId", ConfigurationDocumentStore.GetClientId(), isEnabled, "ClientId", true);
-            yield return new ConfigurationValue<bool>($"Octopus.OctopusID.HasClientSecret", !string.IsNullOrWhiteSpace(ConfigurationDocumentStore.GetClientSecret()), ConfigurationDocumentStore.GetIsEnabled(), "Client Secret has been set");
+            yield return new ConfigurationValue<string>($"Octopus.OctopusID.ClientId", ConfigurationDocumentStore.GetClientId(), isEnabled, "ClientId", isSensitive: true);
+            yield return new ConfigurationValue<string>($"Octopus.OctopusID.ClientSecret", ConfigurationDocumentStore.GetClientSecret(), isEnabled && !string.IsNullOrWhiteSpace(ConfigurationDocumentStore.GetClientSecret()), "Client Secret", isSensitive: true);
             yield return new ConfigurationValue<bool>($"Octopus.OctopusID.AllowAutoUserCreation", ConfigurationDocumentStore.GetAllowAutoUserCreation(), isEnabled, "Allow auto user creation");
         }
     }
