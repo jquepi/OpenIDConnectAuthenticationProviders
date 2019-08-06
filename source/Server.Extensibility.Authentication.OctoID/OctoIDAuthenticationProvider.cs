@@ -8,7 +8,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID
 {
     public class OctoIDAuthenticationProvider : OpenIDConnectAuthenticationProvider<IOctoIDConfigurationStore>
     {
-        public const string ProviderName = "Octopus ID";
+        public const string ProviderName = "OctopusID";
 
         public OctoIDAuthenticationProvider(ILog log, IOctoIDConfigurationStore configurationStore) : base(log, configurationStore)
         {
