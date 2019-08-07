@@ -23,7 +23,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
         
         public override string Description => "Octopus ID authentication settings";
 
-        public bool IsHidden => !licenseProvider.IsOctopusCloudLicense();
+        public override bool IsHidden => !licenseProvider.IsOctopusCloudLicense();
 
         public override IEnumerable<IConfigurationValue> GetConfigurationValues()
         {
