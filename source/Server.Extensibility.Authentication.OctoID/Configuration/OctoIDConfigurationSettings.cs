@@ -1,13 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Server.Extensibility.Extensions;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.Extensibility.HostServices.Licensing;
 
 namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
 {
-    public class OctoIDConfigurationSettings : OpenIdConnectConfigurationSettings<OctoIDConfiguration, OctoIDConfigurationResource, IOctoIDConfigurationStore>, IOctoIDConfigurationSettings
+    public class OctoIDConfigurationSettings : OpenIdConnectConfigurationSettings<OctoIDConfiguration, OctoIDConfigurationResource, IOctoIDConfigurationStore>, IOctoIDConfigurationSettings, ICanBeHidden
     {
-        public OctoIDConfigurationSettings(IOctoIDConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
+        readonly ILicenseProvider licenseProvider;
+
+        public OctoIDConfigurationSettings(IOctoIDConfigurationStore configurationDocumentStore,
+            ILicenseProvider licenseProvider) : base(configurationDocumentStore)
         {
+            this.licenseProvider = licenseProvider;
         }
 
         public override string Id => OctoIDConfigurationStore.SingletonId;
@@ -15,6 +22,8 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
         public override string ConfigurationSetName => "Octopus ID";
         
         public override string Description => "Octopus ID authentication settings";
+
+        public bool IsHidden => !licenseProvider.IsOctopusCloudLicense();
 
         public override IEnumerable<IConfigurationValue> GetConfigurationValues()
         {

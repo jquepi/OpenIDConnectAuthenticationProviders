@@ -14,7 +14,7 @@
     <PackageReference Include="Autofac" Version="4.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Octopus.Data" Version="4.2.0" />
-    <PackageReference Include="Octopus.Server.Extensibility" Version="6.3.1" />
+    <PackageReference Include="Octopus.Server.Extensibility" Version="7.0.1-enh-octopusid0005" />
     <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="9.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
