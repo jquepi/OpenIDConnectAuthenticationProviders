@@ -12,6 +12,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
             Issuer = "https://account.octopus.com";
             Scope = DefaultScope;
             RoleClaimType = DefaultRoleClaimType;
+            IsEnabled = true;
         }
         
         public string RoleClaimType { get; set; }

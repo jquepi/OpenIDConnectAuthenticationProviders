@@ -21,5 +21,8 @@ namespace Octopus.Server.Extensibility.Authentication.OctoID.Configuration
         public override SensitiveValue ClientSecret { get; set; }
         [ReadOnly(true)]
         public override bool? AllowAutoUserCreation { get; set; }
+
+        [ReadOnly(true)]
+        public new bool IsEnabled { get; set; }
     }
 }
