@@ -108,7 +108,7 @@ Task("__Pack")
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.AzureAD" + bin452 + "Octopus.Server.Extensibility.Authentication.AzureAD.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.GoogleApps" + bin452 + "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", odNugetPackDir);
         CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.Okta" + bin452 + "Octopus.Server.Extensibility.Authentication.Okta.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OctoID" + bin452 + "Octopus.Server.Extensibility.Authentication.OctoID.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OctopusID" + bin452 + "Octopus.Server.Extensibility.Authentication.OctopusID.dll", odNugetPackDir);
 
         NuGetPack(Path.Combine(odNugetPackDir, nuspecFile), new NuGetPackSettings {
             Version = nugetVersion,
@@ -147,7 +147,7 @@ Task("__Pack")
             ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
         });
         
-        DotNetCorePack("source/Client.Extensibility.Authentication.OctoID", new DotNetCorePackSettings
+        DotNetCorePack("source/Client.Extensibility.Authentication.OctopusID", new DotNetCorePackSettings
         {
             Configuration = configuration,
             OutputDirectory = artifactsDir,
@@ -167,7 +167,7 @@ Task("__CopyToLocalPackages")
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.AzureAD.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.GoogleApps.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.Okta.{nugetVersion}.nupkg"), localPackagesDir);
-    CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.OctoID.{nugetVersion}.nupkg"), localPackagesDir);
+    CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.OctopusID.{nugetVersion}.nupkg"), localPackagesDir);
 });
 
 //////////////////////////////////////////////////////////////////////

@@ -31,9 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Extensibility.Authen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Extensibility.Authentication.Okta", "Client.Extensibility.Authentication.Okta\Client.Extensibility.Authentication.Okta.csproj", "{580B0996-346B-44F5-8411-C9F8EA04869D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.OctoID", "Server.Extensibility.Authentication.OctoID\Server.Extensibility.Authentication.OctoID.csproj", "{F0421EFD-B724-4A4F-BC0D-9394B4EE520E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Extensibility.Authentication.OctopusID", "Server.Extensibility.Authentication.OctopusID\Server.Extensibility.Authentication.OctopusID.csproj", "{F0421EFD-B724-4A4F-BC0D-9394B4EE520E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Extensibility.Authentication.OctoID", "Client.Extensibility.Authentication.OctoID\Client.Extensibility.Authentication.OctoID.csproj", "{4186AB53-9506-4932-AF33-A5D013DA590C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Extensibility.Authentication.OctopusID", "Client.Extensibility.Authentication.OctopusID\Client.Extensibility.Authentication.OctopusID.csproj", "{4186AB53-9506-4932-AF33-A5D013DA590C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
