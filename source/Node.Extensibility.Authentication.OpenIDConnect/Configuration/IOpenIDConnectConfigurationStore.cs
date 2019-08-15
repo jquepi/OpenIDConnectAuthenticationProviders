@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
     public interface IOpenIDConnectConfigurationStore<TConfiguration> : IExtensionConfigurationStore<TConfiguration>, IOpenIDConnectConfigurationStore
-        where TConfiguration : OpenIDConnectConfiguration, IId, new()
+        where TConfiguration : ExtensionConfigurationDocument, IOpenIDConnectConfiguration, IId, new()
     {
     }
 

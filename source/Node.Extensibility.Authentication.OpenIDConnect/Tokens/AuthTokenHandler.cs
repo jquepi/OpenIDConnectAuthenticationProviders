@@ -1,8 +1,12 @@
-﻿using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
+﻿using System;
+using System.Collections.Generic;
+using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration;
 using Octopus.Node.Extensibility.Authentication.OpenIDConnect.Issuer;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Diagnostics;
@@ -13,6 +17,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
         where TStore : IOpenIDConnectConfigurationStore
         where TRetriever : IKeyRetriever
     {
+        static string[] hmacAlgorithms = {SecurityAlgorithms.HmacSha256, SecurityAlgorithms.HmacSha384, SecurityAlgorithms.HmacSha512};
+        
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever keyRetriever;
         protected readonly ILog Log;
@@ -31,12 +37,10 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
 
         protected async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string accessToken, string idToken)
         {
-            var handler = new JwtSecurityTokenHandler();
+            ClaimsPrincipal principal = null;
 
             var issuer = ConfigurationStore.GetIssuer();
             var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
-
-            var keys = await keyRetriever.GetKeysAsync(issuerConfig);
 
             var validationParameters = new TokenValidationParameters
             {
@@ -45,17 +49,7 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 ValidAudience = issuer + "/resources",
                 ValidateIssuer = true,
                 ValidIssuer = issuerConfig.Issuer,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
-                {
-                    if (!keys.ContainsKey(identifier))
-                    {
-                        Log.InfoFormat("No signing key found for kid {0}", identifier);
-                        return null;
-                    } 
-                    else 
-                        return new[] {keys[identifier]};
-                }
+                ValidateIssuerSigningKey = true
             };
 
             if (!string.IsNullOrWhiteSpace(ConfigurationStore.GetNameClaimType()))
@@ -70,12 +64,72 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
             }
 
             SetIssuerSpecificTokenValidationParameters(validationParameters);
+            
+            var jwt = new JwtSecurityToken(idToken);
+            
+            if (hmacAlgorithms.Contains(jwt.Header.Alg))
+            {
+                principal = ValidateUsingSharedSecret(validationParameters, tokenToValidate);
+            }
+            else
+            {
+                principal = await ValidateUsingIssuerCerficate(validationParameters, tokenToValidate, issuerConfig);
+            }
 
-            // This is where we actually interpret the token, validate it, and pump out a ClaimsPrincipal
+            var error = string.Empty;
+            DoIssuerSpecificClaimsValidation(principal, out error);
+
+            if (string.IsNullOrWhiteSpace(error))
+                return new ClaimsPrincipleContainer(principal, GetProviderGroupIds(principal));
+
+            return new ClaimsPrincipleContainer(error);
+        }
+
+        ClaimsPrincipal ValidateUsingSharedSecret(TokenValidationParameters validationParameters, string tokenToValidate)
+        {
+            if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
+            {
+                var clientSecret = clientSecretStore.GetClientSecret();
+                validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clientSecret));
+            }
+            else
+            {
+                throw new InvalidOperationException($"The received token was signed with a client secret, which is not supported by the {ConfigurationStore.ConfigurationSettingsName} authentication provider.");
+            }
+            
             SecurityToken unused;
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                return handler.ValidateToken(tokenToValidate, validationParameters, out unused);
+            }
+            catch (SecurityTokenInvalidSignatureException ex)
+            {
+                Log.Error(ex, "Token signature validation failed, ensure the clientId and clientSecret are set correctly.");
+                throw new ApplicationException("Token signature validation failed, ensure the clientId and clientSecret are set correctly.", ex);
+            }
+        }
+
+        async Task<ClaimsPrincipal> ValidateUsingIssuerCerficate(TokenValidationParameters validationParameters, string tokenToValidate, IssuerConfiguration issuerConfig)
+        {
+            var keys = !string.IsNullOrWhiteSpace(issuerConfig.JwksUri) ? await keyRetriever.GetKeysAsync(issuerConfig) : new Dictionary<string, AsymmetricSecurityKey>();
+            validationParameters.IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+            {
+                if (!keys.ContainsKey(identifier))
+                {
+                    Log.InfoFormat("No signing key found for kid {0}", identifier);
+                    return null;
+                }
+
+                return new[] {keys[identifier]};
+            };
+            
+            SecurityToken unused;
+            ClaimsPrincipal principal = null;
 
             var signatureError = false;
-            ClaimsPrincipal principal = null;
+            var handler = new JwtSecurityTokenHandler();
+
             try
             {
                 principal = handler.ValidateToken(tokenToValidate, validationParameters, out unused);
@@ -85,8 +139,8 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 signatureError = true;
             }
 
-            // If we receive an invalid signature, it might be because the provider has recylced their keys.
-            // So reflush the key cache, reload the keys, and try once more.
+            // If we receive an invalid signature, it might be because the provider has cycled their keys.
+            // So flush the key cache, reload the keys, and try once more.
             if (signatureError)
             {
                 try
@@ -103,15 +157,9 @@ namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Tokens
                 }
             }
 
-            var error = string.Empty;
-            DoIssuerSpecificClaimsValidation(principal, out error);
-
-            if (string.IsNullOrWhiteSpace(error))
-                return new ClaimsPrincipleContainer(principal, GetProviderGroupIds(principal));
-
-            return new ClaimsPrincipleContainer(error);
+            return principal;
         }
-
+        
         protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
         { }
 

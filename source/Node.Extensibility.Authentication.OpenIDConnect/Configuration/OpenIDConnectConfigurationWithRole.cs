@@ -1,6 +1,6 @@
 ﻿namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public class OpenIDConnectConfigurationWithRole : OpenIDConnectConfiguration
+    public class OpenIDConnectConfigurationWithRole : OpenIDConnectConfiguration, IOpenIDConnectConfigurationWithRole
     {
         public OpenIDConnectConfigurationWithRole()
         {

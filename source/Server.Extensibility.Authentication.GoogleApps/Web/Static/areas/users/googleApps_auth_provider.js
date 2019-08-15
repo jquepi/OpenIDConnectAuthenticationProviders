@@ -1,4 +1,4 @@
-var providerName = "Google Apps";
+(function (providerName) {
 
 function googleAuthProvider(octopusClient, provider, loginState, onError) {
 
@@ -30,3 +30,5 @@ function googleAuthProvider(octopusClient, provider, loginState, onError) {
 
 console.log("Registering " + providerName + " auth provider");
 window.Octopus.registerExtension(providerName, "auth_provider", googleAuthProvider);
+
+})("Google Apps");

@@ -1,8 +1,8 @@
 (function (providerName) {
 
-function azureADAuthProvider(octopusClient, provider, loginState, onError) {
+function octopusIDAuthProvider(octopusClient, provider, loginState, onError) {
 
-    this.linkHtml = '<a><div class="aad-button"><img src="' + octopusClient.resolve("~/images/microsoft_signin_buttons/microsoft-logo.svg") + '" /><div>Sign in with Microsoft</div></div></a>';
+    this.linkHtml = '<a><div class="octopusID-button"><img src="' + octopusClient.resolve("~/images/Octopus-96x96.png") + '" /><div>Sign in with your Octopus ID</div></div></a>';
 
     this.signIn = function () {
         console.log("Signing in using " + providerName + " provider");
@@ -28,6 +28,6 @@ function azureADAuthProvider(octopusClient, provider, loginState, onError) {
 }
 
 console.log("Registering " + providerName + " auth provider");
-window.Octopus.registerExtension(providerName, "auth_provider", azureADAuthProvider);
+window.Octopus.registerExtension(providerName, "auth_provider", octopusIDAuthProvider);
 
-})("Azure AD");
+})("Octopus ID");

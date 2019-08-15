@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
-    public abstract class OpenIDConnectConfiguration : ExtensionConfigurationDocument, IOverridableId
+    public abstract class OpenIDConnectConfiguration : ExtensionConfigurationDocument, IOverridableId, IOpenIDConnectConfiguration
     {
         public const string DefaultResponseType = "code+id_token";
         public const string DefaultResponseMode = "form_post";

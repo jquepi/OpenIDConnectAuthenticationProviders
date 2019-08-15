@@ -1,9 +1,10 @@
 ﻿using Nevermore.Contracts;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Configuration
 {
     public interface IOpenIDConnectConfigurationWithRoleStore<TConfiguration> : IOpenIDConnectConfigurationStore<TConfiguration>, IOpenIDConnectConfigurationWithRoleStore
-        where TConfiguration : OpenIDConnectConfigurationWithRole, IId, new()
+        where TConfiguration : ExtensionConfigurationDocument, IOpenIDConnectConfigurationWithRole, IId, new()
     {
     }
 

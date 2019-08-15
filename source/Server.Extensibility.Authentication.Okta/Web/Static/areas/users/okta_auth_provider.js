@@ -1,6 +1,6 @@
-var providerName = "Okta";
+(function (providerName) {
 
-function azureADAuthProvider(octopusClient, provider, loginState, onError) {
+function oktaAuthProvider(octopusClient, provider, loginState, onError) {
 
     this.linkHtml = '<a><div class="okta-button"><img src="' + octopusClient.resolve("~/images/okta/aura_solid_blue.png") + '" /><div>Sign in with Okta</div></div></a>';
 
@@ -28,4 +28,6 @@ function azureADAuthProvider(octopusClient, provider, loginState, onError) {
 }
 
 console.log("Registering " + providerName + " auth provider");
-window.Octopus.registerExtension(providerName, "auth_provider", azureADAuthProvider);
+window.Octopus.registerExtension(providerName, "auth_provider", oktaAuthProvider);
+
+})("Okta");
