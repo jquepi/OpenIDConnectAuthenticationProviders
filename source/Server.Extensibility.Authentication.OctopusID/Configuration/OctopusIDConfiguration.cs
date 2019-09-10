@@ -6,13 +6,12 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
     {
         public static string DefaultRoleClaimType = "roles";
 
-        public OctopusIDConfiguration() : base("OctopusID", "Octopus Deploy", "1.0")
+        public OctopusIDConfiguration() : base("OctopusID", "Octopus Deploy", "1.1")
         {
             Id = OctopusIDConfigurationStore.SingletonId;
             Issuer = "https://account.octopus.com";
             Scope = DefaultScope;
             RoleClaimType = DefaultRoleClaimType;
-            IsEnabled = true;
         }
         
         public string RoleClaimType { get; set; }
