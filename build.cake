@@ -12,6 +12,7 @@ using Cake.Common.Tools;
 //////////////////////////////////////////////////////////////////////
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var testFilter = Argument("where", "");
 
 ///////////////////////////////////////////////////////////////////////////////
 // GLOBAL VARIABLES
@@ -55,6 +56,7 @@ Task("__Default")
     .IsDependentOn("__Clean")
     .IsDependentOn("__Restore")
     .IsDependentOn("__Build")
+    .IsDependentOn("__Test")
     .IsDependentOn("__Pack")
     .IsDependentOn("__CopyToLocalPackages");
 
@@ -86,6 +88,25 @@ Task("__Build")
         ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
     });
 });
+
+Task("__Test")
+    .IsDependentOn("__Build")
+    .Does(() => {
+		var projects = GetFiles("./source/**/*Tests.csproj");
+		foreach(var project in projects)
+			DotNetCoreTest(project.FullPath, new DotNetCoreTestSettings
+			{
+				Configuration = configuration,
+				NoBuild = true,
+				ArgumentCustomization = args => {
+					if(!string.IsNullOrEmpty(testFilter)) {
+						args = args.Append("--where").AppendQuoted(testFilter);
+					}
+					return args.Append("--logger:trx")
+                        .Append($"--verbosity normal");
+				}
+			});
+	});
 
 Task("__Pack")
     .Does(() => {
