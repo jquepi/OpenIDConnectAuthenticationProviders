@@ -21,7 +21,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 
         public override IEnumerable<ConfigureCommandOption> GetOptions()
         {
-            foreach (var option in base.GetOptions())
+            foreach (var option in base.GetCoreOptions(hide: true))
             {
                 yield return option;
             }
@@ -29,7 +29,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
             {
                 ConfigurationStore.Value.SetClientSecret(v);
                 Log.Info($"{ConfigurationSettingsName} ClientSecret set");
-            });
+            }, hide: true);
         }
     }
 }

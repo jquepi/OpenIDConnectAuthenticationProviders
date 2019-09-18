@@ -27,7 +27,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
 
         protected abstract string ConfigurationSettingsName { get; }
 
-        public virtual IEnumerable<ConfigureCommandOption> GetOptions()
+        protected IEnumerable<ConfigureCommandOption> GetCoreOptions(bool hide)
         {
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}IsEnabled=", $"Set the {ConfigurationSettingsName} IsEnabled, used for authentication.", v =>
             {
@@ -51,17 +51,25 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuratio
                         Log.Info(prefix.TrimEnd('/') + "/api/users/authenticatedToken/" + ConfigurationStore.Value.ConfigurationSettingsName);
                     }
                 }
-            });
+            }, hide: hide);
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Issuer=", $"Follow our documentation to find the Issuer for {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetIssuer(v);
                 Log.Info($"{ConfigurationSettingsName} Issuer set to: {v}");
-            });
+            }, hide: hide);
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}ClientId=", $"Follow our documentation to find the Client ID for {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetClientId(v);
                 Log.Info($"{ConfigurationSettingsName} ClientId set to: {v}");
-            });
+            }, hide: hide);
+        }
+
+        public virtual IEnumerable<ConfigureCommandOption> GetOptions()
+        {
+            foreach (var option in GetCoreOptions(hide: false))
+            {
+                yield return option;
+            }
             yield return new ConfigureCommandOption($"{ConfigurationSettingsName}Scope=", $"Only change this if you need to change the OpenID Connect scope requested by Octopus for {ConfigurationSettingsName}.", v =>
             {
                 ConfigurationStore.Value.SetScope(v);
