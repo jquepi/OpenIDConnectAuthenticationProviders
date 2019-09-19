@@ -25,6 +25,8 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID
         {
             base.Load(builder);
 
+            builder.RegisterType<OctopusIdConfigDiscoverer>().As<IOctopusIdentityProviderConfigDiscoverer>().InstancePerDependency();
+
             builder.RegisterType<OctopusIDDatabaseInitializer>().As<IExecuteWhenDatabaseInitializes>().InstancePerDependency();
             builder.RegisterType<OctopusIDPrincipalToUserResourceMapper>().As<IOctopusIDPrincipalToUserResourceMapper>().InstancePerDependency();
             builder.RegisterType<OctopusIDConfigurationMapping>().As<IConfigurationDocumentMapper>().InstancePerDependency();
