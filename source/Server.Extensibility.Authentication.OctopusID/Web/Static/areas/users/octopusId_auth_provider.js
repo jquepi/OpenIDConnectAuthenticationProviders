@@ -2,7 +2,7 @@
 
 function octopusIDAuthProvider(octopusClient, provider, loginState, onError) {
 
-    this.linkHtml = '<a><div class="octopusID-button"><img src="' + octopusClient.resolve("~/images/Octopus-96x96.png") + '" /><div>Sign in with your Octopus ID</div></div></a>';
+    this.linkHtml = '<a><div class="octopusID-button"><div><em class="fontoctopus-octopus" style="font-size:23px; margin-right:10px;"></em> Sign in with your Octopus ID</div></div></a>';
 
     this.signIn = function () {
         console.log("Signing in using " + providerName + " provider");
