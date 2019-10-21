@@ -1,7 +1,0 @@
-﻿namespace Octopus.Node.Extensibility.Authentication.OpenIDConnect.Certificates
-{
-    public class KeyDetails
-    {
-        public string Kid { get; set; }
-    }
-}

@@ -120,39 +120,22 @@ Task("__Pack")
         CreateDirectory(odNugetPackDir);
         CopyFileToDirectory(Path.Combine(assetDir, nuspecFile), odNugetPackDir);
 
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin452 + "/Microsoft.IdentityModel.Logging.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin452 + "/Microsoft.IdentityModel.Tokens.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin452 + "/System.IdentityModel.Tokens.Jwt.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin452 + "Octopus.Node.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OpenIDConnect" + bin452 + "Octopus.Server.Extensibility.Authentication.OpenIDConnect.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.OpenIDConnect.Common" + bin452 + "/Microsoft.IdentityModel.Logging.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.OpenIDConnect.Common" + bin452 + "/Microsoft.IdentityModel.Tokens.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.OpenIDConnect.Common" + bin452 + "/System.IdentityModel.Tokens.Jwt.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.OpenIDConnect.Common" + bin452 + "Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.dll", odNugetPackDir);
             
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.AzureAD" + bin452 + "Octopus.Server.Extensibility.Authentication.AzureAD.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.GoogleApps" + bin452 + "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.Okta" + bin452 + "Octopus.Server.Extensibility.Authentication.Okta.dll", odNugetPackDir);
-        CopyFileToDirectory(solutionDir + "Server.Extensibility.Authentication.OctopusID" + bin452 + "Octopus.Server.Extensibility.Authentication.OctopusID.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.AzureAD" + bin452 + "Octopus.Server.Extensibility.Authentication.AzureAD.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.GoogleApps" + bin452 + "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.Okta" + bin452 + "Octopus.Server.Extensibility.Authentication.Okta.dll", odNugetPackDir);
+        CopyFileToDirectory(solutionDir + "Server.OctopusID" + bin452 + "Octopus.Server.Extensibility.Authentication.OctopusID.dll", odNugetPackDir);
 
         NuGetPack(Path.Combine(odNugetPackDir, nuspecFile), new NuGetPackSettings {
             Version = nugetVersion,
             OutputDirectory = artifactsDir
         });
 
-        DotNetCorePack("source/Client.Extensibility.Authentication.OpenIDConnect", new DotNetCorePackSettings
-        {
-            Configuration = configuration,
-            OutputDirectory = artifactsDir,
-            NoBuild = true,
-            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
-        });
-        
-        DotNetCorePack("source/Client.Extensibility.Authentication.AzureAD", new DotNetCorePackSettings
-        {
-            Configuration = configuration,
-            OutputDirectory = artifactsDir,
-            NoBuild = true,
-            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
-        });
-            
-        DotNetCorePack("source/Client.Extensibility.Authentication.GoogleApps", new DotNetCorePackSettings
+        DotNetCorePack("source/Server.OpenIDConnect.Common", new DotNetCorePackSettings
         {
             Configuration = configuration,
             OutputDirectory = artifactsDir,
@@ -160,7 +143,7 @@ Task("__Pack")
             ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
         });
 
-        DotNetCorePack("source/Client.Extensibility.Authentication.Okta", new DotNetCorePackSettings
+        DotNetCorePack("source/Client.OpenIDConnect", new DotNetCorePackSettings
         {
             Configuration = configuration,
             OutputDirectory = artifactsDir,
@@ -168,7 +151,31 @@ Task("__Pack")
             ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
         });
         
-        DotNetCorePack("source/Client.Extensibility.Authentication.OctopusID", new DotNetCorePackSettings
+        DotNetCorePack("source/Client.AzureAD", new DotNetCorePackSettings
+        {
+            Configuration = configuration,
+            OutputDirectory = artifactsDir,
+            NoBuild = true,
+            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+        });
+            
+        DotNetCorePack("source/Client.GoogleApps", new DotNetCorePackSettings
+        {
+            Configuration = configuration,
+            OutputDirectory = artifactsDir,
+            NoBuild = true,
+            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+        });
+
+        DotNetCorePack("source/Client.Okta", new DotNetCorePackSettings
+        {
+            Configuration = configuration,
+            OutputDirectory = artifactsDir,
+            NoBuild = true,
+            ArgumentCustomization = args => args.Append($"/p:Version={nugetVersion}")
+        });
+        
+        DotNetCorePack("source/Client.OctopusID", new DotNetCorePackSettings
         {
             Configuration = configuration,
             OutputDirectory = artifactsDir,
@@ -184,6 +191,7 @@ Task("__CopyToLocalPackages")
 {
     CreateDirectory(localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Server.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg"), localPackagesDir);
+    CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.OpenIDConnect.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.AzureAD.{nugetVersion}.nupkg"), localPackagesDir);
     CopyFileToDirectory(Path.Combine(artifactsDir, $"Octopus.Client.Extensibility.Authentication.GoogleApps.{nugetVersion}.nupkg"), localPackagesDir);

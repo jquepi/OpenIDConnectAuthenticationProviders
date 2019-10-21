@@ -1,0 +1,27 @@
+﻿using System;
+using Octopus.Server.Extensibility.HostServices.Web;
+using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+
+namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
+{
+    public class GoogleAppsAuthorizationEndpointUrlBuilder : AuthorizationEndpointUrlBuilder<IGoogleAppsConfigurationStore>, IGoogleAppsAuthorizationEndpointUrlBuilder
+    {
+        public GoogleAppsAuthorizationEndpointUrlBuilder(IGoogleAppsConfigurationStore configurationStore, IUrlEncoder urlEncoder) : base(configurationStore, urlEncoder)
+        {
+        }
+
+        public override string Build(string requestDirectoryPath, IssuerConfiguration issuerConfiguration, string nonce, string state = null)
+        {
+            var url = base.Build(requestDirectoryPath, issuerConfiguration, nonce, state);
+
+            var hd = ConfigurationStore.GetHostedDomain();
+            if (!string.IsNullOrWhiteSpace(hd))
+            {
+                url += $"&hd={hd}";
+            }
+
+            return url;
+        }
+    }
+}
