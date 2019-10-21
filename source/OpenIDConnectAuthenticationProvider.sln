@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Solution Items\VersionInfo.cs = Solution Items\VersionInfo.cs
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.OpenIDConnect", "Server.OpenIDConnect\Server.OpenIDConnect.csproj", "{90829768-9B06-475D-AC73-C9C6E0F20ACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.OpenIDConnect.Common", "Server.OpenIDConnect.Common\Server.OpenIDConnect.Common.csproj", "{90829768-9B06-475D-AC73-C9C6E0F20ACB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.AzureAD", "Server.AzureAD\Server.AzureAD.csproj", "{8CBCE54C-D501-4ED8-A716-DE64AE5198DA}"
 EndProject

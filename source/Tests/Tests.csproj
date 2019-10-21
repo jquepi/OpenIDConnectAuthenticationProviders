@@ -13,6 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Server.OctopusID\Server.OctopusID.csproj" />
-    <ProjectReference Include="..\Server.OpenIDConnect\Server.OpenIDConnect.csproj" />
+    <ProjectReference Include="..\Server.OpenIDConnect.Common\Server.OpenIDConnect.Common.csproj" />
   </ItemGroup>
 </Project>

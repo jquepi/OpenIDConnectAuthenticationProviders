@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
-    <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIDConnect</RootNamespace>
-    <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIDConnect</AssemblyName>
-    <Description>Octopus Deploy: Extensibility.Authentication.OpenIDConnect</Description>
+    <RootNamespace>Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common</RootNamespace>
+    <AssemblyName>Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common</AssemblyName>
+    <Description>Common components for the Octopus OpenID Connect authentication providers.</Description>
     <Authors>Octopus Deploy</Authors>
     <PackageIconUrl>http://i.octopusdeploy.com/resources/Avatar3_360.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/OctopusDeploy/OpenIDConnectAuthenticationProviders/blob/master/LICENSE.txt</PackageLicenseUrl>
