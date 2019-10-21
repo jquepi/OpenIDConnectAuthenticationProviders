@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <RootNamespace>Octopus.Server.Extensibility.Authentication.Okta</RootNamespace>
+    <AssemblyName>Octopus.Server.Extensibility.Authentication.Okta</AssemblyName>
+    <Description>Octopus Deploy: Extensibility.Authentication.Okta</Description>
+    <Authors>Octopus Deploy</Authors>
+    <PackageIconUrl>http://i.octopusdeploy.com/resources/Avatar3_360.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/OctopusDeploy/OpenIDConnectAuthenticationProviders/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/OctopusDeploy/OpenIDConnectAuthenticationProviders</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="Octopus.Diagnostics" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Web\Static\areas\users\okta_auth_provider.js" />
+    <EmbeddedResource Include="Web\Static\styles\okta.css" />
+    <EmbeddedResource Include="Web\Static\images\okta\logo_blue_medium.png" />
+    <EmbeddedResource Include="Web\Static\images\okta\aura_solid_blue.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Server.OpenIDConnect\Server.OpenIDConnect.csproj" />
+  </ItemGroup>
+
+</Project>
