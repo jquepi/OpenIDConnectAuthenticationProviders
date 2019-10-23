@@ -1,8 +1,8 @@
 ﻿using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 
 namespace Tests.OpenIdConnect.Tokens
 {

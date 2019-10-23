@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OctopusID.Configuration;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Identities;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Tokens;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Web;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID

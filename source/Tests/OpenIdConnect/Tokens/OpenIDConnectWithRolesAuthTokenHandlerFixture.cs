@@ -5,9 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using NUnit.Framework;
 using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
 namespace Tests.OpenIdConnect.Tokens
 {

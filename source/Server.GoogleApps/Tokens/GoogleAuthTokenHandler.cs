@@ -3,8 +3,8 @@ using System.Security.Claims;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens
 {

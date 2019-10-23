@@ -1,7 +1,7 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Configuration;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Tokens
 {

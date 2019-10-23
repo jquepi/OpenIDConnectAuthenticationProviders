@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Octopus.Data.Resources;
 using Octopus.Data.Resources.Attributes;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
     public class OpenIDConnectConfigurationWithClientSecretResource : OpenIDConnectConfigurationResource
     {

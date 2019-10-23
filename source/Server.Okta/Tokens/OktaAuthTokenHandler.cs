@@ -1,8 +1,8 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Tokens
 {

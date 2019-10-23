@@ -13,8 +13,9 @@ using Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Web;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {

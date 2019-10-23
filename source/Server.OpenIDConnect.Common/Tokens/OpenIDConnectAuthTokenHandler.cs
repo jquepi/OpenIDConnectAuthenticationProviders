@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens
 {
     public abstract class OpenIDConnectAuthTokenHandler<TStore, TRetriever, TDiscoverer> : AuthTokenHandler<TStore, TRetriever, TDiscoverer>, IAuthTokenHandler
         where TStore : IOpenIDConnectConfigurationStore

@@ -1,6 +1,6 @@
 ﻿using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer
 {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
 using Octopus.Server.Extensibility.HostServices.Web;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer
 {
     public abstract class AuthorizationEndpointUrlBuilder<TStore> : IAuthorizationEndpointUrlBuilder
         where TStore : IOpenIDConnectConfigurationStore

@@ -5,7 +5,7 @@ using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Server.Extensibility.HostServices.Web;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
     public abstract class OpenIdConnectConfigureCommands<TStore> : IContributeToConfigureCommand
         where TStore : IOpenIDConnectConfigurationStore

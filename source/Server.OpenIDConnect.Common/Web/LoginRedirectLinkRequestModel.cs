@@ -1,6 +1,6 @@
 ﻿using Octopus.Server.Extensibility.Authentication.Resources;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 {
     public class LoginRedirectLinkRequestModel
     {

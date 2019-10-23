@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates
 {
     public class DefaultKeyJsonParser : IKeyJsonParser
     {

@@ -2,7 +2,7 @@
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 using Octopus.Server.Extensibility.HostServices.Mapping;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
     public abstract class OpenIdConnectConfigurationSettings<TConfiguration, TResource, TDocumentStore> : ExtensionConfigurationSettings<TConfiguration, TResource, TDocumentStore>
         where TConfiguration : OpenIDConnectConfiguration, new()

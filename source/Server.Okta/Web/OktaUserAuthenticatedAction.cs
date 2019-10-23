@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.Okta.Identities;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Server.Extensibility.HostServices.Web;
 using Octopus.Time;

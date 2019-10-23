@@ -1,7 +1,7 @@
 using Nevermore.Contracts;
 using Octopus.Data.Storage.Configuration;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
     public abstract class OpenIDConnectWithClientSecretConfigurationStore<TConfiguration> : OpenIdConnectConfigurationStore<TConfiguration>, IOpenIDConnectWithClientSecretConfigurationStore<TConfiguration>
         where TConfiguration : OpenIDConnectConfigurationWithClientSecret, IId, new()

@@ -1,7 +1,7 @@
 using Octopus.Data.Model.User;
 using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Identities
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identities
 {
     public abstract class IdentityCreator : IIdentityCreator
     {

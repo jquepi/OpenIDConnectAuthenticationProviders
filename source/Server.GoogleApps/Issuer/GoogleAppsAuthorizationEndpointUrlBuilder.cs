@@ -1,7 +1,7 @@
 ﻿using System;
 using Octopus.Server.Extensibility.HostServices.Web;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {

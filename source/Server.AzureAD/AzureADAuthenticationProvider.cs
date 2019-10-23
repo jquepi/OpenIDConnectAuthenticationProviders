@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Configuration;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {

@@ -1,7 +1,7 @@
 ﻿using Octopus.Data.Storage.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
     public abstract class DatabaseInitializer<TConfiguration> : ExecuteWhenDatabaseInitializes
         where TConfiguration : OpenIDConnectConfiguration, new()

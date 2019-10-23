@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration

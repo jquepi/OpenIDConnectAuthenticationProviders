@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.HostServices;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 using Octopus.Server.Extensibility.Authentication.Resources;
+using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 {
     public abstract class UserAuthenticationAction<TStore> : IAsyncApiAction
         where TStore : IOpenIDConnectConfigurationStore

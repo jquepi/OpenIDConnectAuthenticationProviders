@@ -3,12 +3,12 @@ using System.Linq;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.Extensions;
 using Octopus.Server.Extensibility.Authentication.Extensions.Identities;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
 using Octopus.Server.Extensibility.Authentication.Resources;
 using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common
 {
     public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport, 
         IUseAuthenticationIdentities,

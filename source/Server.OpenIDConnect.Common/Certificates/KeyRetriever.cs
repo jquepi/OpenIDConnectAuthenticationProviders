@@ -8,10 +8,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates
 {
     public abstract class KeyRetriever<TStore, TKeyParser> : IKeyRetriever
         where TStore : IOpenIDConnectConfigurationStore

@@ -1,4 +1,4 @@
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
     public interface IOpenIDConnectConfigurationWithRole : IOpenIDConnectConfiguration
     {

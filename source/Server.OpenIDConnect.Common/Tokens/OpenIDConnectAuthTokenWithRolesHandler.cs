@@ -2,11 +2,11 @@
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Certificates;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certificates;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens
 {
     public abstract class OpenIDConnectAuthTokenWithRolesHandler<TStore, TRetriever, TDiscoverer> : OpenIDConnectAuthTokenHandler<TStore, TRetriever, TDiscoverer>
         where TStore : IOpenIDConnectConfigurationWithRoleStore

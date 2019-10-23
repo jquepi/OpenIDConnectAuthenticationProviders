@@ -8,19 +8,18 @@ using Octopus.Data.Model.User;
 using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
 using Octopus.Server.Extensibility.Authentication.HostServices;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Identities;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identities;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 using Octopus.Server.Extensibility.Authentication.Resources;
 using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 using Octopus.Server.Extensibility.Authentication.Storage.User;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Server.Extensibility.HostServices.Web;
 using Octopus.Time;
-using OctoCookie = Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api.OctoCookie;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 {
     public abstract class UserAuthenticatedAction<TStore, TAuthTokenHandler, TIdentityCreator> : IAsyncApiAction
         where TStore : IOpenIDConnectConfigurationStore

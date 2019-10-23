@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer
 {
     public class IdentityProviderConfigDiscoverer : IIdentityProviderConfigDiscoverer
     {

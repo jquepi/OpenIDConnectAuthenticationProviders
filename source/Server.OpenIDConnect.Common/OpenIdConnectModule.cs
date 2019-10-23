@@ -1,11 +1,11 @@
 ﻿using Octopus.Server.Extensibility.Authentication.Extensions;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Identities;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Tokens;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identities;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
-namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect
+namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common
 {
     public abstract class OpenIDConnectModule<TAuthenticationAction, TStore, TAuthenticatedAction, TAuthTokenHandler, TIdentityCreator> : RegisterEndpoint
         where TStore : IOpenIDConnectConfigurationStore

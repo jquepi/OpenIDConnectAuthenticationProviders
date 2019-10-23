@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {

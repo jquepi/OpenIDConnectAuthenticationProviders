@@ -3,8 +3,8 @@ using Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Web;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.HostServices.Web;
 using Octopus.Time;
 

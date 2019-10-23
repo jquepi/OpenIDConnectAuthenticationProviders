@@ -1,4 +1,4 @@
-﻿namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Issuer
+﻿namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer
 {
     public interface IAuthorizationEndpointUrlBuilder
     {
