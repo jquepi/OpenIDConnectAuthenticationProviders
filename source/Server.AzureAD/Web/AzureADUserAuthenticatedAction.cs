@@ -10,7 +10,7 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
+    class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
         public AzureADUserAuthenticatedAction(
             ILog log,

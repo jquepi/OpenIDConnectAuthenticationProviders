@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.Authentication.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    public class OktaLoginParametersHandler : ICanHandleLoginParameters
+    class OktaLoginParametersHandler : ICanHandleLoginParameters
     {
         readonly IOktaConfigurationStore configurationStore;
 

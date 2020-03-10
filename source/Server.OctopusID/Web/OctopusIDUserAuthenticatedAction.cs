@@ -10,7 +10,7 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 {
-    public class OctopusIDUserAuthenticatedAction : UserAuthenticatedAction<IOctopusIDConfigurationStore, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
+    class OctopusIDUserAuthenticatedAction : UserAuthenticatedAction<IOctopusIDConfigurationStore, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
     {
         public OctopusIDUserAuthenticatedAction(
             ILog log,

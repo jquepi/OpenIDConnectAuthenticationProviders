@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    public interface IOctopusIDConfigurationSettings: IHasConfigurationSettings
+    interface IOctopusIDConfigurationSettings: IHasConfigurationSettings
     { }
 }

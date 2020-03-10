@@ -11,7 +11,7 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    public class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
+    class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
     {
         public OktaUserAuthenticatedAction(
             ILog log,

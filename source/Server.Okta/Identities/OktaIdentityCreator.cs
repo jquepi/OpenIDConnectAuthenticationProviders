@@ -2,11 +2,11 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Identities
 {
-    public class OktaIdentityCreator : IdentityCreator, IOktaIdentityCreator
+    class OktaIdentityCreator : IdentityCreator, IOktaIdentityCreator
     {
         protected override string ProviderName => OktaAuthenticationProvider.ProviderName;
     }
 
-    public interface IOktaIdentityCreator : IIdentityCreator
+    interface IOktaIdentityCreator : IIdentityCreator
     { }
 }

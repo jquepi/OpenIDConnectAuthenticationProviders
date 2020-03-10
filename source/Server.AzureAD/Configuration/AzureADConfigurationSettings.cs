@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public class AzureADConfigurationSettings : OpenIdConnectConfigurationSettings<AzureADConfiguration, AzureADConfigurationResource, IAzureADConfigurationStore>, IAzureADConfigurationSettings
+    class AzureADConfigurationSettings : OpenIdConnectConfigurationSettings<AzureADConfiguration, AzureADConfigurationResource, IAzureADConfigurationStore>, IAzureADConfigurationSettings
     {
         public AzureADConfigurationSettings(IAzureADConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
         {

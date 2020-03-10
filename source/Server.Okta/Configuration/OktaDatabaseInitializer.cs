@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaDatabaseInitializer : DatabaseInitializer<OktaConfiguration>
+    class OktaDatabaseInitializer : DatabaseInitializer<OktaConfiguration>
     {
         public OktaDatabaseInitializer(IConfigurationStore configurationStore) : base(configurationStore)
         {

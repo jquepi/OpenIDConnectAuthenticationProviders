@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Issuer
 {
-    public interface IOktaKeyRetriever : IKeyRetriever
+    interface IOktaKeyRetriever : IKeyRetriever
     {
         
     }

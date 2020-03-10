@@ -10,7 +10,7 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
-    public class GoogleAppsUserAuthenticatedAction 
+    class GoogleAppsUserAuthenticatedAction 
         : UserAuthenticatedAction<IGoogleAppsConfigurationStore, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
     {
         public GoogleAppsUserAuthenticatedAction(

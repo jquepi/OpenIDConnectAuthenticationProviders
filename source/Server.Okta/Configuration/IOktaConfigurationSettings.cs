@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public interface IOktaConfigurationSettings: IHasConfigurationSettings
+    interface IOktaConfigurationSettings: IHasConfigurationSettings
     { }
 }

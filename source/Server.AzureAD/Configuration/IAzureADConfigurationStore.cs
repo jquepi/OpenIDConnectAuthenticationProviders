@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public interface IAzureADConfigurationStore : IOpenIDConnectConfigurationWithRoleStore<AzureADConfiguration>
+    interface IAzureADConfigurationStore : IOpenIDConnectConfigurationWithRoleStore<AzureADConfiguration>
     {
     }
 }

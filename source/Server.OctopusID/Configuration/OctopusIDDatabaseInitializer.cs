@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    public class OctopusIDDatabaseInitializer : DatabaseInitializer<OctopusIDConfiguration>
+    class OctopusIDDatabaseInitializer : DatabaseInitializer<OctopusIDConfiguration>
     {
         readonly IConfigurationStore configurationStore;
 

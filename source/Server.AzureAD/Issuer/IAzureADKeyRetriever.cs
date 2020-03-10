@@ -2,8 +2,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certifica
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer
 {
-    public interface IAzureADKeyRetriever : IKeyRetriever
+    interface IAzureADKeyRetriever : IKeyRetriever
     {
-
     }
 }

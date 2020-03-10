@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certifica
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {
-    public class GoogleKeyRetriever : KeyRetriever<IGoogleAppsConfigurationStore, IKeyJsonParser>, IGoogleKeyRetriever
+    class GoogleKeyRetriever : KeyRetriever<IGoogleAppsConfigurationStore, IKeyJsonParser>, IGoogleKeyRetriever
     {
         public GoogleKeyRetriever(IGoogleAppsConfigurationStore configurationStore, IKeyJsonParser keyParser, ILog log) : base(configurationStore, keyParser, log)
         {

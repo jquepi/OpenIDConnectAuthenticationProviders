@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastru
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Infrastructure
 {
-    public class OktaPrincipalToUserResourceMapper : PrincipalToUserResourceMapper, IOktaPrincipalToUserResourceMapper
+    class OktaPrincipalToUserResourceMapper : PrincipalToUserResourceMapper, IOktaPrincipalToUserResourceMapper
     {
         readonly IOktaConfigurationStore configurationStore;
 

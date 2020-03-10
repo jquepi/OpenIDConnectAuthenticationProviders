@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD
 {
-    public class AzureADApi : OpenIDConnectModule<AzureADUserAuthenticationAction, IAzureADConfigurationStore, AzureADUserAuthenticatedAction, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
+    class AzureADApi : OpenIDConnectModule<AzureADUserAuthenticationAction, IAzureADConfigurationStore, AzureADUserAuthenticatedAction, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
         public AzureADApi(
             IAzureADConfigurationStore configurationStore, 

@@ -2,11 +2,11 @@
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Identities
 {
-    public class GoogleAppsIdentityCreator : IdentityCreator, IGoogleAppsIdentityCreator
+    class GoogleAppsIdentityCreator : IdentityCreator, IGoogleAppsIdentityCreator
     {
         protected override string ProviderName => GoogleAppsAuthenticationProvider.ProviderName;
     }
 
-    public interface IGoogleAppsIdentityCreator : IIdentityCreator
+    interface IGoogleAppsIdentityCreator : IIdentityCreator
     { }
 }

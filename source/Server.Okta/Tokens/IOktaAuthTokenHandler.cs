@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Tokens
 {
-    public interface IOktaAuthTokenHandler : IAuthTokenHandler
+    interface IOktaAuthTokenHandler : IAuthTokenHandler
     { }
 }

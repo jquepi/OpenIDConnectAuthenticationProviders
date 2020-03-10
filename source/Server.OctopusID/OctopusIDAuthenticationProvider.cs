@@ -5,7 +5,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID
 {
-    public class OctopusIDAuthenticationProvider : OpenIDConnectAuthenticationProvider<IOctopusIDConfigurationStore>
+    class OctopusIDAuthenticationProvider : OpenIDConnectAuthenticationProvider<IOctopusIDConfigurationStore>
     {
         public const string ProviderName = "Octopus ID";
 

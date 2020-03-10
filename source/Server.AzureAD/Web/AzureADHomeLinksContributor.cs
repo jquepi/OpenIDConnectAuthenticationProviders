@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADHomeLinksContributor : OpenIDConnectHomeLinksContributor<IAzureADConfigurationStore, AzureADAuthenticationProvider>
+    class AzureADHomeLinksContributor : OpenIDConnectHomeLinksContributor<IAzureADConfigurationStore, AzureADAuthenticationProvider>
     {
         public AzureADHomeLinksContributor(IAzureADConfigurationStore configurationStore, AzureADAuthenticationProvider authenticationProvider) : base(configurationStore, authenticationProvider)
         {

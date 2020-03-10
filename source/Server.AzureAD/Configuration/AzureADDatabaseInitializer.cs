@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public class AzureADDatabaseInitializer : DatabaseInitializer<AzureADConfiguration>
+    class AzureADDatabaseInitializer : DatabaseInitializer<AzureADConfiguration>
     {
         public AzureADDatabaseInitializer(IConfigurationStore configurationStore) : base(configurationStore)
         {

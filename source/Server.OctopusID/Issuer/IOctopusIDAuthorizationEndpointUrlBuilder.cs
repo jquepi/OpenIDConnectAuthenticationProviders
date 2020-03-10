@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Issuer
 {
-    public interface IOctopusIDAuthorizationEndpointUrlBuilder : IAuthorizationEndpointUrlBuilder
+    interface IOctopusIDAuthorizationEndpointUrlBuilder : IAuthorizationEndpointUrlBuilder
     { }
 }

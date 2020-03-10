@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta
 {
-    public class OktaAuthenticationProvider : OpenIDConnectAuthenticationProvider<IOktaConfigurationStore>
+    class OktaAuthenticationProvider : OpenIDConnectAuthenticationProvider<IOktaConfigurationStore>
     {
         public const string ProviderName = "Okta";
 

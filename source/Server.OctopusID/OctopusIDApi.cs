@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID
 {
-    public class OctopusIDApi : OpenIDConnectModule<OctopusIDUserAuthenticationAction, IOctopusIDConfigurationStore, OctopusIDUserAuthenticatedAction, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
+    class OctopusIDApi : OpenIDConnectModule<OctopusIDUserAuthenticationAction, IOctopusIDConfigurationStore, OctopusIDUserAuthenticatedAction, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
     {
         public OctopusIDApi(
             IOctopusIDConfigurationStore configurationStore, 

@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
 {
-    public class OktaConfiguration : OpenIDConnectConfigurationWithRole
+    class OktaConfiguration : OpenIDConnectConfigurationWithRole
     {
         public static string DefaultRoleClaimType = "groups";
         public static string DefaultUsernameClaimType = "preferred_username";

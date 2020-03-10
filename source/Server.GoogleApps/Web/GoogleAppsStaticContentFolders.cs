@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
-    public class GoogleAppsStaticContentFolders : IContributesStaticContentFolders
+    class GoogleAppsStaticContentFolders : IContributesStaticContentFolders
     {
         public IEnumerable<StaticContentEmbeddedResourcesFolder> GetStaticContentFolders()
         {

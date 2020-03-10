@@ -9,7 +9,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta
 {
-    public class OktaApi : OpenIDConnectModule<OktaUserAuthenticationAction, IOktaConfigurationStore, OktaUserAuthenticatedAction, IOktaAuthTokenHandler, IOktaIdentityCreator>
+    class OktaApi : OpenIDConnectModule<OktaUserAuthenticationAction, IOktaConfigurationStore, OktaUserAuthenticatedAction, IOktaAuthTokenHandler, IOktaIdentityCreator>
     {
         public OktaApi(
             IOktaConfigurationStore configurationStore, 

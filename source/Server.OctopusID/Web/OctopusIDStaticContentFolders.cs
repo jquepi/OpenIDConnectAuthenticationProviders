@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 {
-    public class OctopusIDStaticContentFolders : IContributesStaticContentFolders
+    class OctopusIDStaticContentFolders : IContributesStaticContentFolders
     {
         public IEnumerable<StaticContentEmbeddedResourcesFolder> GetStaticContentFolders()
         {

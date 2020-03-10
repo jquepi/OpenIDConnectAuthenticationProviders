@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 {
-    public class OctopusIDHomeLinksContributor : OpenIDConnectHomeLinksContributor<IOctopusIDConfigurationStore, OctopusIDAuthenticationProvider>
+    class OctopusIDHomeLinksContributor : OpenIDConnectHomeLinksContributor<IOctopusIDConfigurationStore, OctopusIDAuthenticationProvider>
     {
         public OctopusIDHomeLinksContributor(IOctopusIDConfigurationStore configurationStore, OctopusIDAuthenticationProvider authenticationProvider) : base(configurationStore, authenticationProvider)
         {

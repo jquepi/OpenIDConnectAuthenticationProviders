@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer
 {
-    public interface IAzureADAuthorizationEndpointUrlBuilder : IAuthorizationEndpointUrlBuilder
+    interface IAzureADAuthorizationEndpointUrlBuilder : IAuthorizationEndpointUrlBuilder
     { }
 }

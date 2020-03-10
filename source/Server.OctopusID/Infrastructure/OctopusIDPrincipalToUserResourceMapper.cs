@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastru
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Infrastructure
 {
-    public class OctopusIDPrincipalToUserResourceMapper : PrincipalToUserResourceMapper, IOctopusIDPrincipalToUserResourceMapper
+    class OctopusIDPrincipalToUserResourceMapper : PrincipalToUserResourceMapper, IOctopusIDPrincipalToUserResourceMapper
     {
         readonly IOctopusIDConfigurationStore configurationStore;
 

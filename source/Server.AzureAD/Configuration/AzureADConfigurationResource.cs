@@ -5,7 +5,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
     [Description("Sign in to your Octopus Server with Azure Active Directory. [Learn more](https://g.octopushq.com/AuthAzureAD).")]
-    public class AzureADConfigurationResource : OpenIDConnectConfigurationResource
+    class AzureADConfigurationResource : OpenIDConnectConfigurationResource
     {
         [DisplayName("Role Claim Type")]
         [Description("Tell Octopus how to find the roles/groups in the security token from Azure Active Directory (usually \"roles\" or \"groups\")")]

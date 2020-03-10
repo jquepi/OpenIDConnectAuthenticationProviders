@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public interface IAzureADConfigurationSettings : IHasConfigurationSettings
+    interface IAzureADConfigurationSettings : IHasConfigurationSettings
     { }
 }

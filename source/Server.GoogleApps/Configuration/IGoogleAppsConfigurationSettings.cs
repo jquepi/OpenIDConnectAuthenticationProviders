@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    public interface IGoogleAppsConfigurationSettings : IHasConfigurationSettings
+    interface IGoogleAppsConfigurationSettings : IHasConfigurationSettings
     { }
 }

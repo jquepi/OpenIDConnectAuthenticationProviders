@@ -2,7 +2,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastru
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Infrastructure
 {
-    public interface IOctopusIDPrincipalToUserResourceMapper : IPrincipalToUserResourceMapper
+    interface IOctopusIDPrincipalToUserResourceMapper : IPrincipalToUserResourceMapper
     {
     }
 }

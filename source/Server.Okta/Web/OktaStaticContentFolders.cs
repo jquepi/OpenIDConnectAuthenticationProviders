@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    public class OktaStaticContentFolders : IContributesStaticContentFolders
+    class OktaStaticContentFolders : IContributesStaticContentFolders
     {
         public IEnumerable<StaticContentEmbeddedResourcesFolder> GetStaticContentFolders()
         {

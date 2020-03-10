@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {
-    public class GoogleAppsAuthenticationProvider : OpenIDConnectAuthenticationProvider<IGoogleAppsConfigurationStore>
+    class GoogleAppsAuthenticationProvider : OpenIDConnectAuthenticationProvider<IGoogleAppsConfigurationStore>
     {
         public const string ProviderName = "Google Apps";
 

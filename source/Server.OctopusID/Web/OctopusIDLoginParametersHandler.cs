@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.Authentication.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 {
-    public class OctopusIDLoginParametersHandler : ICanHandleLoginParameters
+    class OctopusIDLoginParametersHandler : ICanHandleLoginParameters
     {
         readonly IOctopusIDConfigurationStore configurationStore;
 

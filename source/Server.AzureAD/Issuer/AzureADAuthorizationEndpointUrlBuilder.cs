@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer
 {
-    public class AzureADAuthorizationEndpointUrlBuilder : AuthorizationEndpointUrlBuilder<IAzureADConfigurationStore>, IAzureADAuthorizationEndpointUrlBuilder
+    class AzureADAuthorizationEndpointUrlBuilder : AuthorizationEndpointUrlBuilder<IAzureADConfigurationStore>, IAzureADAuthorizationEndpointUrlBuilder
     {
         public AzureADAuthorizationEndpointUrlBuilder(IAzureADConfigurationStore configurationStore, IUrlEncoder urlEncoder) : base(configurationStore, urlEncoder)
         {

@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps
 {
-    public class GoogleAppsApi : OpenIDConnectModule<GoogleAppsUserAuthenticationAction, IGoogleAppsConfigurationStore, GoogleAppsUserAuthenticatedAction, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
+    class GoogleAppsApi : OpenIDConnectModule<GoogleAppsUserAuthenticationAction, IGoogleAppsConfigurationStore, GoogleAppsUserAuthenticatedAction, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
     {
         public GoogleAppsApi(
             IGoogleAppsConfigurationStore configurationStore, 

@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADStaticContentFolders : IContributesStaticContentFolders
+    class AzureADStaticContentFolders : IContributesStaticContentFolders
     {
         public IEnumerable<StaticContentEmbeddedResourcesFolder> GetStaticContentFolders()
         {

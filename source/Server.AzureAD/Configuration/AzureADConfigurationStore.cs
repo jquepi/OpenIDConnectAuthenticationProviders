@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public class AzureADConfigurationStore : OpenIdConnectConfigurationWithRoleStore<AzureADConfiguration>, IAzureADConfigurationStore
+    class AzureADConfigurationStore : OpenIdConnectConfigurationWithRoleStore<AzureADConfiguration>, IAzureADConfigurationStore
     {
         public const string SingletonId = "authentication-aad";
 

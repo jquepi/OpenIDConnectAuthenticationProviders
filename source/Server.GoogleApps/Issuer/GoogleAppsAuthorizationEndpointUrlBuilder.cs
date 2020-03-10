@@ -5,7 +5,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {
-    public class GoogleAppsAuthorizationEndpointUrlBuilder : AuthorizationEndpointUrlBuilder<IGoogleAppsConfigurationStore>, IGoogleAppsAuthorizationEndpointUrlBuilder
+    class GoogleAppsAuthorizationEndpointUrlBuilder : AuthorizationEndpointUrlBuilder<IGoogleAppsConfigurationStore>, IGoogleAppsAuthorizationEndpointUrlBuilder
     {
         public GoogleAppsAuthorizationEndpointUrlBuilder(IGoogleAppsConfigurationStore configurationStore, IUrlEncoder urlEncoder) : base(configurationStore, urlEncoder)
         {

@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    public class GoogleAppsConfigurationStore : OpenIdConnectConfigurationStore<GoogleAppsConfiguration>, IGoogleAppsConfigurationStore
+    class GoogleAppsConfigurationStore : OpenIdConnectConfigurationStore<GoogleAppsConfiguration>, IGoogleAppsConfigurationStore
     {
         public const string SingletonId = "authentication-googleapps";
 

@@ -2,6 +2,6 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Tokens
 {
-    public interface IAzureADAuthTokenHandler : IAuthTokenHandler
+    interface IAzureADAuthTokenHandler : IAuthTokenHandler
     { }
 }

@@ -1,6 +1,6 @@
 namespace Octopus.Server.Extensibility.Authentication.OctopusID
 {
-    public static class StringExtensions
+    static class StringExtensions
     {
         public static string WithTrailingSlash(this string uri)
         {

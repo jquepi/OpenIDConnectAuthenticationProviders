@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certifica
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Issuer
 {
-    public class AzureADKeyRetriever : KeyRetriever<IAzureADConfigurationStore, IKeyJsonParser>, IAzureADKeyRetriever
+    class AzureADKeyRetriever : KeyRetriever<IAzureADConfigurationStore, IKeyJsonParser>, IAzureADKeyRetriever
     {
         public AzureADKeyRetriever(IAzureADConfigurationStore configurationStore, IKeyJsonParser keyParser, ILog log) : base(configurationStore, keyParser, log)
         {

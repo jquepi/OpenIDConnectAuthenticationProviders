@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    public class OktaUserAuthenticationAction : UserAuthenticationAction<IOktaConfigurationStore>
+    class OktaUserAuthenticationAction : UserAuthenticationAction<IOktaConfigurationStore>
     {
         public OktaUserAuthenticationAction(
             ILog log,

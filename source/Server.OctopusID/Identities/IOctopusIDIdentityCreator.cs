@@ -2,6 +2,6 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identitie
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Identities
 {
-    public interface IOctopusIDIdentityCreator : IIdentityCreator
+    interface IOctopusIDIdentityCreator : IIdentityCreator
     { }
 }

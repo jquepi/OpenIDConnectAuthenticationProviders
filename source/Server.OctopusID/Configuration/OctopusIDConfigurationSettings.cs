@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    public class OctopusIDConfigurationSettings : OpenIdConnectConfigurationSettings<OctopusIDConfiguration, OctopusIDConfigurationResource, IOctopusIDConfigurationStore>, IOctopusIDConfigurationSettings
+    class OctopusIDConfigurationSettings : OpenIdConnectConfigurationSettings<OctopusIDConfiguration, OctopusIDConfigurationResource, IOctopusIDConfigurationStore>, IOctopusIDConfigurationSettings
     {
         public OctopusIDConfigurationSettings(IOctopusIDConfigurationStore configurationDocumentStore) : base(configurationDocumentStore)
         {

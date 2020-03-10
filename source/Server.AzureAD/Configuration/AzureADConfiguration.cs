@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Configuration
 {
-    public class AzureADConfiguration : OpenIDConnectConfigurationWithRole
+    class AzureADConfiguration : OpenIDConnectConfigurationWithRole
     {
         public static string DefaultRoleClaimType = "roles";
 

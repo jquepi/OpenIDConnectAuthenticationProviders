@@ -5,7 +5,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
     [Description("Sign in to your Octopus Server with Google Apps. [Learn more](https://g.octopushq.com/AuthGoogleApps).")]
-    public class GoogleAppsConfigurationResource : OpenIDConnectConfigurationResource
+    class GoogleAppsConfigurationResource : OpenIDConnectConfigurationResource
     {
         [DisplayName("Hosted Domain")]
         [Description("Tell Octopus which Google Apps domain to trust")]

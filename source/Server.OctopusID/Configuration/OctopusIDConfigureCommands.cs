@@ -7,7 +7,7 @@ using Octopus.Server.Extensibility.HostServices.Web;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
-    public class OctopusIDConfigureCommands : OpenIdConnectConfigureCommands<IOctopusIDConfigurationStore>
+    class OctopusIDConfigureCommands : OpenIdConnectConfigureCommands<IOctopusIDConfigurationStore>
     {
         public OctopusIDConfigureCommands(
             ILog log,

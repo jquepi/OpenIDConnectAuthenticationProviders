@@ -6,7 +6,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configura
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
     [Description("Sign in to your Octopus Server with an Octopus ID. [Learn more](https://g.octopushq.com/AuthOctopusID).")]
-    public class OctopusIDConfigurationResource : OpenIDConnectConfigurationWithClientSecretResource
+    class OctopusIDConfigurationResource : OpenIDConnectConfigurationWithClientSecretResource
     {
         [ReadOnly(true)]
         public override string Issuer { get; set; }

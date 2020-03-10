@@ -8,7 +8,7 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    public class AzureADUserAuthenticationAction : UserAuthenticationAction<IAzureADConfigurationStore>
+    class AzureADUserAuthenticationAction : UserAuthenticationAction<IAzureADConfigurationStore>
     {
         public AzureADUserAuthenticationAction(
             ILog log,

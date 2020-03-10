@@ -4,7 +4,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certifica
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Issuer
 {
-    public class OctopusIDKeyRetriever : KeyRetriever<IOctopusIDConfigurationStore, IKeyJsonParser>, IOctopusIDKeyRetriever
+    class OctopusIDKeyRetriever : KeyRetriever<IOctopusIDConfigurationStore, IKeyJsonParser>, IOctopusIDKeyRetriever
     {
         public OctopusIDKeyRetriever(IOctopusIDConfigurationStore configurationStore, IKeyJsonParser keyParser, ILog log) : base(configurationStore, keyParser, log)
         {

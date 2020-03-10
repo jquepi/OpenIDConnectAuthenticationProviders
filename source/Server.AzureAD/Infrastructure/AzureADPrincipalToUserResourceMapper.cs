@@ -3,7 +3,7 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastru
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure
 {
-    public class AzureADPrincipalToUserResourceMapper : PrincipalToUserResourceMapper, IAzureADPrincipalToUserResourceMapper
+    class AzureADPrincipalToUserResourceMapper : PrincipalToUserResourceMapper, IAzureADPrincipalToUserResourceMapper
     {
         protected override string GetEmailAddress(ClaimsPrincipal principal)
         {

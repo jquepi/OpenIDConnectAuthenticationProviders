@@ -2,7 +2,7 @@
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
-    public class GoogleAppsConfiguration : OpenIDConnectConfiguration
+    class GoogleAppsConfiguration : OpenIDConnectConfiguration
     {
         public GoogleAppsConfiguration() : base("GoogleApps", "Octopus Deploy", "1.0")
         {
