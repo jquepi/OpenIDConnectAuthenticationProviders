@@ -91,7 +91,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             if (ConfigurationStore is IOpenIDConnectWithClientSecretConfigurationStore clientSecretStore)
             {
                 var clientSecret = clientSecretStore.GetClientSecret();
-                validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clientSecret));
+                validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clientSecret.Value));
             }
             else
             {

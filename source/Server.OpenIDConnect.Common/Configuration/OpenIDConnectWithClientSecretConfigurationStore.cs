@@ -1,4 +1,5 @@
 using Nevermore.Contracts;
+using Octopus.Data.Model;
 using Octopus.Data.Storage.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
@@ -10,12 +11,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Confi
         {
         }
 
-        public string GetClientSecret()
+        public SensitiveString GetClientSecret()
         {
             return GetProperty(doc => doc.ClientSecret);
         }
 
-        public void SetClientSecret(string clientSecret)
+        public void SetClientSecret(SensitiveString clientSecret)
         {
             SetProperty(doc => doc.ClientSecret = clientSecret);
         }
