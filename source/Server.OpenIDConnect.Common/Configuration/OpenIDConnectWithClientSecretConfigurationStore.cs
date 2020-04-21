@@ -1,4 +1,3 @@
-using Nevermore.Contracts;
 using Octopus.Data.Model;
 using Octopus.Data.Storage.Configuration;
 

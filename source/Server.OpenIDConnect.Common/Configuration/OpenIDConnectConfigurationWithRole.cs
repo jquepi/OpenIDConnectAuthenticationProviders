@@ -2,11 +2,11 @@
 {
     public class OpenIDConnectConfigurationWithRole : OpenIDConnectConfiguration, IOpenIDConnectConfigurationWithRole
     {
-        public OpenIDConnectConfigurationWithRole()
+        public OpenIDConnectConfigurationWithRole(string id) : base(id)
         {
         }
 
-        public OpenIDConnectConfigurationWithRole(string name, string author, string configurationSchemaVersion) : base(name, author, configurationSchemaVersion)
+        public OpenIDConnectConfigurationWithRole(string id, string name, string author, string configurationSchemaVersion) : base(id, name, author, configurationSchemaVersion)
         {
         }
 

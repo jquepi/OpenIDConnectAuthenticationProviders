@@ -4,11 +4,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Confi
 {
     public class OpenIDConnectConfigurationWithClientSecret : OpenIDConnectConfiguration, IOpenIDConnectConfigurationWithClientSecret
     {
-        public OpenIDConnectConfigurationWithClientSecret()
+        public OpenIDConnectConfigurationWithClientSecret(string id) : base(id)
         {
         }
 
-        public OpenIDConnectConfigurationWithClientSecret(string name, string author, string configurationSchemaVersion) : base(name, author, configurationSchemaVersion)
+        public OpenIDConnectConfigurationWithClientSecret(string id, string name, string author, string configurationSchemaVersion) : base(id, name, author, configurationSchemaVersion)
         {
         }
 

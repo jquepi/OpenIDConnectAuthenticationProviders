@@ -4,9 +4,8 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Configuration
 {
     class GoogleAppsConfiguration : OpenIDConnectConfiguration
     {
-        public GoogleAppsConfiguration() : base("GoogleApps", "Octopus Deploy", "1.0")
+        public GoogleAppsConfiguration() : base(GoogleAppsConfigurationStore.SingletonId, "GoogleApps", "Octopus Deploy", "1.0")
         {
-            Id = GoogleAppsConfigurationStore.SingletonId;
             Issuer = "https://accounts.google.com";
         }
 
