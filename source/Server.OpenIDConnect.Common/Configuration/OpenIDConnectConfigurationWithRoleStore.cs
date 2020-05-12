@@ -1,4 +1,4 @@
-﻿using Nevermore.Contracts;
+﻿using Octopus.Data.Model;
 using Octopus.Data.Storage.Configuration;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
