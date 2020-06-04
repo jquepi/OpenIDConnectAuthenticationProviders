@@ -6,31 +6,45 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certi
 {
     public class DefaultKeyJsonParser : IKeyJsonParser
     {
+        /// <summary>
+        /// https://tools.ietf.org/html/rfc7517#section-4.1
+        /// </summary>
+        const string RsaKeyType = "RSA";
+
         public KeyDetails[] Parse(string content)
         {
             var keyData = JsonConvert.DeserializeObject<IssuerKeys>(content);
 
             return keyData.Keys
+                .Where(IsRsaKey)
                 .Select(ConvertIssuerKeyToDetails)
                 .ToArray();
         }
 
-        static KeyDetails ConvertIssuerKeyToDetails(IssuerKey cert)
+        bool IsRsaKey(IssuerKey key)
         {
-            if (cert.x509Chain != null && cert.x509Chain.Any())
+            return key.KeyType == RsaKeyType;
+        }
+
+        static KeyDetails ConvertIssuerKeyToDetails(IssuerKey key)
+        {
+            if (key.x509Chain != null && key.x509Chain.Any())
             {
                 return new CertificateDetails
                 {
-                    Kid = cert.KeyId,
-                    Certificate = cert.x509Chain.First()
+                    Kid = key.KeyId,
+                    Certificate = key.x509Chain.First()
                 };
             }
 
+            if (key.Exponent == null || key.Modulus == null)
+                throw new UnsupportedJsonWebKeyFormatException($"Failed to parse JSON Web Key (\"kid\": \"{key.KeyId}\"): expected an RSA key with X.509 Certificate Chain, or exponent and modulus.");
+
             return new RsaDetails
             {
-                Kid = cert.KeyId,
-                Exponent = cert.Exponent,
-                Modulus = cert.Modulus
+                Kid = key.KeyId,
+                Exponent = key.Exponent,
+                Modulus = key.Modulus
             };
         }
 
@@ -41,11 +55,18 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Certi
 
         public class IssuerKey
         {
+            [JsonProperty("kty")]
+            public string KeyType { get; set; }
+
+            [JsonProperty("use")]
+            public string PublicKeyUse { get; set; }
+
             [JsonProperty("kid")]
             public string KeyId { get; set; }
 
             [JsonProperty("e")]
             public string Exponent { get; set; }
+
             [JsonProperty("n")]
             public string Modulus { get; set; }
 
