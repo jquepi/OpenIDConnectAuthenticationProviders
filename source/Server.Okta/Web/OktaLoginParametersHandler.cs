@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Octopus.CoreUtilities;
 using Octopus.Server.Extensibility.Authentication.Extensions;
 using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Web;
@@ -16,10 +15,10 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             this.configurationStore = configurationStore;
         }
 
-        public Maybe<LoginInitiatedResult> WasExternalLoginInitiated(string encodedQueryString)
+        public LoginInitiatedResult? WasExternalLoginInitiated(string encodedQueryString)
         {
             if (!configurationStore.GetIsEnabled())
-                return Maybe<LoginInitiatedResult>.None;
+                return null;
 
             var parser = new EncodedQueryStringParser();
             var parameters = parser.Parse(encodedQueryString);
@@ -29,9 +28,9 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
             var configuredIssuer = configurationStore.GetIssuer();
 
             if (issuerParam != null && string.Compare(configuredIssuer, issuerParam.Value, StringComparison.InvariantCultureIgnoreCase) == 0)
-                return new LoginInitiatedResult(OktaAuthenticationProvider.ProviderName).AsSome();
+                return new LoginInitiatedResult(OktaAuthenticationProvider.ProviderName);
 
-            return Maybe<LoginInitiatedResult>.None;
+            return null;
         }
     }
 }
