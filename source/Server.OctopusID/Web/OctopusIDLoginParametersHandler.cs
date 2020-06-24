@@ -15,7 +15,9 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
             this.configurationStore = configurationStore;
         }
 
-        public LoginInitiatedResult? WasExternalLoginInitiated(string encodedQueryString)
+        public string IdentityProviderName => OctopusIDAuthenticationProvider.ProviderName;
+
+        public bool? WasExternalLoginInitiated(string encodedQueryString)
         {
             if (!configurationStore.GetIsEnabled())
                 return null;
@@ -27,10 +29,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 
             var configuredIssuer = configurationStore.GetIssuer();
 
-            if (issuerParam != null && string.Compare(configuredIssuer, issuerParam.Value, StringComparison.InvariantCultureIgnoreCase) == 0)
-                return new LoginInitiatedResult(OctopusIDAuthenticationProvider.ProviderName);
-
-            return null;
+            return issuerParam != null && string.Compare(configuredIssuer, issuerParam.Value, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
     }
 }

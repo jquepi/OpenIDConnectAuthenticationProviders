@@ -66,7 +66,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
             // Finally, provide the client with the information it requires to initiate the redirect to the external identity provider
             try
             {
-                var issuer = ConfigurationStore.GetIssuer();
+                var issuer = ConfigurationStore.GetIssuer() ?? string.Empty;
                 var issuerConfig = await identityProviderConfigDiscoverer.GetConfigurationAsync(issuer);
 
                 // Use a non-deterministic nonce to prevent replay attacks

@@ -96,7 +96,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 return;
             }
 
-            var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest);
+            var stateFromRequest = JsonConvert.DeserializeObject<LoginState>(stateStringFromRequest ?? string.Empty);
 
             // Step 3: Validate the nonce is as we expected to prevent replay attacks
             const string nonceDescription = "As a security precaution to prevent replay attacks, Octopus ensures the nonce returned in the claims from the external identity provider matches what it expected.";
@@ -127,6 +127,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
             // Step 4: Now the integrity of the request has been validated we can figure out which Octopus User this represents
             var authenticationCandidate = principalToUserResourceMapper.MapToUserResource(principal);
+            if (authenticationCandidate.Username == null)
+            {
+                BadRequest(context, "Unable to determine username.");
+                return;
+            }
 
             // Step 4a: Check if this authentication attempt is already being banned
             var action = loginTracker.BeforeAttempt(authenticationCandidate.Username, context.Request.Host);
@@ -166,7 +171,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                     }
 
                     context.Response.Redirect(stateFromRequest.RedirectAfterLoginTo)
-                        .WithHeader("Expires", new string[] { DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo) })
+                        .WithHeader("Expires", new [] { DateTime.UtcNow.AddYears(1).ToString("R", DateTimeFormatInfo.InvariantInfo) })
                         .WithCookie(new OctoCookie(UserAuthConstants.OctopusStateCookieName, Guid.NewGuid().ToString()) { HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue })
                         .WithCookie(new OctoCookie(UserAuthConstants.OctopusNonceCookieName, Guid.NewGuid().ToString()) { HttpOnly = true, Secure = false, Expires = DateTimeOffset.MinValue });
                     return;
@@ -223,9 +228,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 return ResultFromExtension<IUser>.Failed("User could not be located and auto user creation is not enabled.");
 
             var userResult = userStore.Create(
-                userResource.Username, 
-                userResource.DisplayName, 
-                userResource.EmailAddress,
+                userResource.Username ?? string.Empty, 
+                userResource.DisplayName ?? string.Empty, 
+                userResource.EmailAddress ?? string.Empty,
                 cancellationToken,
                 new ProviderUserGroups { IdentityProviderName = ProviderName, GroupIds = groups },
                 new[] { identityToMatch });
