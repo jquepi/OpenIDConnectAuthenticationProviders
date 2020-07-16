@@ -11,10 +11,11 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/OctopusDeploy/OpenIDConnectAuthenticationProviders</PackageProjectUrl>
     <Nullable>enable</Nullable>
+    <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Octopus.Diagnostics" Version="1.3.2-enh-nullable0003" />
+    <PackageReference Include="Octopus.Diagnostics" Version="1.3.4" />
   </ItemGroup>
 
   <ItemGroup>

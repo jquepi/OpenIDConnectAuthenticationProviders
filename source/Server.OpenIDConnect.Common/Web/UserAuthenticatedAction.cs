@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Octopus.Data;
 using Octopus.Data.Model.User;
 using Octopus.Data.Storage.User;
 using Octopus.Diagnostics;
@@ -40,16 +41,16 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         protected readonly TStore ConfigurationStore;
 
         protected UserAuthenticatedAction(
-            ILog log, 
-            TAuthTokenHandler authTokenHandler, 
-            IPrincipalToUserResourceMapper principalToUserResourceMapper, 
-            IUpdateableUserStore userStore, 
-            TStore configurationStore, 
-            IAuthCookieCreator authCookieCreator, 
-            IInvalidLoginTracker loginTracker, 
-            ISleep sleep, 
-            TIdentityCreator identityCreator, 
-            IClock clock, 
+            ILog log,
+            TAuthTokenHandler authTokenHandler,
+            IPrincipalToUserResourceMapper principalToUserResourceMapper,
+            IUpdateableUserStore userStore,
+            TStore configurationStore,
+            IAuthCookieCreator authCookieCreator,
+            IInvalidLoginTracker loginTracker,
+            ISleep sleep,
+            TIdentityCreator identityCreator,
+            IClock clock,
             IUrlEncoder encoder)
         {
             this.log = log;
@@ -77,7 +78,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 BadRequest(context, $"The response from the external identity provider contained an error: {principalContainer.Error}");
                 return;
             }
-            
+
             // Step 2: Validate the state object we passed wasn't tampered with
             const string stateDescription = "As a security precaution, Octopus ensures the state object returned from the external identity provider matches what it expected.";
             var expectedStateHash = string.Empty;
@@ -145,27 +146,27 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
             {
                 // Step 4b: Try to get or create a the Octopus User this external identity represents
                 var userResult = GetOrCreateUser(authenticationCandidate, principalContainer.ExternalGroupIds, cts.Token);
-                if (userResult.WasSuccessful)
+                if (userResult is ISuccessResult<IUser> successResult)
                 {
                     loginTracker.RecordSucess(authenticationCandidate.Username, context.Request.Host);
 
-                    var authCookies = authCookieCreator.CreateAuthCookies(userResult.Value.IdentificationToken, SessionExpiry.TwentyDays, context.Request.IsHttps, stateFromRequest.UsingSecureConnection);
+                    var authCookies = authCookieCreator.CreateAuthCookies(successResult.Value.IdentificationToken, SessionExpiry.TwentyDays, context.Request.IsHttps, stateFromRequest.UsingSecureConnection);
 
                     foreach (var cookie in authCookies)
                     {
                         context.Response.WithCookie(cookie);
                     }
 
-                    if (!userResult.Value.IsActive)
+                    if (!successResult.Value.IsActive)
                     {
-                        BadRequest(context, 
+                        BadRequest(context,
                             $"The Octopus User Account '{authenticationCandidate.Username}' has been disabled by an Administrator. If you believe this to be a mistake, please contact your Octopus Administrator to have your account re-enabled.");
                         return;
                     }
 
-                    if (userResult.Value.IsService)
+                    if (successResult.Value.IsService)
                     {
-                        BadRequest(context, 
+                        BadRequest(context,
                             $"The Octopus User Account '{authenticationCandidate.Username}' is a Service Account, which are prevented from using Octopus interactively. Service Accounts are designed to authorize external systems to access the Octopus API using an API Key.");
                         return;
                     }
@@ -186,7 +187,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                     sleep.For(1000);
                 }
 
-                BadRequest(context, $"User login failed: {userResult.ErrorString}");
+                BadRequest(context, $"User login failed: {((FailureResult)userResult).ErrorString}");
             }
         }
 
@@ -196,7 +197,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
             context.Response.BadRequest(message);
         }
 
-        ResultFromExtension<IUser> GetOrCreateUser(UserResource userResource, string[] groups, CancellationToken cancellationToken)
+        IResultFromExtension<IUser> GetOrCreateUser(UserResource userResource, string[] groups, CancellationToken cancellationToken)
         {
             var identityToMatch = NewIdentity(userResource);
 
@@ -228,14 +229,15 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 return ResultFromExtension<IUser>.Failed("User could not be located and auto user creation is not enabled.");
 
             var userResult = userStore.Create(
-                userResource.Username ?? string.Empty, 
-                userResource.DisplayName ?? string.Empty, 
+                userResource.Username ?? string.Empty,
+                userResource.DisplayName ?? string.Empty,
                 userResource.EmailAddress ?? string.Empty,
                 cancellationToken,
                 new ProviderUserGroups { IdentityProviderName = ProviderName, GroupIds = groups },
                 new[] { identityToMatch });
-
-            return ResultFromExtension<IUser>.Success(userResult.Value);
+            if (userResult is FailureResult failureResult)
+                return ResultFromExtension<IUser>.Failed(failureResult.Errors);
+            return ResultFromExtension<IUser>.Success(((ISuccessResult<IUser>)userResult).Value);
         }
 
         bool MatchesProviderAndExternalId(UserResource userResource, Identity x)
