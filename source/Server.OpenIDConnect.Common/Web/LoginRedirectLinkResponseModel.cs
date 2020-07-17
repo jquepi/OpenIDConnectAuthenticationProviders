@@ -2,6 +2,6 @@
 {
     public class LoginRedirectLinkResponseModel
     {
-        public string ExternalAuthenticationUrl { get; set; }
+        public string ExternalAuthenticationUrl { get; set; } = string.Empty;
     }
 }
