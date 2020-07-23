@@ -235,7 +235,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
                 cancellationToken,
                 new ProviderUserGroups { IdentityProviderName = ProviderName, GroupIds = groups },
                 new[] { identityToMatch });
-            if (userResult is FailureResult failureResult)
+            if (userResult is IFailureResult failureResult)
                 return ResultFromExtension<IUser>.Failed(failureResult.Errors);
             return ResultFromExtension<IUser>.Success(((ISuccessResult<IUser>)userResult).Value);
         }
