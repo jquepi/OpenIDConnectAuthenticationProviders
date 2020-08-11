@@ -11,13 +11,11 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps
     class GoogleAppsApi : OpenIDConnectModule<GoogleAppsUserAuthenticationAction, IGoogleAppsConfigurationStore, GoogleAppsUserAuthenticatedAction, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
     {
         public GoogleAppsApi(
-            IGoogleAppsConfigurationStore configurationStore, 
-            GoogleAppsAuthenticationProvider authenticationProvider,
-            Func<WhenEnabledAsyncActionInvoker<GoogleAppsUserAuthenticationAction, IGoogleAppsConfigurationStore>> authenticateUserActionFactory,
-            Func<WhenEnabledAsyncActionInvoker<GoogleAppsUserAuthenticatedAction, IGoogleAppsConfigurationStore>> userAuthenticatedActionFactory) : base(configurationStore, authenticationProvider)
+            IGoogleAppsConfigurationStore configurationStore, GoogleAppsAuthenticationProvider authenticationProvider)
+            : base(configurationStore, authenticationProvider)
         {
-            Add("POST", authenticationProvider.AuthenticateUri, authenticateUserActionFactory().ExecuteAsync);
-            Add("POST", configurationStore.RedirectUri, userAuthenticatedActionFactory().ExecuteAsync);
+            Add<GoogleAppsUserAuthenticationAction>("POST", authenticationProvider.AuthenticateUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IGoogleAppsConfigurationStore>(), null, "OpenIDConnect");
+            Add<GoogleAppsUserAuthenticatedAction>("POST", configurationStore.RedirectUri, RouteCategory.Raw, new AnonymousWhenEnabledEndpointInvocation<IGoogleAppsConfigurationStore>(), null, "OpenIDConnect");
         }
     }
 }

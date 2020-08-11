@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using JWT;
 using JWT.Serializers;
 using Microsoft.IdentityModel.Tokens;
@@ -28,13 +29,76 @@ namespace Tests.OpenIdConnect.Tokens
 
         protected const string DefaultRedirect = "/infrastructure/machines/machines-1";
 
-        protected OctoRequest CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
+        class OctoRequest : IOctoRequest
         {
-            var request = new OctoRequest("https", true, DefaultIssuer, String.Empty, string.Empty, "http", Stream.Null, null, null, new Dictionary<string, IEnumerable<string>>(), null);
+            public OctoRequest(string scheme, bool isHttps, string host, string pathBase, string path, string protocol, IDictionary<string, IEnumerable<string>> headers, IDictionary<string, string> form, IDictionary<string, string> cookies, IPrincipal user)
+            {
+                Scheme = scheme;
+                IsHttps = isHttps;
+                Host = host;
+                PathBase = pathBase;
+                Path = path;
+                Protocol = protocol;
+                Headers = headers;
+                Form = form;
+                Cookies = cookies;
+                User = user;
+            }
+
+            public string Scheme { get; }
+            public bool IsHttps { get; }
+            public string Host { get; }
+            public string PathBase { get; }
+            public string Path { get; }
+            public string Protocol { get; }
+            public IDictionary<string, IEnumerable<string>> Headers { get; }
+            public IDictionary<string, string> Form { get; }
+            public IDictionary<string, string> Cookies { get; }
+            public IPrincipal User { get; }
+
+            public Task<IOctoResponseProvider> HandleAsync(Func<Task<IOctoResponseProvider>> onSuccess)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IOctoResponseProvider> HandleAsync<T>(IResponderParameter<T> parameter, Func<T, Task<IOctoResponseProvider>> onSuccess)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IOctoResponseProvider> HandleAsync<T1, T2>(IResponderParameter<T1> parameter1, IResponderParameter<T2> parameter2, Func<T1, T2, Task<IOctoResponseProvider>> onSuccess)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IOctoResponseProvider> HandleAsync<T1, T2, T3>(IResponderParameter<T1> parameter1, IResponderParameter<T2> parameter2, IResponderParameter<T3> parameter3, Func<T1, T2, T3, Task<IOctoResponseProvider>> onSuccess)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IOctoResponseProvider> HandleAsync<T1, T2, T3, T4>(IResponderParameter<T1> parameter1, IResponderParameter<T2> parameter2, IResponderParameter<T3> parameter3, IResponderParameter<T4> parameter4, Func<T1, T2, T3, T4, Task<IOctoResponseProvider>> onSuccess)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<IOctoResponseProvider> HandleAsync<T1, T2, T3, T4, T5>(IResponderParameter<T1> parameter1, IResponderParameter<T2> parameter2, IResponderParameter<T3> parameter3, IResponderParameter<T4> parameter4, IResponderParameter<T5> parameter5, Func<T1, T2, T3, T4, T5, Task<IOctoResponseProvider>> onSuccess)
+            {
+                throw new NotImplementedException();
+            }
+
+            public TResource GetBody<TResource>(RequestBodyRegistration<TResource> registration)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected IOctoRequest CreateRequest(string token, string redirectAfterLoginTo = DefaultRedirect, bool usingSecureConnection = false)
+        {
+            var request = new OctoRequest("https", true, DefaultIssuer, String.Empty, string.Empty, "http", null, new Dictionary<string, string>(), null, null);
             //request.Form["access_token"] = null;
-            request.Form["id_token"] = new [] { token };
+            request.Form["id_token"] = token;
             var stateData = JsonConvert.SerializeObject(new LoginState {RedirectAfterLoginTo = redirectAfterLoginTo, UsingSecureConnection = usingSecureConnection});
-            request.Form["state"] = new [] { stateData };
+            request.Form["state"] = stateData;
             return request;
         }
 
