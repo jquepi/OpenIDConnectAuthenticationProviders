@@ -10,15 +10,15 @@ using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Content;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common
 {
-    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport, 
+    public abstract class OpenIDConnectAuthenticationProvider<TStore> : IAuthenticationProviderWithGroupSupport,
         IUseAuthenticationIdentities,
         IContributesCSS,
         IContributesJavascript
         where TStore : IOpenIDConnectConfigurationStore
     {
-        readonly ILog log;
+        readonly ISystemLog log;
 
-        protected OpenIDConnectAuthenticationProvider(ILog log, TStore configurationStore)
+        protected OpenIDConnectAuthenticationProvider(ISystemLog log, TStore configurationStore)
         {
             this.log = log;
             ConfigurationStore = configurationStore;
@@ -88,7 +88,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common
                 ? Enumerable.Empty<string>()
                 : new[] { $"~/areas/users/{FilenamePrefix}_auth_provider.js" };
 		}
-				
+
         public IdentityMetadataResource GetMetadata()
         {
             return new IdentityMetadataResource

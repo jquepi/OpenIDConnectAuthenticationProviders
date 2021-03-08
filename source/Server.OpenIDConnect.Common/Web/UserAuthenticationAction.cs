@@ -18,8 +18,8 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         static readonly BadRequestRegistration PotentialOpenDirect = new BadRequestRegistration("Request not allowed, due to potential Open Redirection attack");
         static readonly BadRequestRegistration LoginFailed = new BadRequestRegistration("Login failed. Please see the Octopus Server logs for more details.");
         static readonly OctopusJsonRegistration<LoginRedirectLinkResponseModel> Result = new OctopusJsonRegistration<LoginRedirectLinkResponseModel>();
-        
-        readonly ILog log;
+
+        readonly ISystemLog log;
         readonly IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer;
         readonly IAuthorizationEndpointUrlBuilder urlBuilder;
 
@@ -28,7 +28,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         readonly IAuthenticationConfigurationStore authenticationConfigurationStore;
 
         protected UserAuthenticationAction(
-            ILog log,
+            ISystemLog log,
             TStore configurationStore,
             IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             IAuthorizationEndpointUrlBuilder urlBuilder,

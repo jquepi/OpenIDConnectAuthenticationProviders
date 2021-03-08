@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Issuer
 {
     class OctopusIDKeyRetriever : KeyRetriever<IOctopusIDConfigurationStore, IKeyJsonParser>, IOctopusIDKeyRetriever
     {
-        public OctopusIDKeyRetriever(IOctopusIDConfigurationStore configurationStore, IKeyJsonParser keyParser, ILog log) : base(configurationStore, keyParser, log)
+        public OctopusIDKeyRetriever(ISystemLog log, IOctopusIDConfigurationStore configurationStore, IKeyJsonParser keyParser) : base(log, configurationStore, keyParser)
         {
         }
     }

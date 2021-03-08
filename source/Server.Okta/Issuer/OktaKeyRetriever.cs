@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Issuer
 {
     class OktaKeyRetriever : KeyRetriever<IOktaConfigurationStore, IKeyJsonParser>, IOktaKeyRetriever
     {
-        public OktaKeyRetriever(IOktaConfigurationStore configurationStore, IKeyJsonParser keyParser, ILog log) : base(configurationStore, keyParser, log)
+        public OktaKeyRetriever(ISystemLog log, IOktaConfigurationStore configurationStore, IKeyJsonParser keyParser) : base(log, configurationStore, keyParser)
         {
         }
     }

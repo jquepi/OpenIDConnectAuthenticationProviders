@@ -19,21 +19,21 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
         where TDiscoverer : IIdentityProviderConfigDiscoverer
     {
         static string[] hmacAlgorithms = {SecurityAlgorithms.HmacSha256, SecurityAlgorithms.HmacSha384, SecurityAlgorithms.HmacSha512};
-        
+
         readonly TDiscoverer identityProviderConfigDiscoverer;
         readonly TRetriever keyRetriever;
-        protected readonly ILog Log;
+        protected readonly ISystemLog Log;
         protected readonly TStore ConfigurationStore;
 
-        protected AuthTokenHandler(TStore configurationStore,
+        protected AuthTokenHandler(ISystemLog log,
+            TStore configurationStore,
             TDiscoverer identityProviderConfigDiscoverer,
-            TRetriever keyRetriever,
-            ILog log)
+            TRetriever keyRetriever)
         {
+            Log = log;
             ConfigurationStore = configurationStore;
             this.identityProviderConfigDiscoverer = identityProviderConfigDiscoverer;
             this.keyRetriever = keyRetriever;
-            Log = log;
         }
 
         protected async Task<ClaimsPrincipleContainer> GetPrincipalFromToken(string? accessToken, string? idToken)
@@ -65,9 +65,9 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             }
 
             SetIssuerSpecificTokenValidationParameters(validationParameters);
-            
+
             var jwt = new JwtSecurityToken(idToken);
-            
+
             if (hmacAlgorithms.Contains(jwt.Header.Alg))
             {
                 principal = ValidateUsingSharedSecret(validationParameters, tokenToValidate);
@@ -99,7 +99,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             {
                 throw new InvalidOperationException($"The received token was signed with a client secret, which is not supported by the {ConfigurationStore.ConfigurationSettingsName} authentication provider.");
             }
-            
+
             SecurityToken unused;
             var handler = new JwtSecurityTokenHandler();
             try
@@ -126,7 +126,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
 
                 return new[] {keys[identifier]};
             };
-            
+
             SecurityToken unused;
             ClaimsPrincipal? principal = null;
 
@@ -163,7 +163,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             }
             throw new InvalidOperationException("Unable to retrieve issuer certificate");
         }
-        
+
         protected virtual void SetIssuerSpecificTokenValidationParameters(TokenValidationParameters validationParameters)
         { }
 

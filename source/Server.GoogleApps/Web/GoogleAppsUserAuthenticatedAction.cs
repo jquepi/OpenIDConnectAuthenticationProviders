@@ -10,11 +10,11 @@ using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
-    class GoogleAppsUserAuthenticatedAction 
+    class GoogleAppsUserAuthenticatedAction
         : UserAuthenticatedAction<IGoogleAppsConfigurationStore, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
     {
         public GoogleAppsUserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             IGoogleAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
@@ -23,7 +23,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
             IGoogleAppsIdentityCreator identityCreator,
-            IClock clock, IUrlEncoder encoder) 
+            IClock clock, IUrlEncoder encoder)
             : base(log, authTokenHandler, principalToUserResourceMapper, userStore, configurationStore, authCookieCreator, loginTracker, sleep, identityCreator, clock, encoder)
         {
         }

@@ -13,17 +13,17 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
         where TDiscoverer : IIdentityProviderConfigDiscoverer
     {
         protected OpenIDConnectAuthTokenHandler(
-            ILog log,
+            ISystemLog log,
             TStore configurationStore,
             TDiscoverer identityProviderConfigDiscoverer,
-            TRetriever keyRetriever) : base(configurationStore, identityProviderConfigDiscoverer, keyRetriever, log)
+            TRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
         }
 
         public Task<ClaimsPrincipleContainer> GetPrincipalAsync(IDictionary<string, string?> requestForm, out string? stateString)
         {
             stateString = null;
-            
+
             if (requestForm.ContainsKey("error"))
             {
                 var errorDescription = requestForm["error_description"] ?? string.Empty;
@@ -36,7 +36,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Token
             {
                 accessToken = requestForm["access_token"];
             }
-            
+
             string? idToken = null;
             if (requestForm.ContainsKey("id_token"))
             {

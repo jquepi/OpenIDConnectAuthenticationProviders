@@ -14,7 +14,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
     class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
     {
         public OktaUserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             IOktaAuthTokenHandler authTokenHandler,
             IOktaPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
@@ -33,8 +33,8 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 authCookieCreator,
                 loginTracker,
                 sleep,
-                identityCreator, 
-                clock, 
+                identityCreator,
+                clock,
                 encoder)
         {
         }

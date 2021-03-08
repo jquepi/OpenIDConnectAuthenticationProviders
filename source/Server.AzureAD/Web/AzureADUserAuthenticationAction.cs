@@ -11,9 +11,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
     class AzureADUserAuthenticationAction : UserAuthenticationAction<IAzureADConfigurationStore>
     {
         public AzureADUserAuthenticationAction(
-            ILog log,
-            IAzureADConfigurationStore configurationStore, 
-            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
+            ISystemLog log,
+            IAzureADConfigurationStore configurationStore,
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             IAzureADAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionModelBinder modelBinder,
             IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)
