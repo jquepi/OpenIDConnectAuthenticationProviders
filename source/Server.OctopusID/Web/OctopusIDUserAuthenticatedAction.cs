@@ -13,7 +13,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
     class OctopusIDUserAuthenticatedAction : UserAuthenticatedAction<IOctopusIDConfigurationStore, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
     {
         public OctopusIDUserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             IOctopusIDAuthTokenHandler authTokenHandler,
             IOctopusIDPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
@@ -32,8 +32,8 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
                 authCookieCreator,
                 loginTracker,
                 sleep,
-                identityCreator, 
-                clock, 
+                identityCreator,
+                clock,
                 encoder)
         {
         }

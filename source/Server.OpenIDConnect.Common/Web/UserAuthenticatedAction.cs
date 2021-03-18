@@ -30,7 +30,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         static readonly BadRequestRegistration LoginFailed = new BadRequestRegistration("User login failed");
         static readonly RedirectRegistration Redirect = new RedirectRegistration("Redirects back to the Octopus portal");
 
-        readonly ILog log;
+        readonly ISystemLog log;
         readonly TAuthTokenHandler authTokenHandler;
         readonly IPrincipalToUserResourceMapper principalToUserResourceMapper;
         readonly IUpdateableUserStore userStore;
@@ -44,7 +44,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         protected readonly TStore ConfigurationStore;
 
         protected UserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             TAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,

@@ -6,7 +6,7 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Issuer
 {
     class GoogleKeyRetriever : KeyRetriever<IGoogleAppsConfigurationStore, IKeyJsonParser>, IGoogleKeyRetriever
     {
-        public GoogleKeyRetriever(IGoogleAppsConfigurationStore configurationStore, IKeyJsonParser keyParser, ILog log) : base(configurationStore, keyParser, log)
+        public GoogleKeyRetriever(ISystemLog log, IGoogleAppsConfigurationStore configurationStore, IKeyJsonParser keyParser) : base(log, configurationStore, keyParser)
         {
         }
     }

@@ -13,16 +13,16 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
     class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
         public AzureADUserAuthenticatedAction(
-            ILog log,
+            ISystemLog log,
             IAzureADAuthTokenHandler authTokenHandler,
             IAzureADPrincipalToUserResourceMapper principalToUserResourceMapper,
             IUpdateableUserStore userStore,
             IAzureADConfigurationStore configurationStore,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
-            ISleep sleep, 
+            ISleep sleep,
             IAzureADIdentityCreator identityCreator,
-            IClock clock, 
+            IClock clock,
             IUrlEncoder encoder) :
             base(
                 log,

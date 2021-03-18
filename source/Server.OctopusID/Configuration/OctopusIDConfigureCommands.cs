@@ -11,7 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
     class OctopusIDConfigureCommands : OpenIdConnectConfigureCommands<IOctopusIDConfigurationStore>
     {
         public OctopusIDConfigureCommands(
-            ILog log,
+            ISystemLog log,
             Lazy<IOctopusIDConfigurationStore> configurationStore,
             Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
             : base(log, configurationStore, webPortalConfigurationStore)

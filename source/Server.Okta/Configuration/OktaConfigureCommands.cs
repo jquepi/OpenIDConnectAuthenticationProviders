@@ -10,7 +10,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
     class OktaConfigureCommands : OpenIdConnectConfigureCommands<IOktaConfigurationStore>
     {
         public OktaConfigureCommands(
-            ILog log,
+            ISystemLog log,
             Lazy<IOktaConfigurationStore> configurationStore,
             Lazy<IWebPortalConfigurationStore> webPortalConfigurationStore)
             : base(log, configurationStore, webPortalConfigurationStore)

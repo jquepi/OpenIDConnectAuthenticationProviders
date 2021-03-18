@@ -7,10 +7,10 @@ using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Tokens;
 namespace Tests.OpenIdConnect.Tokens
 {
     public class CustomOpenIDConnectAuthTokenHandler : OpenIDConnectAuthTokenHandler<IOpenIDConnectConfigurationStore, IKeyRetriever, IIdentityProviderConfigDiscoverer>
-    { 
-        public CustomOpenIDConnectAuthTokenHandler(ILog log, IOpenIDConnectConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
+    {
+        public CustomOpenIDConnectAuthTokenHandler(ISystemLog log, IOpenIDConnectConfigurationStore configurationStore, IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, IKeyRetriever keyRetriever) : base(log, configurationStore, identityProviderConfigDiscoverer, keyRetriever)
         {
-            
+
         }
     }
 }

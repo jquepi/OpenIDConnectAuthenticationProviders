@@ -10,9 +10,9 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
     class OctopusIDUserAuthenticationAction : UserAuthenticationAction<IOctopusIDConfigurationStore>
     {
         public OctopusIDUserAuthenticationAction(
-            ILog log,
-            IOctopusIDConfigurationStore configurationStore, 
-            IOctopusIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
+            ISystemLog log,
+            IOctopusIDConfigurationStore configurationStore,
+            IOctopusIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             IOctopusIDAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionModelBinder modelBinder,
             IAuthenticationConfigurationStore authenticationConfigurationStore) : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)

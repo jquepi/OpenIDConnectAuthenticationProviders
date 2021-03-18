@@ -11,12 +11,12 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
     class GoogleAppsUserAuthenticationAction : UserAuthenticationAction<IGoogleAppsConfigurationStore>
     {
         public GoogleAppsUserAuthenticationAction(
-            ILog log,
-            IGoogleAppsConfigurationStore configurationStore, 
-            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer, 
+            ISystemLog log,
+            IGoogleAppsConfigurationStore configurationStore,
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
             IGoogleAppsAuthorizationEndpointUrlBuilder urlBuilder,
             IApiActionModelBinder modelBinder,
-            IAuthenticationConfigurationStore authenticationConfigurationStore) 
+            IAuthenticationConfigurationStore authenticationConfigurationStore)
                 : base(log, configurationStore, identityProviderConfigDiscoverer, urlBuilder, modelBinder, authenticationConfigurationStore)
         {
         }
