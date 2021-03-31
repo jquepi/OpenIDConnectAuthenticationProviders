@@ -13,11 +13,11 @@
     <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Octopus.Data" Version="5.3.1-enh-mediatorcontracts.1" />
     <PackageReference Include="Octopus.Diagnostics" Version="2.1.1" />
-    <PackageReference Include="Octopus.Server.Extensibility" Version="13.0.1-enh-mediatorcont0021" />
-    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="10.0.2-enh-mediatorcont0002" />
+    <PackageReference Include="Octopus.Server.Extensibility" Version="13.0.1-enh-mediatorcont0022" />
+    <PackageReference Include="Octopus.Server.Extensibility.Authentication" Version="10.0.2-enh-mediatorcont0004" />
     <PackageReference Include="Octopus.Time" Version="1.1.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
   </ItemGroup>
