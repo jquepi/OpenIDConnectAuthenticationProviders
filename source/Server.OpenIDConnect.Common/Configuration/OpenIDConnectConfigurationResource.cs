@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
-using Octopus.Data.Resources.Attributes;
 using Octopus.Server.Extensibility.Extensions.Infrastructure.Configuration;
+using Octopus.Server.MessageContracts.Attributes;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration
 {
