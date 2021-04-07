@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
-using Octopus.Data.Resources;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Configuration;
+using Octopus.Server.MessageContracts;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
 {
@@ -9,11 +9,11 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Configuration
     {
         [ReadOnly(true)]
         public override string? Issuer { get; set; }
-        
+
         /// <summary>
         /// NOTE: the following properties are here to control the order they appear on the settings page
         /// </summary>
-        
+
         [ReadOnly(true)]
         public override string? ClientId { get; set; }
         [ReadOnly(true)]
