@@ -1,9 +1,10 @@
 ﻿using Octopus.Data.Model.User;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identities
 {
     public interface IIdentityCreator
     {
-        Identity Create(string? email, string? displayName, string? externalId);
+        Identity Create(UserResource userResource);
     }
 }

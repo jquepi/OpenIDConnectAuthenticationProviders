@@ -1,5 +1,6 @@
 using Octopus.Data.Model.User;
 using Octopus.Server.Extensibility.Authentication.Model;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 
 namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identities
@@ -10,15 +11,15 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Ident
 
         protected abstract string ProviderName { get; }
 
-        public Identity Create(string? email, string? displayName, string? externalId)
+        public virtual Identity Create(UserResource userResource)
         {
             var identity = new Identity(ProviderName);
-            if (email != null)
-                identity = identity.WithClaim(ClaimDescriptor.EmailClaimType, email, true);
-            if (displayName != null)
-                identity = identity.WithClaim(ClaimDescriptor.DisplayNameClaimType, displayName, false);
-            if (externalId != null)
-                identity = identity.WithClaim(ExternalIdClaimType, externalId, true, true);
+            if (userResource?.EmailAddress != null)
+                identity = identity.WithClaim(ClaimDescriptor.EmailClaimType, userResource.EmailAddress, true);
+            if (userResource?.DisplayName != null)
+                identity = identity.WithClaim(ClaimDescriptor.DisplayNameClaimType, userResource.DisplayName, false);
+            if (userResource?.ExternalId != null)
+                identity = identity.WithClaim(ExternalIdClaimType, userResource.ExternalId, true, true);
 
             return identity;
         }
