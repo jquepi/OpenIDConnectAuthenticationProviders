@@ -11,7 +11,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Configuration
         {
             RoleClaimType = DefaultRoleClaimType;
             UsernameClaimType = DefaultUsernameClaimType;
-            Scope = DefaultScope + "%20profile%20groups";
+            Scope = DefaultScope + "%20groups";
         }
 
         public string UsernameClaimType { get; set; }
