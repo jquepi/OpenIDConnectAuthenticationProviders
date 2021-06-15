@@ -2,7 +2,6 @@
 using Octopus.Server.Extensibility.Authentication.Model;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Identities;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.Resources.Identities;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Identities
 {
@@ -15,7 +14,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Identities
         public override Identity Create(UserResource userResource)
         {
             var identity = base.Create(userResource);
-            if (userResource?.Username != null && userResource.Username != userResource.EmailAddress && userResource.Username != userResource.ExternalId)
+            if (userResource.Username != null && userResource.Username != userResource.EmailAddress && userResource.Username != userResource.ExternalId)
                 identity = identity.WithClaim(PreferredUsername, userResource.Username, true, true);
 
             return identity;

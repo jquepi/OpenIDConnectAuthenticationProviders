@@ -14,11 +14,11 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Ident
         public virtual Identity Create(UserResource userResource)
         {
             var identity = new Identity(ProviderName);
-            if (userResource?.EmailAddress != null)
+            if (userResource.EmailAddress != null)
                 identity = identity.WithClaim(ClaimDescriptor.EmailClaimType, userResource.EmailAddress, true);
-            if (userResource?.DisplayName != null)
+            if (userResource.DisplayName != null)
                 identity = identity.WithClaim(ClaimDescriptor.DisplayNameClaimType, userResource.DisplayName, false);
-            if (userResource?.ExternalId != null)
+            if (userResource.ExternalId != null)
                 identity = identity.WithClaim(ExternalIdClaimType, userResource.ExternalId, true, true);
 
             return identity;
