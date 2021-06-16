@@ -74,7 +74,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
         public async Task<IOctoResponseProvider> ExecuteAsync(IOctoRequest request)
         {
             // Step 1: Try and get all of the details from the request making sure there are no errors passed back from the external identity provider
-            var principalContainer = await authTokenHandler.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => pair.Value), out var stateStringFromRequest);
+            var principalContainer = await authTokenHandler.GetPrincipalAsync(request.Form.ToDictionary(pair => pair.Key, pair => (string?)pair.Value), out var stateStringFromRequest);
             var principal = principalContainer.Principal;
             if (principal == null || !string.IsNullOrEmpty(principalContainer.Error))
             {
@@ -239,10 +239,7 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
         Identity NewIdentity(UserResource userResource)
         {
-            return identityCreator.Create(
-                userResource.EmailAddress,
-                userResource.DisplayName,
-                userResource.ExternalId);
+            return identityCreator.Create(userResource);
         }
     }
 }
