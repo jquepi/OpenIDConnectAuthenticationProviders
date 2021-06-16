@@ -15,7 +15,7 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Identities
         {
             var identity = base.Create(userResource);
             if (userResource.Username != null && userResource.Username != userResource.EmailAddress && userResource.Username != userResource.ExternalId)
-                identity = identity.WithClaim(PreferredUsername, userResource.Username, true, true);
+                identity = identity.WithClaim(PreferredUsername, userResource.Username, true);
 
             return identity;
         }
