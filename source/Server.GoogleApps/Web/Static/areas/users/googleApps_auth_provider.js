@@ -6,8 +6,8 @@ function googleAuthProvider(octopusClient, provider, loginState, onError, isDark
             <div class="googleapps-button ${isDarkMode ? "dark" : "light"}>
                 <div class="googleapps-button-image">
                     <img alt="Login using Google Auth" src="${octopusClient.resolve("~/images/google_signin_buttons/icon-google.svg")}" />
-                    <span class="googleapps-button-text">Sign in with Google</span>
                 </div>
+                <span class="googleapps-button-text">Sign in with Google</span>
             </div>
         </a>
     `;
