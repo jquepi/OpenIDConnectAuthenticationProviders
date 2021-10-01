@@ -3,7 +3,7 @@
 function googleAuthProvider(octopusClient, provider, loginState, onError, isDarkMode) {
     this.linkHtml = `
         <a>
-            <div class="googleapps-button ${isDarkMode ? "dark" : "light"}>
+            <div class="googleapps-button ${isDarkMode ? "dark" : "light"}">
                 <div class="googleapps-button-image">
                     <img alt="Login using Google Auth" src="${octopusClient.resolve("~/images/google_signin_buttons/icon-google.svg")}" />
                 </div>
