@@ -1,6 +1,7 @@
 (function (providerName) {
 
 function googleAuthProvider(octopusClient, provider, loginState, onError, isDarkMode) {
+    //The following styling and structure is following google's branding guidelines. Please see https://developers.google.com/identity/branding-guidelines
     this.linkHtml = `
         <a>
             <div class="googleapps-button ${isDarkMode ? "dark" : "light"}">
