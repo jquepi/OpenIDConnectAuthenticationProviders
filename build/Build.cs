@@ -86,12 +86,11 @@ class Build : NukeBuild
             
             CopyFileToDirectory(BuildProjectDirectory / "Octopus.Server.Extensibility.Authentication.OpenIDConnect.nuspec", PublishDirectory);
             
-            CopyFileToDirectory(SourceDirectory / "Server.OpenIDConnect.Common" / "bin" / "Release" / "net5.0" / "Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.dll" , PublishDirectory);
-            CopyFileToDirectory(SourceDirectory / "Server.AzureAD" / "bin" / "Release" / "net5.0" / "Octopus.Server.Extensibility.Authentication.AzureAD.dll" , PublishDirectory);
-            CopyFileToDirectory(SourceDirectory / "Server.GoogleApps" / "bin" / "Release" / "net5.0" / "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", PublishDirectory);
-            CopyFileToDirectory(SourceDirectory / "Server.Okta" / "bin" / "Release" / "net5.0" / "Octopus.Server.Extensibility.Authentication.Okta.dll", PublishDirectory);
-            CopyFileToDirectory(SourceDirectory / "Server.OctopusID" / "bin" / "Release" / "net5.0" / "Octopus.Server.Extensibility.Authentication.OctopusID.dll", PublishDirectory);
-            
+            CopyFileToDirectory(SourceDirectory / "Server.OpenIDConnect.Common" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.dll" , PublishDirectory);
+            CopyFileToDirectory(SourceDirectory / "Server.AzureAD" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.AzureAD.dll" , PublishDirectory);
+            CopyFileToDirectory(SourceDirectory / "Server.GoogleApps" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", PublishDirectory);
+            CopyFileToDirectory(SourceDirectory / "Server.Okta" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.Okta.dll", PublishDirectory);
+            CopyFileToDirectory(SourceDirectory / "Server.OctopusID" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.OctopusID.dll", PublishDirectory);
             
             DotNetPack(_ => _
                 .SetProject(Solution)
