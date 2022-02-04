@@ -76,7 +76,8 @@
               "CopyToLocalPackages",
               "Default",
               "Pack",
-              "Restore"
+              "Restore",
+              "Test"
             ]
           }
         },
@@ -95,7 +96,8 @@
               "CopyToLocalPackages",
               "Default",
               "Pack",
-              "Restore"
+              "Restore",
+              "Test"
             ]
           }
         },

@@ -67,8 +67,18 @@ class Build : NukeBuild
                 .EnableNoRestore());
         });
 
-    Target Pack => _ => _
+    Target Test => _ => _
         .DependsOn(Compile)
+        .Executes(() =>
+        {
+            DotNetTest(_ => _
+                .SetProjectFile(SourceDirectory / "Tests" / "Tests.csproj")
+                .SetConfiguration(Configuration)
+                .EnableNoBuild());
+        });
+
+    Target Pack => _ => _
+        .DependsOn(Test)
         .Produces(ArtifactsDirectory / "*.nupkg")
         .Executes(() =>
         {
