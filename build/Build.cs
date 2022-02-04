@@ -92,7 +92,8 @@ class Build : NukeBuild
             CopyFileToDirectory(SourceDirectory / "Server.OctopusID" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.OctopusID.dll", PublishDirectory);
             
             DotNetPack(_ => _
-                .SetProject(Solution)
+                .SetProject(SourceDirectory / "Server.OpenIDConnect.Common" / "Server.OpenIDConnect.Common.csproj") 
+                // we need a placeholder csproj here even though nuspec is what is being honoured - https://github.com/NuGet/Home/issues/4254 
                 .SetVersion(OctoVersionInfo.FullSemVer)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
