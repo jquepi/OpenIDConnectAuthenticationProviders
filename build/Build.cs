@@ -65,7 +65,7 @@ class Build : NukeBuild
                 .SetVersion(OctoVersionInfo.NuGetVersion)
                 .EnableNoRestore());
         });
-
+    
     Target Test => _ => _
         .DependsOn(Compile)
         .Executes(() =>
@@ -85,12 +85,14 @@ class Build : NukeBuild
             
             CopyFileToDirectory(BuildProjectDirectory / "Octopus.Server.Extensibility.Authentication.OpenIDConnect.nuspec", PublishDirectory);
             
+            CopyFileToDirectory(RootDirectory / "LICENSE.txt", PublishDirectory);
+            CopyFileToDirectory(BuildProjectDirectory / "icon.png", PublishDirectory);
             CopyFileToDirectory(SourceDirectory / "Server.OpenIDConnect.Common" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.dll" , PublishDirectory);
             CopyFileToDirectory(SourceDirectory / "Server.AzureAD" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.AzureAD.dll" , PublishDirectory);
             CopyFileToDirectory(SourceDirectory / "Server.GoogleApps" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.GoogleApps.dll", PublishDirectory);
             CopyFileToDirectory(SourceDirectory / "Server.Okta" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.Okta.dll", PublishDirectory);
             CopyFileToDirectory(SourceDirectory / "Server.OctopusID" / "bin" / Configuration / "net5.0" / "Octopus.Server.Extensibility.Authentication.OctopusID.dll", PublishDirectory);
-            
+
             DotNetPack(_ => _
                 .SetProject(SourceDirectory / "Server.OpenIDConnect.Common" / "Server.OpenIDConnect.Common.csproj") 
                 // we need a placeholder csproj here even though nuspec is what is being honoured - https://github.com/NuGet/Home/issues/4254 
