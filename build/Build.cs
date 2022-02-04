@@ -102,60 +102,61 @@ class Build : NukeBuild
                 .SetVerbosity(DotNetVerbosity.Normal)
                 .SetProperty("NuspecFile", PublishDirectory / "Octopus.Server.Extensibility.Authentication.OpenIDConnect.nuspec")
                 .SetProperty("NuspecProperties", $"Version={OctoVersionInfo.FullSemVer}"));
-            //
-            // DotNetPack(_ => _
-            //     .SetProject(SourceDirectory / "Server.OpenIDConnect.Common" /"Server.OpenIDConnect.Common.csproj")
-            //     .SetVersion(OctoVersionInfo.FullSemVer)
-            //     .SetConfiguration(Configuration)
-            //     .SetOutputDirectory(ArtifactsDirectory)
-            //     .EnableNoBuild()
-            //     .DisableIncludeSymbols()
-            //     .SetVerbosity(DotNetVerbosity.Normal));
-            //
-            // DotNetPack(_ => _
-            //     .SetProject(SourceDirectory / "Client.OpenIDConnect" / "Client.OpenIDConnect.csproj")
-            //     .SetVersion(OctoVersionInfo.FullSemVer)
-            //     .SetConfiguration(Configuration)
-            //     .SetOutputDirectory(ArtifactsDirectory)
-            //     .EnableNoBuild()
-            //     .DisableIncludeSymbols()
-            //     .SetVerbosity(DotNetVerbosity.Normal));
-            //
-            // DotNetPack(_ => _
-            //     .SetProject(SourceDirectory / "Client.AzureAD" / "Client.AzureAD.csproj")
-            //     .SetVersion(OctoVersionInfo.FullSemVer)
-            //     .SetConfiguration(Configuration)
-            //     .SetOutputDirectory(ArtifactsDirectory)
-            //     .EnableNoBuild()
-            //     .DisableIncludeSymbols()
-            //     .SetVerbosity(DotNetVerbosity.Normal));
-            //
-            // DotNetPack(_ => _
-            //     .SetProject(SourceDirectory / "Client.GoogleApps" / "Client.GoogleApps.csproj")
-            //     .SetVersion(OctoVersionInfo.FullSemVer)
-            //     .SetConfiguration(Configuration)
-            //     .SetOutputDirectory(ArtifactsDirectory)
-            //     .EnableNoBuild()
-            //     .DisableIncludeSymbols()
-            //     .SetVerbosity(DotNetVerbosity.Normal));
-            //
-            // DotNetPack(_ => _
-            //     .SetProject(SourceDirectory / "Client.Okta" / "Client.Okta.csproj")
-            //     .SetVersion(OctoVersionInfo.FullSemVer)
-            //     .SetConfiguration(Configuration)
-            //     .SetOutputDirectory(ArtifactsDirectory)
-            //     .EnableNoBuild()
-            //     .DisableIncludeSymbols()
-            //     .SetVerbosity(DotNetVerbosity.Normal));
-            //
-            // DotNetPack(_ => _
-            //     .SetProject(SourceDirectory / "Client.OctopusID" / "Client.OctopusID.csproj")
-            //     .SetVersion(OctoVersionInfo.FullSemVer)
-            //     .SetConfiguration(Configuration)
-            //     .SetOutputDirectory(ArtifactsDirectory)
-            //     .EnableNoBuild()
-            //     .DisableIncludeSymbols()
-            //     .SetVerbosity(DotNetVerbosity.Normal));
+
+            
+            DotNetPack(_ => _
+                .SetProject(SourceDirectory / "Server.OpenIDConnect.Common" /"Server.OpenIDConnect.Common.csproj")
+                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetConfiguration(Configuration)
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
+                .DisableIncludeSymbols()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            DotNetPack(_ => _
+                .SetProject(SourceDirectory / "Client.OpenIDConnect" / "Client.OpenIDConnect.csproj")
+                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetConfiguration(Configuration)
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
+                .DisableIncludeSymbols()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            DotNetPack(_ => _
+                .SetProject(SourceDirectory / "Client.AzureAD" / "Client.AzureAD.csproj")
+                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetConfiguration(Configuration)
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
+                .DisableIncludeSymbols()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            DotNetPack(_ => _
+                .SetProject(SourceDirectory / "Client.GoogleApps" / "Client.GoogleApps.csproj")
+                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetConfiguration(Configuration)
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
+                .DisableIncludeSymbols()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            DotNetPack(_ => _
+                .SetProject(SourceDirectory / "Client.Okta" / "Client.Okta.csproj")
+                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetConfiguration(Configuration)
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
+                .DisableIncludeSymbols()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            DotNetPack(_ => _
+                .SetProject(SourceDirectory / "Client.OctopusID" / "Client.OctopusID.csproj")
+                .SetVersion(OctoVersionInfo.FullSemVer)
+                .SetConfiguration(Configuration)
+                .SetOutputDirectory(ArtifactsDirectory)
+                .EnableNoBuild()
+                .DisableIncludeSymbols()
+                .SetVerbosity(DotNetVerbosity.Normal));
         });
     
         Target CopyToLocalPackages => _ => _
