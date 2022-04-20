@@ -4,16 +4,18 @@ using Octopus.Server.Extensibility.Authentication.GoogleApps.Identities;
 using Octopus.Server.Extensibility.Authentication.GoogleApps.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.HostServices.Web;
+using Octopus.Server.Extensibility.Mediator;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
 {
-    class GoogleAppsUserAuthenticatedAction
-        : UserAuthenticatedAction<IGoogleAppsConfigurationStore, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
+    class GoogleAppsUserAuthenticatedPkceAction
+        : UserAuthenticatedPkceAction<IGoogleAppsConfigurationStore, IGoogleAuthTokenHandler, IGoogleAppsIdentityCreator>
     {
-        public GoogleAppsUserAuthenticatedAction(
+        public GoogleAppsUserAuthenticatedPkceAction(
             ISystemLog log,
             IGoogleAuthTokenHandler authTokenHandler,
             IPrincipalToUserResourceMapper principalToUserResourceMapper,
@@ -23,9 +25,10 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
             ISleep sleep,
             IGoogleAppsIdentityCreator identityCreator,
             IUrlEncoder encoder,
-            IUserService userService) :
-            base(
-                log,
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IMediator mediator,
+            IUserService service)
+            : base(log,
                 authTokenHandler,
                 principalToUserResourceMapper,
                 configurationStore,
@@ -34,7 +37,9 @@ namespace Octopus.Server.Extensibility.Authentication.GoogleApps.Web
                 sleep,
                 identityCreator,
                 encoder,
-                userService)
+                identityProviderConfigDiscoverer,
+                mediator,
+                service)
         {
         }
 

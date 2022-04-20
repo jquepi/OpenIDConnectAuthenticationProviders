@@ -1,31 +1,34 @@
 ﻿using Octopus.Diagnostics;
-using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
-using Octopus.Server.Extensibility.Authentication.Okta.Infrastructure;
-using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
+using Octopus.Server.Extensibility.Authentication.Okta.Configuration;
 using Octopus.Server.Extensibility.Authentication.Okta.Identities;
+using Octopus.Server.Extensibility.Authentication.Okta.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
-using Octopus.Server.Extensibility.Extensions.Infrastructure.Web.Api;
 using Octopus.Server.Extensibility.HostServices.Web;
+using Octopus.Server.Extensibility.Mediator;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.Okta.Web
 {
-    class OktaUserAuthenticatedAction : UserAuthenticatedAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
+    class OktaUserAuthenticatedPkceAction
+        : UserAuthenticatedPkceAction<IOktaConfigurationStore, IOktaAuthTokenHandler, IOktaIdentityCreator>
     {
-        public OktaUserAuthenticatedAction(
+        public OktaUserAuthenticatedPkceAction(
             ISystemLog log,
             IOktaAuthTokenHandler authTokenHandler,
-            IOktaPrincipalToUserResourceMapper principalToUserResourceMapper,
+            IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IOktaConfigurationStore configurationStore,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
             IOktaIdentityCreator identityCreator,
             IUrlEncoder encoder,
-            IUserService userService) :
-            base(
-                log,
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IMediator mediator,
+            IUserService service)
+            : base(log,
                 authTokenHandler,
                 principalToUserResourceMapper,
                 configurationStore,
@@ -34,7 +37,9 @@ namespace Octopus.Server.Extensibility.Authentication.Okta.Web
                 sleep,
                 identityCreator,
                 encoder,
-                userService)
+                identityProviderConfigDiscoverer,
+                mediator,
+                service)
         {
         }
 

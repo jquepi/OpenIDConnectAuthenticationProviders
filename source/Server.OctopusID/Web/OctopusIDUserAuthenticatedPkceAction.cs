@@ -2,29 +2,33 @@
 using Octopus.Server.Extensibility.Authentication.HostServices;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Configuration;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Identities;
-using Octopus.Server.Extensibility.Authentication.OctopusID.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.OctopusID.Tokens;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Infrastructure;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.HostServices.Web;
+using Octopus.Server.Extensibility.Mediator;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
 {
-    class OctopusIDUserAuthenticatedAction : UserAuthenticatedAction<IOctopusIDConfigurationStore, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
+    class OctopusIDUserAuthenticatedPkceAction
+        : UserAuthenticatedPkceAction<IOctopusIDConfigurationStore, IOctopusIDAuthTokenHandler, IOctopusIDIdentityCreator>
     {
-        public OctopusIDUserAuthenticatedAction(
+        public OctopusIDUserAuthenticatedPkceAction(
             ISystemLog log,
             IOctopusIDAuthTokenHandler authTokenHandler,
-            IOctopusIDPrincipalToUserResourceMapper principalToUserResourceMapper,
+            IPrincipalToUserResourceMapper principalToUserResourceMapper,
             IOctopusIDConfigurationStore configurationStore,
             IAuthCookieCreator authCookieCreator,
             IInvalidLoginTracker loginTracker,
             ISleep sleep,
             IOctopusIDIdentityCreator identityCreator,
             IUrlEncoder encoder,
-            IUserService userService) :
-            base(
-                log,
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IMediator mediator,
+            IUserService service)
+            : base(log,
                 authTokenHandler,
                 principalToUserResourceMapper,
                 configurationStore,
@@ -33,7 +37,9 @@ namespace Octopus.Server.Extensibility.Authentication.OctopusID.Web
                 sleep,
                 identityCreator,
                 encoder,
-                userService)
+                identityProviderConfigDiscoverer,
+                mediator,
+                service)
         {
         }
 

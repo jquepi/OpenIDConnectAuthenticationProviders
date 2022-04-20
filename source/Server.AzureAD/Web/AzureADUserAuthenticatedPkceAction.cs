@@ -4,15 +4,17 @@ using Octopus.Server.Extensibility.Authentication.AzureAD.Identities;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Infrastructure;
 using Octopus.Server.Extensibility.Authentication.AzureAD.Tokens;
 using Octopus.Server.Extensibility.Authentication.HostServices;
+using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Issuer;
 using Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web;
 using Octopus.Server.Extensibility.HostServices.Web;
+using Octopus.Server.Extensibility.Mediator;
 using Octopus.Time;
 
 namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
 {
-    class AzureADUserAuthenticatedAction : UserAuthenticatedAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
+    class AzureADUserAuthenticatedPkceAction : UserAuthenticatedPkceAction<IAzureADConfigurationStore, IAzureADAuthTokenHandler, IAzureADIdentityCreator>
     {
-        public AzureADUserAuthenticatedAction(
+        public AzureADUserAuthenticatedPkceAction(
             ISystemLog log,
             IAzureADAuthTokenHandler authTokenHandler,
             IAzureADPrincipalToUserResourceMapper principalToUserResourceMapper,
@@ -22,9 +24,10 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
             ISleep sleep,
             IAzureADIdentityCreator identityCreator,
             IUrlEncoder encoder,
-            IUserService userService) :
-            base(
-                log,
+            IIdentityProviderConfigDiscoverer identityProviderConfigDiscoverer,
+            IMediator mediator,
+            IUserService service)
+            : base(log,
                 authTokenHandler,
                 principalToUserResourceMapper,
                 configurationStore,
@@ -33,7 +36,9 @@ namespace Octopus.Server.Extensibility.Authentication.AzureAD.Web
                 sleep,
                 identityCreator,
                 encoder,
-                userService)
+                identityProviderConfigDiscoverer,
+                mediator,
+                service)
         {
         }
 
