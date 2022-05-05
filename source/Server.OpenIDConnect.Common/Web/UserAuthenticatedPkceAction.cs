@@ -80,10 +80,12 @@ namespace Octopus.Server.Extensibility.Authentication.OpenIDConnect.Common.Web
 
         async Task<IOctoResponseProvider> Handle(string code, string state, IOctoRequest request)
         {
-            var host = request.Headers.ContainsKey("Host") ? request.Headers["Host"].Single() : request.Host;
-            var redirectUri = $"{request.Scheme}://{host}{configurationStore.RedirectUri}";
             var stateFromRequest = JsonConvert.DeserializeObject<LoginStateWithRequestId>(state)!;
-
+            
+            var host = request.Headers.ContainsKey("Host") ? request.Headers["Host"].Single() : request.Host;
+            var scheme = stateFromRequest.UsingSecureConnection ? "https" : "http";
+            var redirectUri = $"{scheme}://{host}{configurationStore.RedirectUri}";
+            
             using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
             var codeVerifier = await GetCodeVerifier(stateFromRequest.RequestId, cts.Token);
             var response = await RequestAuthToken(code, redirectUri, codeVerifier);
